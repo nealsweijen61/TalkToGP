@@ -9,8 +9,6 @@ import numpy as np
 import pandas as pd
 import torch
 
-from explain.mega_explainer.lime_explainer import Lime
-from explain.mega_explainer.perturbation_methods import NormalPerturbation
 from explain.mega_explainer.shap_explainer import SHAPExplainer
 
 
@@ -100,50 +98,19 @@ class Explainer:
         # in order to figure out "the best" explanation. These methods are initialized and
         # stored here
 
-        lime_template = partial(Lime,
-                                model=self.model,
-                                data=self.data,
-                                discrete_features=discrete_features)
-
-        # Generate explanations with many lime kernels
-        if use_selection:
-            kernel_widths = [0.25, 0.50, 0.75, 1.0]
-        else:
-            kernel_widths = [0.75]
-
         available_explanations = {}
-        for width in kernel_widths:
-            name = f"lime_{round(width, 3)}"
-            available_explanations[name] = lime_template(kernel_width=width)
 
         # add shap
-        if use_selection:
-            shap_explainer = SHAPExplainer(self.model, self.data)
-            available_explanations["shap"] = shap_explainer
+        shap_explainer = SHAPExplainer(self.model, self.data)
+        available_explanations["shap"] = shap_explainer
 
         self.explanation_methods = available_explanations
-
-        # Can we delete this line?
-        self.get_explanation_methods = {}
-
-        # TODO(satya): change this to be inputs to __init__
-        # The criteria used to perturb the explanation point and determine which explanations
-        # are the most faithful
-        self.perturbation_mean = 0.0
-        self.perturbation_std = 0.05
-        self.perturbation_flip_percentage = 0.03
-        self.perturbation_max_distance = 0.4
 
         # This is a bit clearer, instead of making users use this representation + is the way
         # existing explanation packages (e.g., LIME do it.)
         self.feature_types = conv_disc_inds_to_char_enc(discrete_feature_indices=discrete_features,
                                                         n_features=self.data.shape[1])
 
-        # Set up the Gaussian perturbations
-        self.perturbation_method = NormalPerturbation("tabular",
-                                                      mean=self.perturbation_mean,
-                                                      std=self.perturbation_std,
-                                                      flip_percentage=self.perturbation_flip_percentage)
 
     @staticmethod
     def _arr(x) -> np.ndarray:
@@ -151,60 +118,6 @@ class Explainer:
         if isinstance(x, torch.Tensor):
             return x.detach().cpu().numpy()
         return np.array(x)
-
-    def _compute_faithfulness_auc(self, data, explanation, c_label, k, metric="topk"):
-        """Computes AUC for faithfulness scores, perturbing top k (where k is an array).
-
-        Args:
-            data:
-            explanation:
-            c_label:
-            k:
-            metric:
-        Returns:
-            faithfulness:
-        """
-        faithfulness = 0
-        for k_i in k:
-            # Construct original mask as all true (i.e., all indices are masked and non are perturbed)
-            top_k_map = torch.tensor([True] * len(explanation), dtype=torch.bool)
-
-            # Unmask topk instances
-            top_k_map[torch.topk(np.abs(explanation), k=k_i).indices] = False
-
-            # If top-k provide top-k instances
-            if metric == "topk":
-                faithfulness += self._compute_faithfulness_topk(data, c_label, top_k_map)
-            else:
-                # Otherwise, provide bottom-k indices
-                faithfulness += self._compute_faithfulness_topk(data, c_label, ~top_k_map)
-        return faithfulness
-
-    def _compute_faithfulness_topk(self, x, label, top_k_mask, num_samples: int = 10_000):
-        """Approximates the expected local faithfulness of the explanation in a neighborhood.
-
-        Args:
-            x: The original sample
-            label:
-            top_k_mask:
-            num_samples: number of perturbations used for Monte Carlo expectation estimate
-        """
-        perturb_args = {
-            "original_sample": x[0],
-            "feature_mask": top_k_mask,
-            "num_samples": num_samples,
-            "max_distance": self.perturbation_max_distance,
-            "feature_metadata": self.feature_types
-        }
-        # Compute perturbed instance
-        x_perturbed = self.perturbation_method.get_perturbed_inputs(**perturb_args)
-
-        # TODO(satya): Could you make these lines more readable?
-        y = self._arr([i[label] for i in self._arr(self.model(x.reshape(1, -1)))])
-        y_perturbed = self._arr([i[label] for i in self._arr(self.model(x_perturbed.float()))])
-
-        # Return abs mean
-        return np.mean(np.abs(y - y_perturbed), axis=0)
 
     @staticmethod
     def check_exp_data_shape(data_x: np.ndarray) -> np.ndarray:
@@ -221,19 +134,13 @@ class Explainer:
         return data_x
 
     def explain_instance(self,
-                         data: Union[np.ndarray, pd.DataFrame],
-                         top_k_starting_pct: float = 0.2,
-                         top_k_ending_pct: float = 0.5,
-                         epsilon: float = 1e-4,
-                         return_fidelities: bool = False) -> MegaExplanation:
+                         data: Union[np.ndarray, pd.DataFrame]) -> MegaExplanation:
         """Computes the explanation.
 
         This function computes the explanation. It calls several explanation methods, computes
         metrics over the different methods, computes an aggregate score and returns the best one.
 
         Args:
-            return_fidelities: Whether to return explanation fidelities
-            epsilon:
             top_k_ending_pct:
             top_k_starting_pct:
             data: The instance to explain. If given as a pd.DataFrame, will be converted to a
@@ -249,76 +156,17 @@ class Explainer:
                 raise NameError(message)
 
         explanations, scores = {}, {}
-        fidelity_scores_topk = {}
 
         # Makes sure data is formatted correctly
         formatted_data = self.check_exp_data_shape(data)
 
-        # Gets indices of 20-50% of data
-        lower_index = int(formatted_data.shape[1]*top_k_starting_pct)
-        upper_index = int(formatted_data.shape[1]*top_k_ending_pct)
-        k = list(range(lower_index, upper_index))
-
         # Explain the most likely class
         label = np.argmax(self.model(formatted_data)[0])
 
-        # Iterate over each explanation method and compute fidelity scores of topk
-        # and non-topk features per the method
-        for method in self.explanation_methods.keys():
-            cur_explainer = self.explanation_methods[method]
-            cur_expl, score = cur_explainer.get_explanation(formatted_data,
-                                                            label=label)
-
-            explanations[method] = cur_expl.squeeze(0)
-            scores[method] = score
-            # Compute the fidelity auc of the top-k features
-            fidelity_scores_topk[method] = self._compute_faithfulness_auc(formatted_data,
-                                                                          explanations[method],
-                                                                          label,
-                                                                          k,
-                                                                          metric="topk")
-
-        if return_fidelities:
-            return fidelity_scores_topk
-
-        if len(fidelity_scores_topk) >= 2:
-            top2 = heapq.nlargest(2, fidelity_scores_topk, key=fidelity_scores_topk.get)
-
-            diff = abs(fidelity_scores_topk[top2[0]] - fidelity_scores_topk[top2[1]])
-            # Priority given to topk for a tie
-            if diff > epsilon:
-                best_method = top2[0]
-                best_exp = explanations[best_method]
-                best_method_score = scores[best_method]
-                agree = True
-            else:
-                # In the case where there is a small difference between best and second best method
-                highest_fidelity = self.compute_stability(formatted_data,
-                                                          explanations[top2[0]],
-                                                          self.explanation_methods[top2[0]],
-                                                          label,
-                                                          k)
-
-                second_highest_fidelity = self.compute_stability(formatted_data,
-                                                                 explanations[top2[1]],
-                                                                 self.explanation_methods[top2[1]],
-                                                                 label,
-                                                                 k)
-
-                agree = False
-                if highest_fidelity < second_highest_fidelity:
-                    best_method = top2[0]
-                    best_exp = explanations[best_method]
-                    best_method_score = scores[best_method]
-                else:
-                    best_method = top2[1]
-                    best_exp = explanations[best_method]
-                    best_method_score = scores[best_method]
-        else:
-            best_method = "lime_0.75"
-            best_exp = explanations[best_method]
-            best_method_score = scores[best_method]
-            agree = True
+        best_method = "shap"
+        best_exp = explanations[best_method]
+        best_method_score = scores[best_method]
+        agree = True
 
         # Format return
         # TODO(satya,dylan): figure out a way to get a score metric using fidelity
@@ -327,78 +175,8 @@ class Explainer:
                                                      best_method_score,
                                                      best_method,
                                                      agree)
-        if return_fidelities:
-            return final_explanation, fidelity_scores_topk
-        else:
-            return final_explanation
 
-    def compute_stability(self, data, baseline_explanation, explainer, label, top_k_inds):
-        """Computes the AUC stability scores.
-
-        Arguments:
-            data: The *single* data point to compute stability for.
-            baseline_explanation: The baseline explanation for data.
-            explainer: The explanation class
-            label: The label to explain
-            top_k_inds: The indices of the top k features to use for the perturbation process.
-        Returns:
-            stability: The AUC stability for the top k indices.
-        """
-        stability = 0
-        for k_i in top_k_inds:
-            stability += self.compute_stability_topk(data,
-                                                     baseline_explanation,
-                                                     explainer,
-                                                     label,
-                                                     k_i)
-        return stability
-
-    def compute_stability_topk(self, data, baseline_explanation, explainer, label, top_k, num_perturbations=100):
-        """Computes the stability score.
-
-        Arguments:
-            data:
-            baseline_explanation:
-            explainer:
-            label:
-            top_k:
-            num_perturbations:
-        Returns:
-            stability_top_k: The top_k stability score
-        """
-
-        perturb_args = {
-            "original_sample": data[0],
-            "feature_mask": torch.tensor([False] * len(baseline_explanation), dtype=torch.bool),
-            "num_samples": num_perturbations,
-            "max_distance": self.perturbation_max_distance,
-            "feature_metadata": self.feature_types
-        }
-
-        # Get the perturbed instances
-        x_perturbed = self.perturbation_method.get_perturbed_inputs(**perturb_args)
-
-        # Compute the top k indices of the explanation
-        topk_base = torch.argsort(torch.abs(baseline_explanation), descending=True)[:top_k]
-        np_topk_base = topk_base.numpy()
-        stability_value = 0
-        for perturbed_sample in x_perturbed:
-            # Explanations return torch tensor
-            explanation_perturbed_input, _ = explainer.get_explanation(perturbed_sample[None, :].numpy(),
-                                                                       label=label)
-
-            abs_expl = torch.abs(explanation_perturbed_input)
-            topk_perturbed = torch.argsort(abs_expl, descending=True)[:top_k]
-
-            np_topk_perturbed = topk_perturbed.numpy()
-
-            jaccard_distance = len(np.intersect1d(np_topk_base, np_topk_perturbed)) / len(
-                np.union1d(np_topk_base, np_topk_perturbed))
-            stability_value += jaccard_distance
-
-        mean_stability = stability_value / num_perturbations
-
-        return mean_stability
+        return final_explanation
 
     def _format_explanation(self, explanation: list, label: int, score: float, best_method: str, agree: bool):
         """Formats the explanation in LIME format to be returned."""
