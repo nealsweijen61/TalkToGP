@@ -106,17 +106,6 @@ class Explainer:
 
         self.explanation_methods = available_explanations
 
-        # Can we delete this line?
-        self.get_explanation_methods = {}
-
-        # TODO(satya): change this to be inputs to __init__
-        # The criteria used to perturb the explanation point and determine which explanations
-        # are the most faithful
-        self.perturbation_mean = 0.0
-        self.perturbation_std = 0.05
-        self.perturbation_flip_percentage = 0.03
-        self.perturbation_max_distance = 0.4
-
         # This is a bit clearer, instead of making users use this representation + is the way
         # existing explanation packages (e.g., LIME do it.)
         self.feature_types = conv_disc_inds_to_char_enc(discrete_feature_indices=discrete_features,
@@ -145,19 +134,13 @@ class Explainer:
         return data_x
 
     def explain_instance(self,
-                         data: Union[np.ndarray, pd.DataFrame],
-                         top_k_starting_pct: float = 0.2,
-                         top_k_ending_pct: float = 0.5,
-                         epsilon: float = 1e-4,
-                         return_fidelities: bool = False) -> MegaExplanation:
+                         data: Union[np.ndarray, pd.DataFrame]) -> MegaExplanation:
         """Computes the explanation.
 
         This function computes the explanation. It calls several explanation methods, computes
         metrics over the different methods, computes an aggregate score and returns the best one.
 
         Args:
-            return_fidelities: Whether to return explanation fidelities
-            epsilon:
             top_k_ending_pct:
             top_k_starting_pct:
             data: The instance to explain. If given as a pd.DataFrame, will be converted to a
@@ -173,29 +156,13 @@ class Explainer:
                 raise NameError(message)
 
         explanations, scores = {}, {}
-        fidelity_scores_topk = {}
 
         # Makes sure data is formatted correctly
         formatted_data = self.check_exp_data_shape(data)
 
-        # Gets indices of 20-50% of data
-        lower_index = int(formatted_data.shape[1]*top_k_starting_pct)
-        upper_index = int(formatted_data.shape[1]*top_k_ending_pct)
-        k = list(range(lower_index, upper_index))
-
         # Explain the most likely class
         label = np.argmax(self.model(formatted_data)[0])
 
-        # Iterate over each explanation method and compute fidelity scores of topk
-        # and non-topk features per the method
-        for method in self.explanation_methods.keys():
-            cur_explainer = self.explanation_methods[method]
-            cur_expl, score = cur_explainer.get_explanation(formatted_data,
-                                                            label=label)
-
-            explanations[method] = cur_expl.squeeze(0)
-            scores[method] = score
-                    
         best_method = "shap"
         best_exp = explanations[best_method]
         best_method_score = scores[best_method]
