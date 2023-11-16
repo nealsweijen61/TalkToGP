@@ -44,12 +44,6 @@ class SHAPExplainer(BaseExplainer):
 
         # Compute the shapley values on the **single** instance
         shap_vals = self.explainer.shap_values(data_x[0], nsamples=10_000, silent=True)
-
-        # Ensure that we select the correct label, if shap values are
-        # computed on output prob. distribution
-        if len(shap_vals) > 1:
-            shap_value_at_label = shap_vals[label]
-            final_shap_values = torch.FloatTensor(shap_value_at_label)
-        else:
-            final_shap_values = torch.FloatTensor(shap_vals)
+        
+        final_shap_values = torch.FloatTensor(shap_vals)
         return final_shap_values, 0

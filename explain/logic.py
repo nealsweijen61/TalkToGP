@@ -212,7 +212,7 @@ class ExplainBot:
             model = load_sklearn_model(filepath)
             self.conversation.add_var('model', model, 'model')
             self.conversation.add_var('model_prob_predict',
-                                      model.predict_proba,
+                                      model.predict,
                                       'prediction_function')
         else:
             # No other types of models implemented yet

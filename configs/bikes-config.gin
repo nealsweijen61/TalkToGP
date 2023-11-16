@@ -1,0 +1,64 @@
+##############################################
+# The bike sharing dataset conversation config
+##############################################
+
+# Name of the parsing model
+# for few shot, e.g., "EleutherAI/gpt-neo-2.7B"
+# ExplainBot.parsing_model_name = "ucinlp/diabetes-t5-small"
+# ExplainBot.parsing_model_name = "EleutherAI/gpt-neo-2.7B"
+ExplainBot.parsing_model_name = "nearest-neighbor"
+
+# Set skip_prompts to true for quicker startup for finetuned models
+# make sure to set to false using few-shot models
+ExplainBot.skip_prompts = True
+
+# t5 configuration file
+ExplainBot.t5_config = "./parsing/t5/gin_configs/t5-large.gin"
+
+# User provided prediction model file path
+ExplainBot.model_file_path = "./data/bikes_model_linear_regression.pkl"
+
+# Seed
+ExplainBot.seed = 0
+
+# The dataset to run the conversation on
+ExplainBot.dataset_file_path = "./data/bikes_test.csv"
+
+# The background dataset for the conversation
+ExplainBot.background_dataset_file_path = "./data/bikes_train.csv"
+ExplainBot.name = "bikes"
+
+# Dataset feature information
+ExplainBot.dataset_index_column = 0
+ExplainBot.target_variable_name = "y"
+ExplainBot.categorical_features = ['holiday', 'working_day', 'season', 'weather', 'year', 'month', 'week_day']
+ExplainBot.numerical_features = ['temperature', 'feeling_temperature', 'humidity', 'wind_speed']
+ExplainBot.remove_underscores = False
+
+# Few-shot settings
+ExplainBot.prompt_metric = "cosine"
+ExplainBot.prompt_ordering = "ascending"
+
+# Prompt params
+Prompts.prompt_cache_size = 1_000_000
+Prompts.prompt_cache_location = "./cache/bikes-prompts.pkl"
+Prompts.max_values_per_feature = 2
+Prompts.sentence_transformer_model_name = "all-mpnet-base-v2"
+Prompts.prompt_folder = "./explain/prompts"
+Prompts.num_per_knn_prompt_template = 1
+Prompts.num_prompt_template = 7
+
+# Explanation Params
+Explanation.max_cache_size = 1_000_000
+
+# MegaExplainer Params
+MegaExplainer.cache_location = "./cache/bikes-mega-explainer-tabular.pkl"
+MegaExplainer.use_selection = False
+
+# Tabular Dice Params
+TabularDice.cache_location = "./cache/bikes-dice-tabular.pkl"
+
+# Dataset description
+DatasetDescription.dataset_objective = "predict the number of bike rides per day"
+DatasetDescription.dataset_description = "Bike Sharing Dataset"
+DatasetDescription.model_description = "linear regression"

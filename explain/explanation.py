@@ -139,7 +139,6 @@ class TabularDice(Explanation):
                  num_features: list[str],
                  num_cfes_per_instance: int = 10,
                  num_in_short_summary: int = 3,
-                 desired_class: str = "opposite",
                  cache_location: str = "./cache/dice-tabular.pkl",
                  class_names: dict = None):
         """Init.
@@ -159,18 +158,14 @@ class TabularDice(Explanation):
         self.temp_outcome_name = 'y'
         self.model = self.wrap(model)
         self.num_features = num_features
-        self.desired_class = desired_class
         self.num_cfes_per_instance = num_cfes_per_instance
         self.num_in_short_summary = num_in_short_summary
 
-        self.dice_model = dice_ml.Model(model=self.model, backend="sklearn")
+        self.dice_model = dice_ml.Model(model=self.model, backend="sklearn", model_type="regressor")
 
         # Format data in dice accepted format
         predictions = self.model.predict(data)
-        if self.model.predict_proba(data).shape[1] > 2:
-            self.non_binary = True
-        else:
-            self.non_binary = False
+        self.non_binary = True
         data[self.temp_outcome_name] = predictions
 
         self.classes = np.unique(predictions)
@@ -192,13 +187,10 @@ class TabularDice(Explanation):
             def predict(self, X):
                 return self.model.predict(X.values)
 
-            def predict_proba(self, X):
-                return self.model.predict_proba(X.values)
         return Model(model)
 
     def run_explanation(self,
-                        data: pd.DataFrame,
-                        desired_class: str = None):
+                        data: pd.DataFrame):
         """Generate tabular dice explanations.
 
         Arguments:
@@ -211,20 +203,16 @@ class TabularDice(Explanation):
         if self.temp_outcome_name in data:
             raise NameError(f"Target Variable {self.temp_outcome_name} should not be in data.")
 
-        if desired_class is None:
-            desired_class = self.desired_class
-
         cfes = {}
         for d in tqdm(list(data.index)):
             # dice has a few function calls that are going to be deprecated
             # silence warnings for ease of use now
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
-                if self.non_binary and desired_class == "opposite":
-                    desired_class = int(np.random.choice([p for p in self.classes if p != self.model.predict(data.loc[[d]])[0]]))
+
                 cur_cfe = self.exp.generate_counterfactuals(data.loc[[d]],
                                                             total_CFs=self.num_cfes_per_instance,
-                                                            desired_class=desired_class)
+                                                            desired_range=[22, 8714])
             cfes[d] = cur_cfe
         return cfes
 
