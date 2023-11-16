@@ -163,6 +163,16 @@ class Explainer:
         # Explain the most likely class
         label = np.argmax(self.model(formatted_data)[0])
 
+        # Iterate over each explanation method and compute fidelity scores of topk
+        # and non-topk features per the method
+        for method in self.explanation_methods.keys():
+            cur_explainer = self.explanation_methods[method]
+            cur_expl, score = cur_explainer.get_explanation(formatted_data,
+                                                            label=label)
+
+            explanations[method] = cur_expl.squeeze(0)
+            scores[method] = score
+
         best_method = "shap"
         best_exp = explanations[best_method]
         best_method_score = scores[best_method]
