@@ -58,7 +58,7 @@ class Conversation:
                  rounding_precision: int = 3,
                  index_col: int = 0,
                  target_var_name: str = "y",
-                 default_metric: str = "accuracy",
+                 default_metric: str = "explained variance score",
                  eval_file_path: str = None,
                  feature_definitions: dict = None):
         """

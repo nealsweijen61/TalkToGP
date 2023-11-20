@@ -6,7 +6,7 @@ provide more tailored dataset specified feedback
 import gin
 from typing import Any
 
-from sklearn.metrics import accuracy_score, confusion_matrix, roc_auc_score, f1_score, precision_score, recall_score
+from sklearn.metrics import explained_variance_score
 
 from explain.utils import read_and_format_data
 
@@ -78,30 +78,10 @@ class DatasetDescription:
         Returns:
             performance_summary: A string describing the performance
         """
-        if metric_name == "accuracy":
-            score = accuracy_score(y_true, y_pred)
+        if metric_name == "explained variance score":
+            score = explained_variance_score(y_true, y_pred)
             # sklearn defaults to accuracy represented as decimal. convert this to %
             score *= 100
-        elif metric_name == "roc":
-            score = roc_auc_score(y_true, y_pred)
-        elif metric_name == "f1":
-            score = f1_score(y_true, y_pred)
-        elif metric_name == "recall":
-            score = recall_score(y_true, y_pred)
-        elif metric_name == "precision":
-            score = precision_score(y_true, y_pred)
-        elif metric_name == "sensitivity":
-            tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
-            score = tp / (tp + fn)
-        elif metric_name == "specificity":
-            tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
-            score = tn / (tn + fp)
-        elif metric_name == "ppv":
-            tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
-            score = tp / (tp + fp)
-        elif metric_name == "npv":
-            tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
-            score = tn / (tn + fn)
         else:
             raise NameError(f"Unknown metric {metric_name}")
 
