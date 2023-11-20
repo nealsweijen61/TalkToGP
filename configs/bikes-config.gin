@@ -3,17 +3,14 @@
 ##############################################
 
 # Name of the parsing model
-# for few shot, e.g., "EleutherAI/gpt-neo-2.7B"
-# ExplainBot.parsing_model_name = "ucinlp/diabetes-t5-small"
-# ExplainBot.parsing_model_name = "EleutherAI/gpt-neo-2.7B"
-ExplainBot.parsing_model_name = "nearest-neighbor"
+ExplainBot.parsing_model_name = "krkv/bikes-t5-small"
 
 # Set skip_prompts to true for quicker startup for finetuned models
 # make sure to set to false using few-shot models
 ExplainBot.skip_prompts = True
 
 # t5 configuration file
-ExplainBot.t5_config = "./parsing/t5/gin_configs/t5-large.gin"
+ExplainBot.t5_config = "./parsing/t5/gin_configs/t5-small.gin"
 
 # User provided prediction model file path
 ExplainBot.model_file_path = "./data/bikes_model_linear_regression.pkl"
@@ -31,8 +28,8 @@ ExplainBot.name = "bikes"
 # Dataset feature information
 ExplainBot.dataset_index_column = 0
 ExplainBot.target_variable_name = "y"
-ExplainBot.categorical_features = ['holiday', 'working_day', 'season', 'weather', 'year', 'month', 'week_day']
-ExplainBot.numerical_features = ['temperature', 'feeling_temperature', 'humidity', 'wind_speed']
+ExplainBot.categorical_features = ["holiday", "working_day", "season", "weather", "year", "month", "week_day"]
+ExplainBot.numerical_features = ["temperature", "feeling_temperature", "humidity", "wind_speed"]
 ExplainBot.remove_underscores = False
 
 # Few-shot settings
@@ -62,3 +59,18 @@ TabularDice.cache_location = "./cache/bikes-dice-tabular.pkl"
 DatasetDescription.dataset_objective = "predict the number of bike rides per day"
 DatasetDescription.dataset_description = "Bike Sharing Dataset"
 DatasetDescription.model_description = "linear regression"
+
+# Feature definitions
+ExplainBot.feature_definitions = {
+    "season": "season (1:winter; 2:spring; 3:summer; 4:fall)",
+    "year": "year (0: 2011; 1:2012)",
+    "month": "month (1 to 12)",
+    "holiday": "weather day is holiday or not",
+    "week_day": "day of the week",
+    "working_day": "if day is neither weekend nor holiday is 1, otherwise is 0",
+    "weather": "weather (1: clear; 2: mist, cloudy; 3: light snow, light rain, thunderstorm; 4: heavy rain, heavy snow)",
+    "temperature": "normalized temperature in Celsius",
+    "feeling_temperature": "normalized feeling temperature in Celsius",
+    "humidity": "normalized humidity",
+    "wind_speed": "normalized wind speed",
+}
