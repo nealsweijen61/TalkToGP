@@ -18,8 +18,7 @@ def explain_operation(conversation, parse_text, i, **kwargs):
     regen = conversation.temp_dataset.contents['ids_to_regenerate']
     parse_op = gen_parse_op_text(conversation)
 
-    # Note, do we want to remove parsing for lime -> mega_explainer here?
-    if parse_text[i+1] == 'features' or parse_text[i+1] == 'lime':
+    if parse_text[i+1] == 'features':
         # mega explainer explanation case
         mega_explainer_exp = conversation.get_var('mega_explainer').contents
         full_summary, short_summary = mega_explainer_exp.summarize_explanations(data,

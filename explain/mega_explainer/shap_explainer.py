@@ -29,7 +29,7 @@ class SHAPExplainer(BaseExplainer):
         # domain specific methods in the future.
         self.explainer = shap.KernelExplainer(self.model, self.data, link=link)
 
-    def get_explanation(self, data_x: np.ndarray, label) -> torch.FloatTensor:
+    def get_explanation(self, data_x: np.ndarray) -> torch.FloatTensor:
         """Gets the SHAP explanation.
 
         Returns SHAP values as the explanation of the decision made for the input data (data_x)

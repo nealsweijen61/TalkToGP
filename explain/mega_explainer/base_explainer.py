@@ -22,7 +22,7 @@ class BaseExplainer(nn.Module):
             This function generates local neighbors of the input sample.
         """
 
-    def get_explanation(self, data_x: torch.FloatTensor, label) -> torch.FloatTensor:
+    def get_explanation(self, data_x: torch.FloatTensor) -> torch.FloatTensor:
         """
         Input : x : Input sample
         Output : This function uses the explanation model to return explanations for the given sample
