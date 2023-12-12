@@ -12,7 +12,7 @@ def compute_stats(df, labels, f, conversation):
     if f == "target":
         labels = deepcopy(labels).to_numpy()
         stats = "<ul>"
-        for label in conversation.class_names:
+        for label in labels:
             freq = np.count_nonzero(label == labels) / len(labels)
             r_freq = round(freq*100, conversation.rounding_precision)
             name = conversation.get_class_name_from_label(label)
