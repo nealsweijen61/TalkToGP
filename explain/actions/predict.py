@@ -12,7 +12,10 @@ def predict_operation(conversation, parse_text, i, max_num_preds_to_print=1, **k
     if len(conversation.temp_dataset.contents['X']) == 0:
         return 'There are no instances that meet this description!', 0
 
+    print(data)
+
     model_predictions = model.predict(data)
+    print(model_predictions)
 
     # Format return string
     return_s = ""

@@ -25,6 +25,7 @@ from explain.actions.score import score_operation
 from explain.actions.self import self_operation
 from explain.actions.show_data import show_operation
 from explain.actions.what_if import what_if_operation
+from explain.actions.ops import ops_operation
 
 
 def get_all_action_functions_map():
@@ -52,6 +53,7 @@ def get_all_action_functions_map():
         'statistic': feature_stats,
         'define': define_operation,
         'predictionfilter': filter_operation,
-        'labelfilter': filter_operation
+        'labelfilter': filter_operation,
+        "opsnum": ops_operation
     }
     return actions

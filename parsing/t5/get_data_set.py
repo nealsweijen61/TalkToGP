@@ -19,6 +19,8 @@ def get_config_loc(dataset: str) -> str:
         config_loc = "./configs/compas-config.gin"
     elif dataset == "german":
         config_loc = "./configs/german-config.gin"
+    elif dataset == "bikes":
+        config_loc = "./configs/bikes-config.gin"
     elif dataset.endswith(".gin"):
         config_loc = dataset
     else:

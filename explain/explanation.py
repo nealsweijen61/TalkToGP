@@ -185,7 +185,8 @@ class TabularDice(Explanation):
                 self.model = m
 
             def predict(self, X):
-                return self.model.predict(X.values)
+                # return self.model.predict(X.values)
+                return self.model.predict(X)
 
         return Model(model)
 

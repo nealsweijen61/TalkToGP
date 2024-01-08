@@ -10,6 +10,7 @@ import secrets
 
 import numpy as np
 import torch
+import cloudpickle
 
 from flask import Flask
 import gin
@@ -21,8 +22,8 @@ from explain.explanation import MegaExplainer, TabularDice
 from explain.parser import Parser, get_parse_tree
 from explain.prompts import Prompts
 from explain.utils import read_and_format_data
-from explain.write_to_log import log_dialogue_input
-
+from explain.write_to_log import log_dialogue_input 
+from data.customClassifier import CustomClassifier
 
 app = Flask(__name__)
 

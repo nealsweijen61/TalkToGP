@@ -1,0 +1,8 @@
+User: what are the number of operators
+Parsed: opsnum [E]
+
+User: how many operators do you use
+Parsed: opsnum [E]
+
+User: number of operators
+Parsed: opsnum [E]
