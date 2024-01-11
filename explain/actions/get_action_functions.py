@@ -25,7 +25,7 @@ from explain.actions.score import score_operation
 from explain.actions.self import self_operation
 from explain.actions.show_data import show_operation
 from explain.actions.what_if import what_if_operation
-from explain.actions.ops import ops_operation
+from explain.actions.ops import num_ops_operation, get_ops_operation, num_nodes_operation, num_features_operation, get_features_operation, get_expr_operation, most_common_features_operation, plot_operation
 
 
 def get_all_action_functions_map():
@@ -54,6 +54,11 @@ def get_all_action_functions_map():
         'define': define_operation,
         'predictionfilter': filter_operation,
         'labelfilter': filter_operation,
-        "opsnum": ops_operation
+        "opsnum": num_ops_operation,
+        "opsget": get_ops_operation,
+        "nodesnum": num_nodes_operation,
+        "featuresnum": most_common_features_operation,
+        "featuresget": get_features_operation,
+        "exprget": plot_operation,
     }
     return actions

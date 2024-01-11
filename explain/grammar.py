@@ -1,12 +1,18 @@
 GRAMMAR = r"""
 ?start: action
 action: operation done | operation join action | followup done
-operation: explanation | filter | predictions | whatami | lastturnfilter | lastturnop | data | impfeatures | show | whatif | likelihood | modeldescription | function | score | ndatapoints | interact | label | mistakes | fstats | define | labelfilter | predfilter | numops
+operation: explanation | filter | predictions | whatami | lastturnfilter | lastturnop | data | impfeatures | show | whatif | likelihood | modeldescription | function | score | ndatapoints | interact | label | mistakes | fstats | define | labelfilter | predfilter | numops | getops | numnodes | numfeatures | getfeatures | getexpr
 
 labelfilter: " labelfilter" class
 predfilter: " predictionfilter" class
 
 numops: " opsnum"
+getops: " opsget"
+numnodes: " nodesnum"
+numfeatures: "featuresnum"
+getfeatures: " featuresget"
+getexpr: " exprget"
+
 
 fstats: fstatsword (allfeaturenames | " target")
 fstatsword: " statistic"
@@ -103,3 +109,7 @@ lte: " less equal than"
 eq: " equal to"
 ne: " not equal to"
 """
+
+
+# selectword: " select"
+# select: selectword modelcriteria

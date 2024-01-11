@@ -1,0 +1,5 @@
+User: Give me all models with less than 5 operators
+Parsed: select operator less than 5 and expr [E]
+
+User: How many nodes do the models that have 3 or more operators have
+Parsed: select operator greater equal than 5 and numnodes [E]

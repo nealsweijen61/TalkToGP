@@ -3,10 +3,19 @@ import numpy as np
 
 from explain.actions.utils import gen_parse_op_text, get_parse_filter_text
 
-
 def predict_operation(conversation, parse_text, i, max_num_preds_to_print=1, **kwargs):
+    models = conversation.get_var('models').contents
+    return_s = ""
+    i = 1
+    for model in models:
+        s, num = predict_operation2(conversation, model, parse_text, i, max_num_preds_to_print, **kwargs)
+        return_s += s
+        i *= num
+    return return_s, i
+
+def predict_operation2(conversation, model, parse_text, i, max_num_preds_to_print=1, **kwargs):
     """The prediction operation."""
-    model = conversation.get_var('model').contents
+    # model = conversation.get_var('model').contents
     data = conversation.temp_dataset.contents['X']
 
     if len(conversation.temp_dataset.contents['X']) == 0:

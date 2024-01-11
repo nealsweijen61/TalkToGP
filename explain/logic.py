@@ -11,6 +11,7 @@ import secrets
 import numpy as np
 import torch
 import cloudpickle
+import os
 
 from flask import Flask
 import gin
@@ -125,6 +126,7 @@ class ExplainBot:
 
         # Load the model into the conversation
         self.load_model(model_file_path)
+        self.load_models()
 
         # Load the dataset into the conversation
         self.load_dataset(dataset_file_path,
@@ -223,6 +225,33 @@ class ExplainBot:
             raise NameError(message)
         app.logger.info("...done")
         return 'success'
+    
+    def load_models(self, folderpath: str = "./data/models"):
+        app.logger.info(f"Loading multiple inference models at path {folderpath}")
+        files = os.listdir(folderpath)
+        models = []
+        models_prob_predictions = []
+        #Loop through each file and load corresponding model
+        for file in files:
+            filepath = os.path.join(folderpath, file)
+            if filepath.endswith('.pkl'):
+                model = load_sklearn_model(filepath)
+                models.append(model)
+                models_prob_predictions.append(model.predict)
+            else:
+                # No other types of models implemented yet
+                message = (f"Models with file extension {filepath} are not supported."
+                        " You must provide a model stored in a .pkl that can be loaded"
+                        f" and called like an sklearn model.")
+                raise NameError(message)
+        
+        self.conversation.add_var('models', models, 'model')
+        self.conversation.add_var('model_prob_predicts',
+                                        models_prob_predictions,
+                                        'prediction_function')
+        app.logger.info("...done")
+        return 'success'
+
 
     def load_dataset(self,
                      filepath: str,

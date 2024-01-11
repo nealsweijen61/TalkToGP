@@ -6,3 +6,51 @@ Parsed: opsnum [E]
 
 User: number of operators
 Parsed: opsnum [E]
+
+User: what are the operators used
+Parsed: opsget [E]
+
+User: which operators do the models use
+Parsed: opsget [E]
+
+User: get operators
+Parsed: opsget [E]
+
+User: what are the number of nodes
+Parsed: nodesnum [E]
+
+User: how many nodes do the models use
+Parsed: nodesnum [E]
+
+User: number of nodes
+Parsed: nodesnum [E]
+
+User: what are the number of features
+Parsed: featuresnum [E]
+
+User: how many features do the models use
+Parsed: featuresnum [E]
+
+User: number of features
+Parsed: featuresnum [E]
+
+User: what are the features used
+Parsed: featuresget [E]
+
+User: which features do the models use
+Parsed: featuresget [E]
+
+User: get features
+Parsed: featuresget [E]
+
+User: list models
+Parsed: exprget [E]
+
+User: give all expressions
+Parsed: exprget [E]
+
+User: show all models
+Parsed: exprget [E]
+
+User: get expr
+Parsed: exprget [E]
