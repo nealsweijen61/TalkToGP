@@ -54,3 +54,12 @@ Parsed: exprget [E]
 
 User: get expr
 Parsed: exprget [E]
+
+User: show the most common subtrees
+Parsed: commonget [E]
+
+User: give the most common subtrees
+Parsed: commonget [E]
+
+User: which subtrees appear the most
+Parsed: commonget [E]

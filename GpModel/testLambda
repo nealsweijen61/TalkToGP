@@ -1,8 +1,24 @@
-from sympy import symbols, lambdify, parse_expr, count_ops, preorder_traversal, Function, Add, Pow, Mod, Symbol, simplify, expand
+from sympy import symbols, lambdify, parse_expr, count_ops, preorder_traversal, Function, Add, Pow, Mod, Symbol, simplify, expand, dotprint
+from sympy.abc import x, y, z
+from graphviz import Source
 
 # expression = "((((x1+x9)+41.432000)/ ((x10/ (x2+1e-6) )+1e-6) )+(x8+x8))"
-ex = ("x0+x1+x9")
+ex = "((((x1+x9)+41.432000)/ ((x10/ (x2+1e-6) )+1e-6) )+(x8+x8))"
 expr = parse_expr(ex, evaluate=False)
-expr = Add("x0+x1", "x9")
-print(expr)
-print(simplify(expr))
+
+# Generate the dot language representation of the expression tree
+dot_code = dotprint(expr)
+
+# Create a Graphviz source object from the dot code
+source = Source(dot_code)
+
+# Specify the output format (e.g., PNG, PDF, SVG)
+output_format = 'png'
+
+# Save the output image to a file
+output_file = f"expression_tree.{output_format}"
+source.render(output_file, format=output_format, cleanup=True)
+
+print(f"Expression tree image saved to {output_file}")
+# print(expr)
+# print(simplify(expr))

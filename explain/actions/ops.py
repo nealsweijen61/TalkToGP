@@ -4,6 +4,9 @@ import os
 import base64
 from data.customClassifier import CustomClassifier
 from io import BytesIO
+from graphviz import Digraph
+import ast
+from sympy import dotprint, simplify, parse_expr
 
 # def ops_operation(conversation, parse_text, i, **kwargs):
 #     """Gives the number of operations"""
@@ -133,7 +136,6 @@ def plot_operation(conversation, parse_text, i, **kwargs):
     classifier = CustomClassifier(expr, 5, 6)
     print(classifier.accuracy)
     for model in models:
-        print(model.expression)
         x.append(model.accuracy)
         y.append(model.complexity)
     plt.scatter(x, y, alpha=0.5) 
@@ -150,3 +152,80 @@ def plot_operation(conversation, parse_text, i, **kwargs):
 #         model.getFeatures()
 
 #     return "kloenk", 1
+def get_second_child_name(node):
+    for i, child in enumerate(ast.iter_child_nodes(node)):
+        if i == 1:
+            return str(child.__class__.__name__)
+
+def create_ast_graph(graph, node, parent_name, index=''):
+    current_name = f'{parent_name}_{index}' if parent_name else 'Root'
+    print(str(node.__class__.__name__))
+    if isinstance(node, ast.BinOp):
+        graph.node(current_name, label=get_second_child_name(node))
+        for i, child in enumerate(ast.iter_child_nodes(node)):
+            if i == 1:
+                continue
+            child_name = f'{current_name}_{i}'
+            graph.edge(current_name, child_name)
+            create_ast_graph(graph, child, current_name, i)
+    elif isinstance(node, ast.Constant):
+        graph.node(current_name, label=str(node.value))
+    elif isinstance(node, ast.Name):
+        graph.node(current_name, label=str(node.id))
+    elif isinstance(node, ast.Module) or isinstance(node, ast.Expr):
+        for i, child in enumerate(ast.iter_child_nodes(node)):
+            child_name = f'{current_name}_{i}'
+            create_ast_graph(graph, child, current_name, i)
+    elif isinstance(node, ast.AST):
+        graph.node(current_name, label=str(node.__class__.__name__))
+        for i, child in enumerate(ast.iter_child_nodes(node)):
+            child_name = f'{current_name}_{i}'
+            graph.edge(current_name, child_name)
+            create_ast_graph(graph, child, current_name, i)
+
+def plot_tree_operation(conversation, parse_text, i, **kwargs):
+    # return_string = '<img src="https://upload.wikimedia.org/wikipedia/commons/7/70/2005-bandipur-tusker.jpg" alt="Girl in a jacket" width="500" height="600">'
+    models = conversation.get_var('models').contents
+    model = models[0]
+    expr = ast.parse(model.expression)
+
+    graph = Digraph(comment='AST Tree')
+    create_ast_graph(graph, expr, '')
+
+    output_directory = 'static/images/'
+    # Ensure the output directory exists
+    os.makedirs(output_directory, exist_ok=True)
+    # Set the output directory
+    output_file = os.path.join(output_directory, "expression_tree")
+
+    # Render and save the graph
+    graph.render(output_file, format='png', cleanup=True)
+
+    return_string = '<img src="static/images/expression_tree.png" alt="drawing" width="400"/>'
+    return return_string, 1
+
+def most_common_trees_operation(conversation, parse_text, i, **kwargs):
+    models = conversation.get_var('models').contents
+    subtrees = []
+    for model in models:
+        subtrees = subtrees + model.subtrees
+    subDic = {}
+    speedDic = {}
+    testExpr = "x0 * (x10+1e-6)"
+    for subtree in subtrees:
+        symExpr = parse_expr(subtree)
+        test = simplify(parse_expr(testExpr)- symExpr)
+        speedDic[test] = speedDic.get(test, 0) + 1
+        found = False
+        if speedDic[test] > 1:
+            for key in subDic:
+                print("sym:", symExpr, "key:", key)
+                if simplify(key - symExpr) == 0:
+                    subDic[key] = subDic.get(key, 0) + 1
+                    found = True
+                    break
+        if not found:
+            subDic[symExpr] = subDic.get(symExpr, 0) + 1
+    subDic = sorted(subDic.items(), key=lambda x:x[1], reverse=True)
+    return_string = f"Most common subtrees are {subDic}"
+    return return_string, 1

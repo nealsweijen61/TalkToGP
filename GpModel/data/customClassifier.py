@@ -2,22 +2,39 @@ from sklearn.base import BaseEstimator, RegressorMixin
 from sympy import symbols, lambdify, parse_expr, count_ops, preorder_traversal, Function, Pow, Mod, Number
 import numpy as np
 import pandas as pd
+import ast
 
 
 class CustomClassifier(BaseEstimator, RegressorMixin):
 
-    def __init__(self, accuracy, complexity, expression, ben=0):
+    def __init__(self, expression, accuracy, complexity):
         super().__init__()
         self.expression = expression
         self.accuracy = accuracy
-        self.ben = ben
         self.symbols = symbols('x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10')
 
-        self.expr = parse_expr(accuracy, evaluate=False)
+        self.expr = parse_expr(expression, evaluate=False)
 
         self.func = lambdify(self.symbols, self.expr, 'numpy')
 
         self.complexity = complexity
+
+        self.ast = ast.parse(expression)
+        self.subtrees = []
+        self.getSubTrees(self.ast)
+
+
+    def count_nodes(self, node):
+        return sum(1 for _ in ast.walk(node))
+    
+    def getSubTrees(self, node):
+        if isinstance(node, ast.Module) or isinstance(node, ast.Expr) or self.count_nodes(node) < 3:
+            for child_node in ast.iter_child_nodes(node):
+                self.getSubTrees(child_node)
+        else:
+            self.subtrees.append(ast.unparse(node))
+            for child_node in ast.iter_child_nodes(node):
+                self.getSubTrees(child_node)
 
     def fit(self, X, y=None):
         pass
@@ -29,7 +46,6 @@ class CustomClassifier(BaseEstimator, RegressorMixin):
         preds = np.empty(len(X), dtype=float)
         for i, x in enumerate(X):
             pred = self.func(*x)
-            print("pred", pred)
             preds[i] = pred
         return preds
 

@@ -1,0 +1,17 @@
+User: plot the pareto front
+Parsed: paretoplot [E]
+
+User: give the pareto front
+Parsed: paretoplot [E]
+
+User: show the pareto front
+Parsed: paretoplot [E]
+
+User: show the subtrees
+Parsed: subtreeplot [E]
+
+User: give the subtrees
+Parsed: subtreeplot [E]
+
+User: give the subtree
+Parsed: subtreeplot [E]

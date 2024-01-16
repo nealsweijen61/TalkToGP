@@ -5,12 +5,14 @@ import pandas as pd
 import ast
 
 
-class CustomClassifier(BaseEstimator, RegressorMixin):
+class GpModel(BaseEstimator, RegressorMixin):
 
     def __init__(self, expression, accuracy, complexity):
         super().__init__()
         self.expression = expression
+
         self.accuracy = accuracy
+
         self.symbols = symbols('x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10')
 
         self.expr = parse_expr(expression, evaluate=False)
@@ -22,8 +24,7 @@ class CustomClassifier(BaseEstimator, RegressorMixin):
         self.ast = ast.parse(expression)
         self.subtrees = []
         self.getSubTrees(self.ast)
-
-
+    
     def count_nodes(self, node):
         return sum(1 for _ in ast.walk(node))
     
@@ -78,6 +79,4 @@ class CustomClassifier(BaseEstimator, RegressorMixin):
     def getComplexity(self):
         return self.complexity
     
-    def kloenker(self):
-        return "klooooenmk"
     

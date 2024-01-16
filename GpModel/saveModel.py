@@ -1,4 +1,5 @@
 from data.customClassifier import CustomClassifier
+from data.gpModel import GpModel
 import pickle as pkl
 import cloudpickle
 
@@ -6,7 +7,7 @@ import cloudpickle
 if __name__ == '__main__':
     expr = "((((x1+x9)+41.432000)/ ((x10/ (x2+1e-6) )+1e-6) )+(x8+x8))"
     expr2 = "(57.700000/ (x10+1e-6))"
-    expr3 = "x0"
+    expr3 = "x0*(x8+x8)"
     expr4 = "((21.783000*56.278000)*x0)"
     expr5 = "(((x1+(2.793000*x8))*(57.470000*(32.096000+x2)))+(((36.191000/ (x6+1e-6) )+(x0-19.821000))*((x4+x2)*4.235000)))"
     expressions = []
@@ -18,7 +19,7 @@ if __name__ == '__main__':
     count = 0
     for expression in expressions:
         count += 1
-        classifier = CustomClassifier(accuracy=expression[0], complexity=expression[1], expression=expression[2])
+        classifier = GpModel(expression=expression[0], accuracy=expression[1], complexity=expression[2])
         with open(f"bikes_gp_{count}.pkl", "wb") as f:
             # pkl.dump(classiefier, f)
             cloudpickle.dump(classifier, f)
