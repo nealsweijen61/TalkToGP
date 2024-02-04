@@ -157,31 +157,34 @@ def get_second_child_name(node):
         if i == 1:
             return str(child.__class__.__name__)
 
-def create_ast_graph(graph, node, parent_name, index=''):
+def create_ast_graph(graph, node, parent_name, index='', num=-1):
     current_name = f'{parent_name}_{index}' if parent_name else 'Root'
+    num += 1
     print(str(node.__class__.__name__))
     if isinstance(node, ast.BinOp):
-        graph.node(current_name, label=get_second_child_name(node))
+        graph.node(current_name, label=f'{get_second_child_name(node)}_{num}')
         for i, child in enumerate(ast.iter_child_nodes(node)):
             if i == 1:
                 continue
             child_name = f'{current_name}_{i}'
             graph.edge(current_name, child_name)
-            create_ast_graph(graph, child, current_name, i)
+            num = create_ast_graph(graph, child, current_name, i, num)
     elif isinstance(node, ast.Constant):
-        graph.node(current_name, label=str(node.value))
+        graph.node(current_name, label=f'{node.value}_{num}')
     elif isinstance(node, ast.Name):
-        graph.node(current_name, label=str(node.id))
+        graph.node(current_name, label=f'{node.id}_{num}')
     elif isinstance(node, ast.Module) or isinstance(node, ast.Expr):
+        num -= 1
         for i, child in enumerate(ast.iter_child_nodes(node)):
             child_name = f'{current_name}_{i}'
-            create_ast_graph(graph, child, current_name, i)
+            num = create_ast_graph(graph, child, current_name, i, num)
     elif isinstance(node, ast.AST):
-        graph.node(current_name, label=str(node.__class__.__name__))
+        graph.node(current_name, label=f'{node.__class__.__name__}_{num}')
         for i, child in enumerate(ast.iter_child_nodes(node)):
             child_name = f'{current_name}_{i}'
             graph.edge(current_name, child_name)
-            create_ast_graph(graph, child, current_name, i)
+            num = create_ast_graph(graph, child, current_name, i, num)
+    return num
 
 def plot_tree_operation(conversation, parse_text, i, **kwargs):
     # return_string = '<img src="https://upload.wikimedia.org/wikipedia/commons/7/70/2005-bandipur-tusker.jpg" alt="Girl in a jacket" width="500" height="600">'

@@ -19,7 +19,6 @@ def get_second_child_name(node):
 
 def create_ast_graph(graph, node, parent_name, index=''):
     current_name = f'{parent_name}_{index}' if parent_name else 'Root'
-    print(str(node.__class__.__name__))
     if isinstance(node, ast.BinOp):
         graph.node(current_name, label=get_second_child_name(node))
         for i, child in enumerate(ast.iter_child_nodes(node)):
@@ -56,7 +55,7 @@ def printSubTrees(node):
             printSubTrees(child_node)
 
 
-expr = "(57.700000/ (x10+1e-6))"
+expr = "(57.700000+ (x10/1e-6))"
 parsed = ast.parse(expr)
 
 expr2 = "x0 * (x10+1e-6)"
@@ -66,38 +65,65 @@ expr3= "(((x1+(2.793000*x8))*(57.470000*(32.096000+x2)))+(((36.191000/ (x6+1e-6)
 parsed3 = ast.parse(expr3)
 
 subtrees = []
-printSubTrees(parsed)
-printSubTrees(parsed2)
-printSubTrees(parsed3)
+# printSubTrees(parsed)
+# printSubTrees(parsed2)
+# printSubTrees(parsed3)
 # print(subtrees)
 
-subDic = {}
-speedDic = {}
-testExpr = "x0 * (x10+1e-6)"
-for subtree in subtrees:
-    symExpr = parse_expr(subtree)
-    test = simplify(parse_expr(testExpr)- symExpr)
-    speedDic[test] = speedDic.get(test, 0) + 1
-    found = False
-    if speedDic[test] > 1:
-        for key in subDic:
-            print("sym:", symExpr, "key:", key)
-            if simplify(key - symExpr) == 0:
-                subDic[key] = subDic.get(key, 0) + 1
-                found = True
-                break
-    if not found:
-        subDic[symExpr] = subDic.get(symExpr, 0) + 1
-subDic = sorted(subDic.items(), key=lambda x:x[1], reverse=True)
-print(subDic)
+# subDic = {}
+# speedDic = {}
+# testExpr = "x0 * (x10+1e-6)"
+# for subtree in subtrees:
+#     symExpr = parse_expr(subtree)
+#     test = simplify(parse_expr(testExpr)- symExpr)
+#     speedDic[test] = speedDic.get(test, 0) + 1
+#     found = False
+#     if speedDic[test] > 1:
+#         for key in subDic:
+#             print("sym:", symExpr, "key:", key)
+#             if simplify(key - symExpr) == 0:
+#                 subDic[key] = subDic.get(key, 0) + 1
+#                 found = True
+#                 break
+#     if not found:
+#         subDic[symExpr] = subDic.get(symExpr, 0) + 1
+# subDic = sorted(subDic.items(), key=lambda x:x[1], reverse=True)
+# print(subDic)
 # Create the graph
+class MyRemover(ast.NodeTransformer):
+    def __init__(self, node_number):
+        self.node_number = node_number
+        self.index = 0
+
+    def generic_visit(self, node):
+        result = super().generic_visit(node)
+        # print(node.__class__.__name__, self.index)
+
+        if not (isinstance(node, ast.Module) or isinstance(node, ast.Expr)):
+            self.index += 1
+        if self.node_number == self.index:
+            print("Removing:", node.__class__.__name__, self.index-1)
+            return None
+        return result
+    
+    # def visit_Div(self, node):
+    #     node2 = ast.Add()
+    #     ast.copy_location(node2, node)
+    #     ast.NodeVisitor.generic_visit(self, node2)
+    #     return node2
+
+
+visitor = MyRemover(20)
+newTree = visitor.visit(parsed)
+# newTree = ast.fix_missing_locations(newTree)
 # graph = Digraph(comment='AST Tree')
-# create_ast_graph(graph, parsed, '')
+# create_ast_graph(graph, newTree, '')
 
-# Render and save the graph
+# # Render and save the graph
 # graph.render('ast_tree', format='png', cleanup=True)
+# print("Done rendering")
 
-# normal = ast.unparse(parsed)
-# print(normal)
-# dump = ast.dump(parsed, annotate_fields=True)
-# print(dump)
+normal = ast.unparse(newTree)
+print(normal)
+dump = ast.dump(parsed, annotate_fields=True)
+print(dump)
