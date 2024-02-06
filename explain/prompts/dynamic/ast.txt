@@ -1,0 +1,41 @@
+User: delete node 2
+Parsed: nodedelete 2 [E]
+
+User: delete node 7
+Parsed: nodedelete 7 [E]
+
+User: delete node 15
+Parsed: nodedelete 15 [E]
+
+User: remove node 10
+Parsed: nodedelete 10 [E]
+
+User: remove node 4
+Parsed: nodedelete 4 [E]
+
+User: remove node 1
+Parsed: nodedelete 1 [E]
+
+User: change node 5 to 2+2
+Parsed: nodemod 5 2+2 [E]
+
+User: change node 7 to 3+4
+Parsed: nodemod 7 3+4 [E]
+
+User: modify node 10 to 8-2
+Parsed: nodemod 10 8-2 [E]
+
+User: update node 12 to 6*5
+Parsed: nodemod 12 6*5 [E]
+
+User: alter node 15 to 9/3
+Parsed: nodemod 15 9/3 [E]
+
+User: adjust node 20 to 2+3*4
+Parsed: nodemod 20 2+3*4 [E]
+
+User: change node 25 to (6-2)/2
+Parsed: nodemod 25 (6-2)/2 [E]
+
+User: modify node 30 to 2*3-1
+Parsed: nodemod 30 2*3-1 [E]

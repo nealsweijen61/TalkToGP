@@ -56,7 +56,7 @@ def printSubTrees(node):
 
 
 expr = "(57.700000+ (x10/1e-6))"
-parsed = ast.parse(expr)
+parsed = ast.parse(expr, mode="eval")
 
 expr2 = "x0 * (x10+1e-6)"
 parsed2 = ast.parse(expr2)
@@ -90,40 +90,62 @@ subtrees = []
 # subDic = sorted(subDic.items(), key=lambda x:x[1], reverse=True)
 # print(subDic)
 # Create the graph
+print(ast.unparse(parsed))
 class MyRemover(ast.NodeTransformer):
-    def __init__(self, node_number):
-        self.node_number = node_number
+    def __init__(self, delIndex):
+        # self.node_number = node_number
+        self.delIndex = delIndex
         self.index = 0
+        self.nodes = []
+        self.parent = None
+
+    def visit(self, node):
+        # set parent attribute for this node
+        node.parent = self.parent
+        # This node becomes the new parent
+        self.parent = node
+        if isinstance(node, ast.BinOp) or isinstance(node, ast.Name) or isinstance(node, ast.Constant):
+            print(node.__class__.__name__, "parent:", node.parent.__class__.__name__, "index", self.index)
+            node.index = self.index
+            self.index += 1
+        # Do any work required by super class 
+        node = super().visit(node)
+        # If we have a valid node (ie. node not being removed)
+        if isinstance(node, ast.AST):
+            # update the parent, since this may have been transformed 
+            # to a different node by super
+            self.parent = node.parent
+        return node
 
     def generic_visit(self, node):
         result = super().generic_visit(node)
-        # print(node.__class__.__name__, self.index)
-
-        if not (isinstance(node, ast.Module) or isinstance(node, ast.Expr)):
-            self.index += 1
-        if self.node_number == self.index:
-            print("Removing:", node.__class__.__name__, self.index-1)
-            return None
+        
+        if hasattr(node, 'index') and self.delIndex == node.index:
+            print("DELETING", node.__class__.__name__)
+            num = 0
+            if isinstance(node.parent, ast.BinOp):
+                op = node.parent.op
+                if isinstance(op, ast.Mult) or isinstance(op, ast.Div):
+                    num = 1
+            newNode = ast.Constant(num)
+            newNode.parent = node.parent
+            return newNode
         return result
     
-    # def visit_Div(self, node):
-    #     node2 = ast.Add()
-    #     ast.copy_location(node2, node)
-    #     ast.NodeVisitor.generic_visit(self, node2)
-    #     return node2
+    def visit_Div(self, node):
+        self.generic_visit(node)
+        newNode = ast.UAdd()
+        newNode.parent = node.parent
+        if hasattr(node, 'index'):
+            newNode.index = node.index
+        return newNode
+        
+expr = "(57.700000+ (x10/1e-6))"
+parsed = ast.parse(expr, mode="eval")
 
-
-visitor = MyRemover(20)
-newTree = visitor.visit(parsed)
-# newTree = ast.fix_missing_locations(newTree)
-# graph = Digraph(comment='AST Tree')
-# create_ast_graph(graph, newTree, '')
-
-# # Render and save the graph
-# graph.render('ast_tree', format='png', cleanup=True)
-# print("Done rendering")
+newTree = ast.fix_missing_locations(MyRemover(10).visit(parsed))
 
 normal = ast.unparse(newTree)
 print(normal)
-dump = ast.dump(parsed, annotate_fields=True)
+dump = ast.dump(newTree, annotate_fields=True)
 print(dump)

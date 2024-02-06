@@ -1,7 +1,7 @@
 GRAMMAR = r"""
 ?start: action
 action: operation done | operation join action | followup done
-operation: explanation | filter | predictions | whatami | lastturnfilter | lastturnop | data | impfeatures | show | whatif | likelihood | modeldescription | function | score | ndatapoints | interact | label | mistakes | fstats | define | labelfilter | predfilter | numops | getops | numnodes | numfeatures | getfeatures | getexpr | getcommon | plotpareto | plotsubtree
+operation: explanation | filter | predictions | whatami | lastturnfilter | lastturnop | data | impfeatures | show | whatif | likelihood | modeldescription | function | score | ndatapoints | interact | label | mistakes | fstats | define | labelfilter | predfilter | numops | getops | numnodes | numfeatures | getfeatures | getexpr | getcommon | plotpareto | plotsubtree | deletenode | modnode
 
 labelfilter: " labelfilter" class
 predfilter: " predictionfilter" class
@@ -15,7 +15,8 @@ getexpr: " exprget"
 getcommon: " commonget"
 plotpareto: " paretoplot"
 plotsubtree: " subtreeplot"
-
+deletenode: " nodedelete" 
+modnode: " nodemod"
 
 fstats: fstatsword (allfeaturenames | " target")
 fstatsword: " statistic"
