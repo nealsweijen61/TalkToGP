@@ -156,6 +156,7 @@ class Parser:
 
         num_features_grammar = NUM_FEATURES.format(numfeaturenames=num_names)
         num_features_grammar += all_num_values
+        print("KLEOENKERS", num_features_grammar)
         return num_features_grammar
 
     def format_cat_features(self, cat_features: Any, dataset: Any):

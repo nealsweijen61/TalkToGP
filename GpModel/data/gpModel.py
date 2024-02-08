@@ -89,4 +89,5 @@ class GpModel(BaseEstimator, RegressorMixin):
         self.ast = ast.parse(expression)
         self.subtrees = []
         self.getSubTrees(self.ast)
+        return self
     

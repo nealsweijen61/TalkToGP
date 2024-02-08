@@ -79,4 +79,15 @@ class GpModel(BaseEstimator, RegressorMixin):
     def getComplexity(self):
         return self.complexity
     
+    def changeModel(self, expression):
+        self.expression = expression
+
+        self.expr = parse_expr(expression, evaluate=False)
+
+        self.func = lambdify(self.symbols, self.expr, 'numpy')
+
+        self.ast = ast.parse(expression)
+        self.subtrees = []
+        self.getSubTrees(self.ast)
+        return self
     

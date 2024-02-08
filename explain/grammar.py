@@ -15,8 +15,11 @@ getexpr: " exprget"
 getcommon: " commonget"
 plotpareto: " paretoplot"
 plotsubtree: " subtreeplot"
-deletenode: " nodedelete" 
-modnode: " nodemod"
+deletenode: " nodedelete" nodenumber
+modnode: "nodemod" nodenumber math_expression
+
+nodenumber: "0".."1000"
+math_expression: /[-+*/0-9\s]+/
 
 fstats: fstatsword (allfeaturenames | " target")
 fstatsword: " statistic"
