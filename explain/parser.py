@@ -153,7 +153,6 @@ class Parser:
                               "( adhocnumvalues )"
 
             self.features[nf_lower] = num_values_numeric
-
         num_features_grammar = NUM_FEATURES.format(numfeaturenames=num_names)
         num_features_grammar += all_num_values
         print("KLEOENKERS", num_features_grammar)
@@ -261,6 +260,6 @@ class Parser:
         grammar += self.target_var_grammar
         grammar += self.numerical_feature_names
         grammar += self.all_feature_names
-
+        # print("GRAMMAR", grammar)
         return grammar
 

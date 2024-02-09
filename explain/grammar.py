@@ -1,7 +1,7 @@
 GRAMMAR = r"""
 ?start: action
 action: operation done | operation join action | followup done
-operation: explanation | filter | predictions | whatami | lastturnfilter | lastturnop | data | impfeatures | show | whatif | likelihood | modeldescription | function | score | ndatapoints | interact | label | mistakes | fstats | define | labelfilter | predfilter | numops | getops | numnodes | numfeatures | getfeatures | getexpr | getcommon | plotpareto | plotsubtree | deletenode | modnode
+operation: explanation | filter | predictions | whatami | lastturnfilter | lastturnop | data | impfeatures | show | whatif | likelihood | modeldescription | function | score | ndatapoints | interact | label | mistakes | fstats | define | labelfilter | predfilter | numops | getops | numnodes | numfeatures | getfeatures | getexpr | getcommon | plotpareto | plotsubtree | deletenode | modnode | select
 
 labelfilter: " labelfilter" class
 predfilter: " predictionfilter" class
@@ -15,11 +15,25 @@ getexpr: " exprget"
 getcommon: " commonget"
 plotpareto: " paretoplot"
 plotsubtree: " subtreeplot"
-deletenode: " nodedelete" nodenumber
-modnode: "nodemod" nodenumber math_expression
+deletenode: " nodedelete" number
+modnode: " nodemod" nodenumber math_expression
 
-nodenumber: "0".."1000"
-math_expression: /[-+*/0-9\s]+/
+nodenumber: " 0"| " 1" | " 2" | " 3" | " 4" | " 5" | " 6" | " 7" | " 8" | " 9" | " 10" | " 11" | " 12" | " 13" | " 14" | " 15" | " 16"
+
+math_expression: term(operator(term))*
+term: number
+number: digit+
+operator: add | sub | mul | div
+digit: "0"| "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+add: "+"
+sub: "-"
+mul: "*"
+div: "/"
+
+selectword: " select"
+select: selectword numoptions equality number
+
+numoptions: " selectoperators"
 
 fstats: fstatsword (allfeaturenames | " target")
 fstatsword: " statistic"
@@ -117,6 +131,3 @@ eq: " equal to"
 ne: " not equal to"
 """
 
-
-# selectword: " select"
-# select: selectword modelcriteria

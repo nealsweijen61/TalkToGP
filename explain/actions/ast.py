@@ -1,79 +1,41 @@
 import ast
-import os
-from graphviz import Digraph
-
-def get_second_child_name(node):
-    for i, child in enumerate(ast.iter_child_nodes(node)):
-        if i == 1:
-            return str(child.__class__.__name__)
-
-def create_ast_graph(graph, node, parent_name, index='', num=-1):
-    current_name = f'{parent_name}_{index}' if parent_name else 'Root'
-    num += 1
-    print(str(node.__class__.__name__))
-    if isinstance(node, ast.BinOp):
-        graph.node(current_name, label=f'{get_second_child_name(node)}_{num}')
-        for i, child in enumerate(ast.iter_child_nodes(node)):
-            if i == 1:
-                continue
-            child_name = f'{current_name}_{i}'
-            graph.edge(current_name, child_name)
-            num = create_ast_graph(graph, child, current_name, i, num)
-    elif isinstance(node, ast.Constant):
-        graph.node(current_name, label=f'{node.value}_{num}')
-    elif isinstance(node, ast.Name):
-        graph.node(current_name, label=f'{node.id}_{num}')
-    elif isinstance(node, ast.Module) or isinstance(node, ast.Expr):
-        num -= 1
-        for i, child in enumerate(ast.iter_child_nodes(node)):
-            child_name = f'{current_name}_{i}'
-            num = create_ast_graph(graph, child, current_name, i, num)
-    elif isinstance(node, ast.AST):
-        graph.node(current_name, label=f'{node.__class__.__name__}_{num}')
-        for i, child in enumerate(ast.iter_child_nodes(node)):
-            child_name = f'{current_name}_{i}'
-            graph.edge(current_name, child_name)
-            num = create_ast_graph(graph, child, current_name, i, num)
-    return num
-
-def plot_tree_operation(conversation, parse_text, i, model, **kwargs):
-    # return_string = '<img src="https://upload.wikimedia.org/wikipedia/commons/7/70/2005-bandipur-tusker.jpg" alt="Girl in a jacket" width="500" height="600">'
-    expr = ast.parse(model.expression)
-
-    graph = Digraph(comment='AST Tree')
-    create_ast_graph(graph, expr, '')
-
-    output_directory = 'static/images/'
-    # Ensure the output directory exists
-    os.makedirs(output_directory, exist_ok=True)
-    # Set the output directory
-    output_file = os.path.join(output_directory, "expression_tree")
-
-    # Render and save the graph
-    graph.render(output_file, format='png', cleanup=True)
-
-    return_string = '<img src="static/images/expression_tree.png" alt="drawing" width="400"/>'
-    return return_string, 1
+from explain.actions.utils import plot_tree
 
 def modification_operation(conversation, parse_text, i, **kwargs):
     models = conversation.get_var('models').contents
     model = models[0]
     astModel = model.ast
+    print(astModel)
     operation = parse_text[i]
     node = parse_text[i+1]
-    print("here", operation, node)
-    if operation == "deletenode":
-        deleter = MyRemover(node)
-        newTree = ast.fix_missing_locations(deleter.visit(astModel))
-        print(model.expression)
-        models[0] = model.changeModel(ast.unparse(newTree))
-        print(model.expression)
-        conversation.add_var('models', models, 'model')
-    if operation == "modnode":
-        nodeType = parse_text[i+2]
+    print("here", operation, node, model.expression)
+    if operation == "nodedelete":
+        newTree = ast.fix_missing_locations(MyRemover(int(node)).visit(astModel))
+        normal =  ast.unparse(newTree)
+        model.changeModel(normal)
+        print("output:", model.expression)
+        # models[0] = model
+        # conversation.add_var('models', models, 'model')
+    if operation == "nodemod":
+        expression = ""
+        for term in parse_text[i+2:]:
+            print(term)
+            if term == "and" or term == "or" or term == "[e]":
+                break
+            expression += term
+        print(expression)
+        astExpression = ast.parse(expression)
+        newTree = ast.fix_missing_locations(MyRemover(int(node), astExpression).visit(astModel))
+        normal =  ast.unparse(newTree)
+        normal = normal.replace('\n', '')
+        print("normal:", normal)
+        model.changeModel(normal)
+        print("output:", model.expression)
+
 
     return_string = f"The model is changed"
-    return plot_tree_operation(conversation, parse_text, i, model, **kwargs)
+    return plot_tree(conversation, parse_text, i, model, **kwargs)
+    # return return_string, 1
 
 
 class MyRemover(ast.NodeTransformer):
@@ -106,6 +68,8 @@ class MyRemover(ast.NodeTransformer):
     def generic_visit(self, node):
         result = super().generic_visit(node)
         
+        if hasattr(node, 'index'):
+            print("index", node.index)
         if hasattr(node, 'index') and self.modIndex == node.index:
             print("ALTERING", node.__class__.__name__)
             if self.newNode is not None:

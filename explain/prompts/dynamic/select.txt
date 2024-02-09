@@ -1,0 +1,71 @@
+User: List models with exactly 5 operators.
+Parsed: select selectoperators equal to 5 [E]
+
+User: Show the most common subtrees in models with less than 7 operators.
+Parsed: select selectoperators less than 7 and commonget [E]
+
+User: What are the features used in models with 8 or more operators?
+Parsed: select selectoperators greater equal than 8 and featuresget [E]
+
+User: How many nodes do models with 6 or fewer operators have?
+Parsed: select selectoperators less equal than 6 and nodesnum [E]
+
+User: Show expressions used in models with exactly 4 operators.
+Parsed: select selectoperators equal to 4 and exprget [E]
+
+User: Give me the most common subtrees in models with more than 9 operators.
+Parsed: select selectoperators greater than 9 and commonget [E]
+
+User: Which models have 3 or fewer operators?
+Parsed: select selectoperators less equal than 3 [E]
+
+User: List all features used in models with exactly 6 operators.
+Parsed: select selectoperators equal to 6 and featuresget [E]
+
+User: Show models with exactly 7 operators.
+Parsed: select selectoperators equal to 7 [E]
+
+User: Display the most common subtrees in models with less than 6 operators.
+Parsed: select selectoperators less than 6 and commonget [E]
+
+User: List features used in models with 9 or more operators.
+Parsed: select selectoperators greater equal than 9 and featuresget [E]
+
+User: How many nodes are there in models with fewer than 8 operators?
+Parsed: select selectoperators less than 8 and nodesnum [E]
+
+User: Show expressions used in models with exactly 3 operators.
+Parsed: select selectoperators equal to 3 and exprget [E]
+
+User: Give me the most common subtrees in models with 10 or more operators.
+Parsed: select selectoperators greater equal than 10 and commonget [E]
+
+User: Which models have 2 or fewer operators?
+Parsed: select selectoperators less equal than 2 [E]
+
+User: List all features used in models with more than 5 operators.
+Parsed: select selectoperators greater than 5 and featuresget [E]
+
+User: Show models with exactly 8 operators.
+Parsed: select selectoperators equal to 8 [E]
+
+User: Display the most common subtrees in models with less than 5 operators.
+Parsed: select selectoperators less than 5 and commonget [E]
+
+User: List features used in models with 7 or more operators.
+Parsed: select selectoperators greater equal than 7 and featuresget [E]
+
+User: How many nodes are there in models with fewer than 9 operators?
+Parsed: select selectoperators less than 9 and nodesnum [E]
+
+User: Show expressions used in models with exactly 6 operators.
+Parsed: select selectoperators equal to 6 and exprget [E]
+
+User: Give me the most common subtrees in models with more than 11 operators.
+Parsed: select selectoperators greater than 11 and commonget [E]
+
+User: Which models have 1 or fewer operators?
+Parsed: select selectoperators less equal than 1 [E]
+
+User: List all features used in models with more than 4 operators.
+Parsed: select selectoperators greater than 4 and featuresget [E]

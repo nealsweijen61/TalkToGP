@@ -33,6 +33,8 @@ class MyRemover(ast.NodeTransformer):
     def generic_visit(self, node):
         result = super().generic_visit(node)
         
+        if hasattr(node, 'index'):
+            print("index", node.index)
         if hasattr(node, 'index') and self.modIndex == node.index:
             print("ALTERING", node.__class__.__name__)
             if self.newNode is not None:
@@ -58,14 +60,22 @@ def load_sklearn_model(filepath):
 
 model = load_sklearn_model("bikes_gp_1.pkl")
 astModel = model.ast
-
-add = ast.BinOp(left = ast.Constant(2), right= ast.Constant(1), op= ast.Add())
+print(astModel)
+add = ast.BinOp(left = ast.Constant(2), right= ast.Constant(2), op= ast.Add())
 newTree = ast.fix_missing_locations(MyRemover(1, add).visit(astModel))
 
 normal = ast.unparse(newTree)
 model.changeModel(normal)
 
-X = [[3,0,7,0,6,0,1,0.686667,0.638263,0.585,0.208342]]
-pred = model.predict(X)
-print(pred)
+print(model.expression)
+
+astModel = model.ast
+newTree = ast.fix_missing_locations(MyRemover(4, add).visit(astModel))
+
+normal = ast.unparse(newTree)
+model.changeModel(normal)
+
+# X = [[3,0,7,0,6,0,1,0.686667,0.638263,0.585,0.208342]]
+# pred = model.predict(X)
+# print(pred)
 print(model.expression)

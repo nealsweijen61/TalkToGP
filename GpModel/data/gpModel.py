@@ -82,6 +82,7 @@ class GpModel(BaseEstimator, RegressorMixin):
     def changeModel(self, expression):
         self.expression = expression
 
+        print("GP model expression:", self.expression)
         self.expr = parse_expr(expression, evaluate=False)
 
         self.func = lambdify(self.symbols, self.expr, 'numpy')
@@ -89,5 +90,6 @@ class GpModel(BaseEstimator, RegressorMixin):
         self.ast = ast.parse(expression)
         self.subtrees = []
         self.getSubTrees(self.ast)
+        print("changing")
         return self
     
