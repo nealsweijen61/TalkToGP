@@ -58,7 +58,10 @@ def num_nodes_operation(conversation, parse_text, i, **kwargs):
 def get_features_operation(conversation, parse_text, i, **kwargs):
     """Gives the features"""
     # get operatos of each model
-    models = conversation.get_var('models').contents
+    models = conversation.temp_select.contents
+    print("HIEEERO", models)
+    if len(conversation.temp_select.contents) == 0:
+        return 'There are no instances that meet this description!', 0
     features = []
     for model in models:
         features.append(model.getFeatures())
@@ -96,7 +99,10 @@ def num_features_operation(conversation, parse_text, i, **kwargs):
     return return_string, 1
 
 def most_common_features_operation(conversation, parse_text, i, **kwargs):
-    models = conversation.get_var('models').contents
+    models = conversation.temp_select.contents
+
+    if len(conversation.temp_select.contents) == 0:
+        return 'There are no instances that meet this description!', 0
     features = []
     definitions = conversation.feature_definitions
     for model in models:

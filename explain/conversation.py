@@ -74,6 +74,7 @@ class Conversation:
         """
         self.stored_vars = {}
         self.temp_dataset = None
+        self.temp_select = None
         self.class_names = class_names
 
         self.rounding_precision = rounding_precision
@@ -121,6 +122,9 @@ class Conversation:
         """Updates temp data set."""
         self.temp_dataset = temp_dataset
 
+    def _update_temp_select(self, temp_select):
+        self.temp_select = temp_select
+
     def add_var(self, name: str, contents, kind: str):
         """Adds a variable with arbitrary contents."""
         var = Variable(name, contents, kind)
@@ -156,6 +160,14 @@ class Conversation:
             self._update_temp_dataset(temp_dataset)
             self.parse_operation = []
         return temp_dataset
+    
+
+    def build_temp_select(self, save=True):
+        temp_select = copy.deepcopy(self.get_var('models'))
+        if save:
+            self._update_temp_select(temp_select)
+            self.parse_operation = []
+        return temp_select
 
     def add_interpretable_parse_op(self, text):
         """Adds a parse operation to the text."""

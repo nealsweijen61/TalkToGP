@@ -9,6 +9,7 @@ def load_sklearn_model(filepath):
 
 
 model = load_sklearn_model("bikes_gp_5.pkl")
+
 print("COmplex", model.getComplexity())
 print(model)
 # X = [[1,0,1,0,6,0,2,0.344167,0.363625,0.805833,0.160446]]

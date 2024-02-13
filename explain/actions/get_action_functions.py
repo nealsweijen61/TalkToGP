@@ -27,6 +27,7 @@ from explain.actions.show_data import show_operation
 from explain.actions.what_if import what_if_operation
 from explain.actions.ops import num_ops_operation, get_ops_operation, num_nodes_operation, num_features_operation, get_features_operation, get_expr_operation, most_common_features_operation, plot_operation, plot_tree_operation, most_common_trees_operation
 from explain.actions.ast import modification_operation
+from explain.actions.select import select_operation
 
 def get_all_action_functions_map():
     """Gets a dictionary mapping all the names of the actions in the parse tree to their functions."""
@@ -64,6 +65,7 @@ def get_all_action_functions_map():
         "paretoplot": plot_operation,
         "subtreeplot": plot_tree_operation,
         "nodedelete": modification_operation,
-        "nodemod": modification_operation
+        "nodemod": modification_operation,
+        "select": select_operation
     }
     return actions
