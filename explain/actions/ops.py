@@ -19,10 +19,17 @@ from explain.actions.utils import plot_tree
 #     # return the string and 1, indicating success
 #     return return_string, 1
 
+def get_models(conversation):
+    # get operatos of each model
+    models = conversation.temp_select.contents
+    if len(conversation.temp_select.contents) == 0:
+        return None
+    return models
+
 def num_ops_operation(conversation, parse_text, i, **kwargs):
     """Gives the number of operations"""
     # get operatos values of each model
-    models = conversation.get_var('models').contents
+    models = get_models(conversation)
     operators = []
     for model in models:
         operators.append(model.numOperators())
@@ -34,7 +41,7 @@ def num_ops_operation(conversation, parse_text, i, **kwargs):
 def get_ops_operation(conversation, parse_text, i, **kwargs):
     """Gives the operations"""
     # get operatos of each model
-    models = conversation.get_var('models').contents
+    models = get_models(conversation)
     operators = []
     for model in models:
         operators.append(model.getOperators())
@@ -46,7 +53,7 @@ def get_ops_operation(conversation, parse_text, i, **kwargs):
 def num_nodes_operation(conversation, parse_text, i, **kwargs):
     """Gives the number of nodes"""
     # get operatos values of each model
-    models = conversation.get_var('models').contents
+    models = get_models(conversation)
     operators = []
     for model in models:
         operators.append(model.numNodes())
@@ -58,10 +65,7 @@ def num_nodes_operation(conversation, parse_text, i, **kwargs):
 def get_features_operation(conversation, parse_text, i, **kwargs):
     """Gives the features"""
     # get operatos of each model
-    models = conversation.temp_select.contents
-    print("HIEEERO", models)
-    if len(conversation.temp_select.contents) == 0:
-        return 'There are no instances that meet this description!', 0
+    models = get_models(conversation)
     features = []
     for model in models:
         features.append(model.getFeatures())
@@ -89,7 +93,7 @@ def feature_to_name(variable_name, definitions):
 def num_features_operation(conversation, parse_text, i, **kwargs):
     """Gives the number of features"""
     # get operatos of each model
-    models = conversation.get_var('models').contents
+    models = get_models(conversation)
     features = []
     for model in models:
         features.append(model.numFeatures())
@@ -99,10 +103,7 @@ def num_features_operation(conversation, parse_text, i, **kwargs):
     return return_string, 1
 
 def most_common_features_operation(conversation, parse_text, i, **kwargs):
-    models = conversation.temp_select.contents
-
-    if len(conversation.temp_select.contents) == 0:
-        return 'There are no instances that meet this description!', 0
+    models = get_models(conversation)
     features = []
     definitions = conversation.feature_definitions
     for model in models:
@@ -121,7 +122,7 @@ def most_common_features_operation(conversation, parse_text, i, **kwargs):
 def get_expr_operation(conversation, parse_text, i, **kwargs):
     """Gives the expressions of each model"""
     # get operatos of each model
-    models = conversation.get_var('models').contents
+    models = get_models(conversation)
     expressions = []
     return_string = f"The features in each model are: "
     for model in models:
@@ -136,7 +137,7 @@ def get_expr_operation(conversation, parse_text, i, **kwargs):
 
 def plot_operation(conversation, parse_text, i, **kwargs):
     # return_string = '<img src="https://upload.wikimedia.org/wikipedia/commons/7/70/2005-bandipur-tusker.jpg" alt="Girl in a jacket" width="500" height="600">'
-    models = conversation.get_var('models').contents
+    models = get_models(conversation)
     x = []
     y = []
     expr = "(57.700000/ (x10+1e-6))"
@@ -162,12 +163,12 @@ def plot_operation(conversation, parse_text, i, **kwargs):
 
 def plot_tree_operation(conversation, parse_text, i, **kwargs):
     # return_string = '<img src="https://upload.wikimedia.org/wikipedia/commons/7/70/2005-bandipur-tusker.jpg" alt="Girl in a jacket" width="500" height="600">'
-    models = conversation.get_var('models').contents
+    models = get_models(conversation)
     model = models[0]
     return plot_tree(conversation, parse_text, i, model, **kwargs)
 
 def most_common_trees_operation(conversation, parse_text, i, **kwargs):
-    models = conversation.get_var('models').contents
+    models = get_models(conversation)
     subtrees = []
     for model in models:
         subtrees = subtrees + model.subtrees

@@ -31,9 +31,9 @@ mul: "*"
 div: "/"
 
 selectword: " select"
-select: selectword numoptions equality number
+select: selectword (numoptions equality number | " model" number | " selectop" operator)
 
-numoptions: " selectoperators"
+numoptions: " selectoperators" | " selectnodes" | " selectconstants" | " selectfeatures" | " selectacurracy" | " selectcomplex"
 
 fstats: fstatsword (allfeaturenames | " target")
 fstatsword: " statistic"

@@ -2,7 +2,9 @@ import ast
 from explain.actions.utils import plot_tree
 
 def modification_operation(conversation, parse_text, i, **kwargs):
-    models = conversation.get_var('models').contents
+    models = conversation.temp_select.contents
+    if len(conversation.temp_select.contents) == 0:
+        return 'There are no instances that meet this description!', 0
     model = models[0]
     astModel = model.ast
     print(astModel)

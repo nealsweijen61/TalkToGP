@@ -1,0 +1,89 @@
+User: List models with exactly 5 constants.
+Parsed: select selectconstants equal to 5 [E]
+
+User: Show the most common subtrees in models with fewer than 10 constants.
+Parsed: select selectconstants less than 10 and commonget [E]
+
+User: What are the features used in models with 15 or more constants?
+Parsed: select selectconstants greater equal than 15 and featuresget [E]
+
+User: How many operators do models with 12 or fewer constants have?
+Parsed: select selectconstants less equal than 12 and opsnum [E]
+
+User: Provide predictions for instances where the number of constants is exactly 20.
+Parsed: select selectconstants equal to 20 and predict [E]
+
+User: Show expressions used in models with exactly 7 constants.
+Parsed: select selectconstants equal to 7 and exprget [E]
+
+User: Give me the most common subtrees in models with more than 25 constants.
+Parsed: select selectconstants greater than 25 and commonget [E]
+
+User: Which models have 3 or fewer constants?
+Parsed: select selectconstants less equal than 3 [E]
+
+User: List all features used in models with 18 or more constants.
+Parsed: select selectconstants greater equal than 18 and featuresget [E]
+
+User: What are the predictions for instances with less than 8 constants?
+Parsed: select selectconstants less than 8 and predict [E]
+
+User: Show models with exactly 10 constants.
+Parsed: select selectconstants equal to 10 [E]
+
+User: Display the most common subtrees in models with less than 6 constants.
+Parsed: select selectconstants less than 6 and commonget [E]
+
+User: List features used in models with 14 or more constants.
+Parsed: select selectconstants greater equal than 14 and featuresget [E]
+
+User: How many operators do models with fewer than 9 constants have?
+Parsed: select selectconstants less than 9 and opsnum [E]
+
+User: Provide predictions for instances where the number of constants exceeds 16.
+Parsed: select selectconstants greater than 16 and predict [E]
+
+User: Show expressions used in models with exactly 4 constants.
+Parsed: select selectconstants equal to 4 and exprget [E]
+
+User: Give me the most common subtrees in models with more than 22 constants.
+Parsed: select selectconstants greater than 22 and commonget [E]
+
+User: Which models have 2 or fewer constants?
+Parsed: select selectconstants less equal than 2 [E]
+
+User: List all features used in models with 16 or more constants.
+Parsed: select selectconstants greater equal than 16 and featuresget [E]
+
+User: What are the predictions for instances with less than 5 constants?
+Parsed: select selectconstants less than 5 and predict [E]
+
+User: Show models with exactly 8 constants.
+Parsed: select selectconstants equal to 8 [E]
+
+User: Display the most common subtrees in models with less than 4 constants.
+Parsed: select selectconstants less than 4 and commonget [E]
+
+User: List features used in models with 20 or more constants.
+Parsed: select selectconstants greater equal than 20 and featuresget [E]
+
+User: How many operators do models with fewer than 7 constants have?
+Parsed: select selectconstants less than 7 and opsnum [E]
+
+User: Provide predictions for instances where the number of constants is at most 14.
+Parsed: select selectconstants less equal than 14 and predict [E]
+
+User: Show expressions used in models with exactly 6 constants.
+Parsed: select selectconstants equal to 6 and exprget [E]
+
+User: Give me the most common subtrees in models with more than 18 constants.
+Parsed: select selectconstants greater than 18 and commonget [E]
+
+User: Which models have 1 or fewer constants?
+Parsed: select selectconstants less equal than 1 [E]
+
+User: List all features used in models with 12 or more constants.
+Parsed: select selectconstants greater equal than 12 and featuresget [E]
+
+User: What are the predictions for instances with less than 3 constants?
+Parsed: select selectconstants less than 3 and predict [E]

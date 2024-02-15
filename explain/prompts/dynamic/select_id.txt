@@ -1,0 +1,29 @@
+User: Select model 5 and display its features.
+Parsed: select model 5 and featuresget [E]
+
+User: Show the most common subtrees in model 8.
+Parsed: select model 8 and commonget [E]
+
+User: List constants used in model 3.
+Parsed: select model 3 and constantsget [E]
+
+User: Display expressions used in model 10.
+Parsed: select model 10 and exprget [E]
+
+User: Show predictions for instances based on model 7.
+Parsed: select model 7 and predict [E]
+
+User: Select model 1 and show the number of operators.
+Parsed: select model 1 and opsnum [E]
+
+User: List all features used in model 4.
+Parsed: select model 4 and featuresget [E]
+
+User: Provide predictions based on model 9.
+Parsed: select model 9 and predict [E]
+
+User: Display the most common subtrees in model 6.
+Parsed: select model 6 and commonget [E]
+
+User: List constants used in model 2.
+Parsed: select model 2 and constantsget [E]

@@ -1,0 +1,77 @@
+User: List models with exactly 10 nodes.
+Parsed: select selectnodes equal to 10 [E]
+
+User: Show the most common subtrees in models with fewer than 50 nodes.
+Parsed: select selectnodes less than 50 and commonget [E]
+
+User: What are the features used in models with 80 or more nodes?
+Parsed: select selectnodes greater equal than 80 and featuresget [E]
+
+User: How many operators do models with 60 or fewer nodes have?
+Parsed: select selectnodes less equal than 60 and opsnum [E]
+
+User: Show expressions used in models with exactly 20 nodes.
+Parsed: select selectnodes equal to 20 and exprget [E]
+
+User: Give me the most common subtrees in models with more than 90 nodes.
+Parsed: select selectnodes greater than 90 and commonget [E]
+
+User: Which models have 5 or fewer nodes?
+Parsed: select selectnodes less equal than 5 [E]
+
+User: List all features used in models with 70 or more nodes.
+Parsed: select selectnodes greater equal than 70 and featuresget [E]
+
+User: Show models with exactly 30 nodes.
+Parsed: select selectnodes equal to 30 [E]
+
+User: Display the most common subtrees in models with less than 20 nodes.
+Parsed: select selectnodes less than 20 and commonget [E]
+
+User: List features used in models with 50 or more nodes.
+Parsed: select selectnodes greater equal than 50 and featuresget [E]
+
+User: How many operators do models with fewer than 70 nodes have?
+Parsed: select selectnodes less than 70 and opsnum [E]
+
+User: Provide predictions for instances where the number of nodes exceeds 80.
+Parsed: select selectnodes greater than 80 and predict [E]
+
+User: Show expressions used in models with exactly 40 nodes.
+Parsed: select selectnodes equal to 40 and exprget [E]
+
+User: Give me the most common subtrees in models with 100 or more nodes.
+Parsed: select selectnodes greater equal than 100 and commonget [E]
+
+User: Which models have 10 or fewer nodes?
+Parsed: select selectnodes less equal than 10 [E]
+
+User: List all features used in models with 90 or more nodes.
+Parsed: select selectnodes greater equal than 90 and featuresget [E]
+
+User: What are the predictions for instances with less than 50 nodes?
+Parsed: select selectnodes less than 50 and predict [E]
+
+User: Show models with exactly 70 nodes.
+Parsed: select selectnodes equal to 70 [E]
+
+User: Display the most common subtrees in models with less than 40 nodes.
+Parsed: select selectnodes less than 40 and commonget [E]
+
+User: List features used in models with 80 or more nodes.
+Parsed: select selectnodes greater equal than 80 and featuresget [E]
+
+User: How many operators do models with fewer than 60 nodes have?
+Parsed: select selectnodes less than 60 and opsnum [E]
+
+User: Show expressions used in models with exactly 20 nodes.
+Parsed: select selectnodes equal to 20 and exprget [E]
+
+User: Give me the most common subtrees in models with more than 90 nodes.
+Parsed: select selectnodes greater than 90 and commonget [E]
+
+User: Which models have 5 or fewer nodes?
+Parsed: select selectnodes less equal than 5 [E]
+
+User: List all features used in models with 70 or more nodes.
+Parsed: select selectnodes greater equal than 70 and featuresget [E]
