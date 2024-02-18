@@ -1,0 +1,59 @@
+User: Select models with an accuracy score of 5000 and list their features.
+Parsed: select selectaccuracy equal to 5000.0 and featuresget [E]
+
+User: Show the most common subtrees in models with an accuracy score less than 2500.
+Parsed: select selectaccuracy less than 2500.0 and commonget [E]
+
+User: What are the constants used in models with an accuracy score greater than or equal to 7500?
+Parsed: select selectaccuracy greater equal than 7500.0 and constantsget [E]
+
+User: How many operators do models with an accuracy score of 3000 or lower have?
+Parsed: select selectaccuracy less equal than 3000.0 and opsnum [E]
+
+User: Provide predictions for instances based on models with an accuracy score equal to 9021.4.
+Parsed: select selectaccuracy equal to 9021.4 and predict [E]
+
+User: Select models with an accuracy score of 4000.5 and display their expressions.
+Parsed: select selectaccuracy equal to 4000.5 and exprget [E]
+
+User: List all features used in models with an accuracy score exceeding 8000.8.
+Parsed: select selectaccuracy greater than 8000.8 and featuresget [E]
+
+User: Show predictions for instances based on models with an accuracy score less than 1000.2.
+Parsed: select selectaccuracy less than 1000.2 and predict [E]
+
+User: Display the most common subtrees in models with an accuracy score between 6000.6 and 7000.7.
+Parsed: select selectaccuracy between 6000.6 and 7000.7 and commonget [E]
+
+User: List constants used in models with an accuracy score greater than 750.3.
+Parsed: select selectaccuracy greater than 750.3 and constantsget [E]
+
+User: Select models with an accuracy score of 9999.9 and count the number of operators.
+Parsed: select selectaccuracy equal to 9999.9 and opsnum [E]
+
+User: Show the most common subtrees in models with an accuracy score less than 1.
+Parsed: select selectaccuracy less than 1 and commonget [E]
+
+User: What are the features used in models with an accuracy score greater than or equal to 5000.0?
+Parsed: select selectaccuracy greater equal than 5000.0 and featuresget [E]
+
+User: How many operators do models with an accuracy score of 2000.2 or lower have?
+Parsed: select selectaccuracy less equal than 2000.2 and opsnum [E]
+
+User: Provide predictions for instances based on models with an accuracy score equal to 3002.2.
+Parsed: select selectaccuracy equal to 3002.2 and predict [E]
+
+User: Select models with an accuracy score of 1001.1 and display their expressions.
+Parsed: select selectaccuracy equal to 1001.1 and exprget [E]
+
+User: List all features used in models with an accuracy score exceeding 9000.9.
+Parsed: select selectaccuracy greater than 9000.9 and featuresget [E]
+
+User: Show predictions for instances based on models with an accuracy score less than 2000.0.
+Parsed: select selectaccuracy less than 2000.0 and predict [E]
+
+User: Display the most common subtrees in models with an accuracy score between 4000.4 and 5000.5.
+Parsed: select selectaccuracy between 4000.4 and 5000.5 and commonget [E]
+
+User: List constants used in models with an accuracy score greater than 7777.7.
+Parsed: select selectaccuracy greater than 7777.7 and constantsget [E]

@@ -1,0 +1,89 @@
+User: Select models with a complexity of 10 and list their features.
+Parsed: select selectcomplex equal to 10 and featuresget [E]
+
+User: Show the most common subtrees in models with a complexity less than 5.
+Parsed: select selectcomplex less than 5 and commonget [E]
+
+User: What are the constants used in models with a complexity greater than or equal to 15?
+Parsed: select selectcomplex greater equal than 15 and constantsget [E]
+
+User: How many operators do models with a complexity of 7 or lower have?
+Parsed: select selectcomplex less equal than 7 and opsnum [E]
+
+User: Provide predictions for instances based on models with a complexity of 20.
+Parsed: select selectcomplex equal to 20 and predict [E]
+
+User: Select models with a complexity of 12 and display their expressions.
+Parsed: select selectcomplex equal to 12 and exprget [E]
+
+User: List all features used in models with a complexity exceeding 25.
+Parsed: select selectcomplex greater than 25 and featuresget [E]
+
+User: Show predictions for instances based on models with a complexity less than 3.
+Parsed: select selectcomplex less than 3 and predict [E]
+
+User: Display the most common subtrees in models with a complexity between 8 and 12.
+Parsed: select selectcomplex between 8 and 12 and commonget [E]
+
+User: List constants used in models with a complexity greater than 20.
+Parsed: select selectcomplex greater than 20 and constantsget [E]
+
+User: Select models with a complexity of 9 and count the number of operators.
+Parsed: select selectcomplex equal to 9 and opsnum [E]
+
+User: Show the most common subtrees in models with a complexity less than 2.
+Parsed: select selectcomplex less than 2 and commonget [E]
+
+User: What are the features used in models with a complexity greater than or equal to 30?
+Parsed: select selectcomplex greater equal than 30 and featuresget [E]
+
+User: How many operators do models with a complexity of 5 or lower have?
+Parsed: select selectcomplex less equal than 5 and opsnum [E]
+
+User: Provide predictions for instances based on models with a complexity of 15.
+Parsed: select selectcomplex equal to 15 and predict [E]
+
+User: Select models with a complexity of 4 and display their expressions.
+Parsed: select selectcomplex equal to 4 and exprget [E]
+
+User: List all features used in models with a complexity exceeding 18.
+Parsed: select selectcomplex greater than 18 and featuresget [E]
+
+User: Show predictions for instances based on models with a complexity less than 1.
+Parsed: select selectcomplex less than 1 and predict [E]
+
+User: Display the most common subtrees in models with a complexity between 6 and 10.
+Parsed: select selectcomplex between 6 and 10 and commonget [E]
+
+User: List constants used in models with a complexity greater than 22.
+Parsed: select selectcomplex greater than 22 and constantsget [E]
+
+User: Select models with a complexity of 8 and count the number of operators.
+Parsed: select selectcomplex equal to 8 and opsnum [E]
+
+User: Show the most common subtrees in models with a complexity less than 4.
+Parsed: select selectcomplex less than 4 and commonget [E]
+
+User: What are the features used in models with a complexity greater than or equal to 27?
+Parsed: select selectcomplex greater equal than 27 and featuresget [E]
+
+User: How many operators do models with a complexity of 3 or lower have?
+Parsed: select selectcomplex less equal than 3 and opsnum [E]
+
+User: Provide predictions for instances based on models with a complexity of 17.
+Parsed: select selectcomplex equal to 17 and predict [E]
+
+User: Select models with a complexity of 6 and display their expressions.
+Parsed: select selectcomplex equal to 6 and exprget [E]
+
+User: List all features used in models with a complexity exceeding 19.
+Parsed: select selectcomplex greater than 19 and featuresget [E]
+
+User: Show predictions for instances based on models with a complexity less than 2.
+Parsed: select selectcomplex less than 2 and predict [E]
+
+User: Display the most common subtrees in models with a complexity between 4 and 8.
+Parsed: select selectcomplex between 4 and 8 and commonget [E]
+
+User: List constants used in models with a complexity greater than 21.
+Parsed: select selectcomplex greater than 21 and constantsget [E]

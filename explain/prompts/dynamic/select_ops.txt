@@ -1,0 +1,89 @@
+User: Select models containing the * operator and show their features.
+Parsed: select selectop * and featuresget [E]
+
+User: Display models with the / operator and list their constants.
+Parsed: select selectop / and constantsget [E]
+
+User: List models with the ^ operator and show predictions for instances based on them.
+Parsed: select selectop ^ and predict [E]
+
+User: Show models with the sin operator and display the most common subtrees.
+Parsed: select selectop sin and commonget [E]
+
+User: Display models containing the cos operator and list all features used.
+Parsed: select selectop cos and featuresget [E]
+
+User: List models with the tan operator and show their expressions.
+Parsed: select selectop tan and exprget [E]
+
+User: Select models with the + and - operators and show their features.
+Parsed: select selectop + - and featuresget [E]
+
+User: Display models containing the * and / operators and list their constants.
+Parsed: select selectop * / and constantsget [E]
+
+User: List models with the ^ and sin operators and show predictions for instances based on them.
+Parsed: select selectop ^ sin and predict [E]
+
+User: Show models with the cos and tan operators and display the most common subtrees.
+Parsed: select selectop cos tan and commonget [E]
+
+User: Display models containing the +, -, and * operators and list all features used.
+Parsed: select selectop + - * and featuresget [E]
+
+User: List models with the /, ^, and sin operators and show their expressions.
+Parsed: select selectop / ^ sin and exprget [E]
+
+User: Show models with the cos, tan, and + operators and display the most common subtrees.
+Parsed: select selectop cos tan + and commonget [E]
+
+User: Display models containing the * and sin operators and list their constants.
+Parsed: select selectop * sin and constantsget [E]
+
+User: List models with the ^ and tan operators and show predictions for instances based on them.
+Parsed: select selectop ^ tan and predict [E]
+
+User: Show models with the +, -, *, and / operators and display the most common subtrees.
+Parsed: select selectop + - * / and commonget [E]
+
+User: Display models containing the sin, cos, and tan operators and list all features used.
+Parsed: select selectop sin cos tan and featuresget [E]
+
+User: List models with the ^, sin, and cos operators and show their expressions.
+Parsed: select selectop ^ sin cos and exprget [E]
+
+User: Show models with the +, -, and sin operators and display the most common subtrees.
+Parsed: select selectop + - sin and commonget [E]
+
+User: Display models containing the *, /, and cos operators and list their constants.
+Parsed: select selectop * / cos and constantsget [E]
+
+User: List models with the ^, tan, and + operators and show predictions for instances based on them.
+Parsed: select selectop ^ tan + and predict [E]
+
+User: Show models with the -, sin, and tan operators and display the most common subtrees.
+Parsed: select selectop - sin tan and commonget [E]
+
+User: Display models containing the *, /, and sin operators and list all features used.
+Parsed: select selectop * / sin and featuresget [E]
+
+User: List models with the ^, cos, and + operators and show their expressions.
+Parsed: select selectop ^ cos + and exprget [E]
+
+User: Show models with the -, tan, and / operators and display the most common subtrees.
+Parsed: select selectop - tan / and commonget [E]
+
+User: Display models containing the *, cos, and sin operators and list their constants.
+Parsed: select selectop * cos sin and constantsget [E]
+
+User: List models with the ^, +, and tan operators and show predictions for instances based on them.
+Parsed: select selectop ^ + tan and predict [E]
+
+User: Show models with the -, /, and cos operators and display the most common subtrees.
+Parsed: select selectop - / cos and commonget [E]
+
+User: Display models containing the *, sin, and tan operators and list all features used.
+Parsed: select selectop * sin tan and featuresget [E]
+
+User: List models with the ^, +, and / operators and show their expressions.
+Parsed: select selectop ^ + / and exprget [E]

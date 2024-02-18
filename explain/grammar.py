@@ -29,6 +29,8 @@ add: "+"
 sub: "-"
 mul: "*"
 div: "/"
+multops: (ops)+
+ops: " +" | " -" | " *" | " /"
 
 selectword: " select"
 select: selectword (numoptions equality number | " model" number | " selectop" operator)
