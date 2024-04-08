@@ -124,8 +124,10 @@ def get_expr_operation(conversation, parse_text, i, **kwargs):
     # get operatos of each model
     models = get_models(conversation)
     expressions = []
-    return_string = f"The features in each model are: "
-    for model in models:
+    return_string = f"The expressions off each model are:"
+    return_string += "<br><br>"
+    for i, model in enumerate(models):
+        return_string += str(i+1) + ") "
         return_string += str(model.getExpr())
         return_string += "<br><br>"
         # expressions.append(model.getExpr())

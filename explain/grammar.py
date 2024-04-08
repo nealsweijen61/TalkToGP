@@ -15,16 +15,15 @@ getexpr: " exprget"
 getcommon: " commonget"
 plotpareto: " paretoplot"
 plotsubtree: " subtreeplot"
-deletenode: " nodedelete" number
+deletenode: " nodedelete" nodenumber
 modnode: " nodemod" nodenumber math_expression
 
 nodenumber: " 0"| " 1" | " 2" | " 3" | " 4" | " 5" | " 6" | " 7" | " 8" | " 9" | " 10" | " 11" | " 12" | " 13" | " 14" | " 15" | " 16"
 
 math_expression: term(operator(term))*
-term: number
-number: digit+
+term: digit+
 operator: add | sub | mul | div
-digit: "0"| "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+digit: "0"| "1" | "2" | "4" | "5" | "6" | "7" | "8" | "9" | " 3"
 add: "+"
 sub: "-"
 mul: "*"
@@ -33,7 +32,7 @@ multops: (ops)+
 ops: " +" | " -" | " *" | " /"
 
 selectword: " select"
-select: selectword (numoptions equality number | " model" number | " selectop" operator)
+select: selectword (numoptions equality nodenumber | " model" nodenumber | " selectop" operator)
 
 numoptions: " selectoperators" | " selectnodes" | " selectconstants" | " selectfeatures" | " selectacurracy" | " selectcomplex"
 

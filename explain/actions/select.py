@@ -3,7 +3,7 @@ import pandas as pd
 
 def get_operation_value(feature_name, model):
     if feature_name == 'selectoperators':
-        return get_operation_value(feature_name, model)
+        return model.numOperators()
     elif feature_name ==  'selectnodes':
         return model.numNodes()
     elif feature_name == 'selectconstants':
@@ -81,7 +81,7 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
         updated_dset = numerical_filter(parse_text, temp_select, i, feature_name)
     elif feature_name == 'model':
         feature_value = int(parse_text[i+2])
-        updated_dset = [temp_select[feature_value]]
+        updated_dset = [temp_select[feature_value-1]]
     else:
         raise NameError(f"Parsed unkown feature name {feature_name}")
 
