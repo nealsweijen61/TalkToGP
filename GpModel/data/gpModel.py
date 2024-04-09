@@ -1,5 +1,5 @@
 from sklearn.base import BaseEstimator, RegressorMixin
-from sympy import symbols, lambdify, parse_expr, count_ops, preorder_traversal, Function, Pow, Mod, Number
+from sympy import symbols, lambdify, parse_expr, count_ops, simplify, preorder_traversal, Function, Pow, Mod, Number
 import numpy as np
 import pandas as pd
 import ast
@@ -93,3 +93,12 @@ class GpModel(BaseEstimator, RegressorMixin):
         print("changing")
         return self
     
+    def getSimplify(self):
+        # self.expression = simplify(self.expression)
+        self.expr = simplify(self.expr)
+    
+        self.func = lambdify(self.symbols, self.expr, 'numpy')
+
+        self.ast = ast.parse(str(self.expr))
+        self.subtrees = []
+        self.getSubTrees(self.ast)

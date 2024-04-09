@@ -19,5 +19,14 @@ X = [[3,0,7,0,6,0,1,0.686667,0.638263,0.585,0.208342]]
 # X = X.reshape(-1, 1)
 pred = model.predict(X)
 print(pred)
+print(model.expression)
+print(model.expr)
+
+model.getSimplify()
+print(model.expression)
+print(model.expr)
+
+
+
 # predProb = model.predict_proba(X)
 # print(pred, predProb)

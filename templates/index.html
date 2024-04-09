@@ -52,7 +52,7 @@
                     <button id="idea-flip" class="idea-button" onclick="sampleFlip()">how to change a prediction</button>
                     <button id="idea-description" class="idea-button" onclick="sampleDataDescription()">dataset description</button>
                     <button id="idea-interaction" class="idea-button" onclick="sampleInteractions()">feature interaction effects</button>
-                    <button id="idea-interaction" class="idea-button" onclick="sampleMistakes()">mistakes</button>
+                    <button id="idea-interaction" class="idea-button" onclick="samplePareto()">Pareto front</button>
                     <button id="idea-interaction" class="idea-button" onclick="sampleLabels()">data labels</button>
                 </div>
             </div>
@@ -139,6 +139,9 @@
     }
     function sampleInteractions() {
         doSample("interactions")
+    }
+    function samplePareto() {
+        doSample("pareto")
     }
 </script>
 
