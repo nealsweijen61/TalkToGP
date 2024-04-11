@@ -19,7 +19,7 @@ from explain.actions.last_turn_filter import last_turn_filter
 from explain.actions.last_turn_operation import last_turn_operation
 from explain.actions.mistakes import show_mistakes_operation
 from explain.actions.model import model_operation
-from explain.actions.predict import predict_operation
+from explain.actions.predict import predict_operation, predict_histogram
 from explain.actions.prediction_likelihood import predict_likelihood
 from explain.actions.score import score_operation
 from explain.actions.self import self_operation

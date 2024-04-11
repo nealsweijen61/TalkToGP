@@ -151,3 +151,10 @@ def plot_tree(conversation, parse_text, i, model, **kwargs):
     graph.render(output_file, format='png', cleanup=True)
     return_string = f'<img src="static/images/expression_tree+{timestamp}.png" alt="drawing" width="400"/>'
     return return_string, 1
+
+def get_models(conversation):
+    # get operatos of each model
+    models = conversation.temp_select.contents
+    if len(conversation.temp_select.contents) == 0:
+        return None
+    return models
