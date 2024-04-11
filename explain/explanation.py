@@ -573,6 +573,10 @@ class MegaExplainer(Explanation):
                 scores[label] = []
             scores[label].append(explanations[ids[i]].score)
 
+        print("hiero!")
+        print("fimportant:", feature_importances)
+        print("scores:", scores)
+        print("ftext", filtering_text)
         full_summary, short_summary = self.format_explanations_to_string(feature_importances,
                                                                          scores,
                                                                          filtering_text)

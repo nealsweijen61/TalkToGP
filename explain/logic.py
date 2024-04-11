@@ -145,6 +145,8 @@ class ExplainBot:
                                                numerical_features,
                                                remove_underscores,
                                                store_to_conversation=False)
+        
+        self.bDataset = background_dataset
 
         # Load the explanations
         self.load_explanations(background_dataset=background_dataset)
@@ -163,37 +165,49 @@ class ExplainBot:
         """
         app.logger.info("Loading explanations into conversation...")
 
-        # This may need to change as we add different types of models
-        pred_f = self.conversation.get_var('model_prob_predict').contents
-        model = self.conversation.get_var('model').contents
-        data = self.conversation.get_var('dataset').contents['X']
-        categorical_f = self.conversation.get_var('dataset').contents['cat']
-        numeric_f = self.conversation.get_var('dataset').contents['numeric']
+        models = self.conversation.get_var("models").contents
+        mega_explainers = []
+        tabular_dices = []
+        for i, model in enumerate(models):
+                
+            # This may need to change as we add different types of models
+            pred_f = self.conversation.get_var('model_prob_predicts').contents[i]
+            model = model
+            data = self.conversation.get_var('dataset').contents['X']
+            categorical_f = self.conversation.get_var('dataset').contents['cat']
+            numeric_f = self.conversation.get_var('dataset').contents['numeric']
 
-        # Load lime tabular explanations
-        mega_explainer = MegaExplainer(prediction_fn=pred_f,
-                                       data=background_dataset,
-                                       cat_features=categorical_f,
-                                       class_names=self.conversation.class_names)
-        mega_explainer.get_explanations(ids=list(data.index),
+            # Load lime tabular explanations
+            mega_explainer = MegaExplainer(prediction_fn=pred_f,
+                                        data=background_dataset,
+                                        cat_features=categorical_f,
+                                        class_names=self.conversation.class_names,
+                                        cache_location=f"./cache/mega-explainer-tabular{str(i)}.pkl")
+            mega_explainer.get_explanations(ids=list(data.index),
+                                            data=data, save_to_cache=True)
+            print(mega_explainer)
+            mega_explainers.append(mega_explainer)
+            message = (f"...loaded {len(mega_explainer.cache)} mega explainer "
+                    "explanations from cache!")
+            app.logger.info(message)
+            # Load lime dice explanations
+            tabular_dice = TabularDice(model=model,
+                                    data=data,
+                                    num_features=numeric_f,
+                                    class_names=self.conversation.class_names)
+            tabular_dice.get_explanations(ids=list(data.index),
                                         data=data)
-        message = (f"...loaded {len(mega_explainer.cache)} mega explainer "
-                   "explanations from cache!")
-        app.logger.info(message)
-        # Load lime dice explanations
-        tabular_dice = TabularDice(model=model,
-                                   data=data,
-                                   num_features=numeric_f,
-                                   class_names=self.conversation.class_names)
-        tabular_dice.get_explanations(ids=list(data.index),
-                                      data=data)
-        message = (f"...loaded {len(tabular_dice.cache)} dice tabular "
-                   "explanations from cache!")
-        app.logger.info(message)
+            tabular_dices.append(tabular_dice)
+            message = (f"...loaded {len(tabular_dice.cache)} dice tabular "
+                    "explanations from cache!")
+            app.logger.info(message)
 
         # Add all the explanations to the conversation
-        self.conversation.add_var('mega_explainer', mega_explainer, 'explanation')
-        self.conversation.add_var('tabular_dice', tabular_dice, 'explanation')
+        self.conversation.add_var('mega_explainers', mega_explainers, 'explanation')
+        self.conversation.add_var('tabular_dices', tabular_dices, 'explanation')
+
+        self.conversation.add_var('mega_explainer', mega_explainers[0], 'explanation')
+        self.conversation.add_var('tabular_dice', tabular_dices[0], 'explanation')
 
     def load_model(self, filepath: str):
         """Loads a model.

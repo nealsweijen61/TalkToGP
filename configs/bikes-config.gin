@@ -49,8 +49,8 @@ Prompts.num_prompt_template = 7
 Explanation.max_cache_size = 1_000_000
 
 # MegaExplainer Params
-MegaExplainer.cache_location = "./cache/bikes-mega-explainer-tabular.pkl"
-MegaExplainer.use_selection = False
+# MegaExplainer.cache_location = "./cache/bikes-mega-explainer-tabular.pkl"
+MegaExplainer.use_selection = True
 
 # Tabular Dice Params
 TabularDice.cache_location = "./cache/bikes-dice-tabular.pkl"

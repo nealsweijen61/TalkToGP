@@ -47,7 +47,6 @@ def compute_rank_stats(data, feature_name_to_rank):
     max_ranks = {}
     avg_ranks = {}
     ci_95s = {}
-    print(feature_name_to_rank)
     for feature_name in data.columns:
         # Get the ranks of each feature name
         rank_to_ids = feature_name_to_rank[feature_name]
@@ -173,6 +172,12 @@ def topk_feature_importance(avg_ranks, conversation, parse_op, return_s, topk):
     conversation.store_followup_desc("")
     return return_s
 
+def get_models(conversation):
+    # get operatos of each model
+    models = conversation.temp_select.contents
+    if len(conversation.temp_select.contents) == 0:
+        return None
+    return models
 
 def important_operation(conversation, parse_text, i, **kwargs):
     """Important features operation.
@@ -196,53 +201,63 @@ def important_operation(conversation, parse_text, i, **kwargs):
 
     # Generate the text for the filtering operation
     parse_op = gen_parse_op_text(conversation)
+    print("parse", parse_op)
 
-    # Get the explainer
-    mega_explainer_exp = conversation.get_var('mega_explainer').contents
-
-    # If there's ids to regenerate from a previous operation, i.e., by changing the feature values
-    regen = conversation.temp_dataset.contents['ids_to_regenerate']
-
-    # Get the explanations
-    explanations = mega_explainer_exp.get_explanations(ids, data, ids_to_regenerate=regen)
-
-    # Generate feature name to frequency of ids at rank mapping
-    feature_name_to_rank = gen_feature_name_to_rank_dict(data, explanations)
-
-    # Compute rank stats for features including max rank of feature, its average rank
-    # and the 95% ci's
-    max_ranks, avg_ranks, ci_95s = compute_rank_stats(data, feature_name_to_rank)
-
+    mega_explainer_exps = conversation.get_var('mega_explainers').contents
+    # print("exp", len(mega_explainer_exps), mega_explainer_exps)
     # Start formatting response into a string
+    return_s = ""
     if len(parse_op) == 0:
         # In the case that no filtering operations have been applied
-        return_s = "For the model's predictions across <b>all</b> the data,"
+        return_s += "For the model's predictions across <b>all</b> the data,"
     else:
-        return_s = f"For the model's predictions on instance with <b>{parse_op}</b>,"
+        return_s += f"For the model's predictions on instance with <b>{parse_op}</b>,"
+    counter = 0
+    for mega_explainer_exp in mega_explainer_exps:
+        counter += 1
+        print("counter", counter)
+        # Get the explainer
+        # mega_explainer_exp = conversation.get_var('mega_explainer').contents
 
-    # Cases for showing all the most important features, topk most important or importance of an
-    # individual feature
-    if parsed_feature_name == "all":
-        return_s = topk_feature_importance(avg_ranks,
-                                           conversation,
-                                           parse_op,
-                                           return_s,
-                                           topk=len(avg_ranks))
-    elif parsed_feature_name == "topk":
-        topk = int(parse_text[i+2])
-        return_s = topk_feature_importance(avg_ranks, conversation, parse_op, return_s, topk)
-    else:
-        # Individual feature importance case
-        return_s = individual_feature_importance(avg_ranks,
-                                                 conversation,
-                                                 ci_95s,
-                                                 parsed_feature_name,
-                                                 max_ranks,
-                                                 data,
-                                                 ids,
-                                                 parse_op,
-                                                 return_s,
-                                                 feature_name_to_rank,
-                                                 MAXIDS)
+        # If there's ids to regenerate from a previous operation, i.e., by changing the feature values
+        regen = conversation.temp_dataset.contents['ids_to_regenerate']
+
+        # Get the explanations
+        explanations = mega_explainer_exp.get_explanations(ids, data, ids_to_regenerate=regen)
+        # Generate feature name to frequency of ids at rank mapping
+        feature_name_to_rank = gen_feature_name_to_rank_dict(data, explanations)
+        # print("f2rank", feature_name_to_rank)
+
+        # Compute rank stats for features including max rank of feature, its average rank
+        # and the 95% ci's
+        max_ranks, avg_ranks, ci_95s = compute_rank_stats(data, feature_name_to_rank)
+        print("max ranks:", max_ranks)
+        print("avg ranks ", avg_ranks)
+        print("ci", ci_95s)
+
+        # Cases for showing all the most important features, topk most important or importance of an
+        # individual feature
+        if parsed_feature_name == "all":
+            return_s = topk_feature_importance(avg_ranks,
+                                            conversation,
+                                            parse_op,
+                                            return_s,
+                                            topk=len(avg_ranks))
+        elif parsed_feature_name == "topk":
+            topk = int(parse_text[i+2])
+            return_s = topk_feature_importance(avg_ranks, conversation, parse_op, return_s, topk)
+        else:
+            # Individual feature importance case
+            return_s = individual_feature_importance(avg_ranks,
+                                                    conversation,
+                                                    ci_95s,
+                                                    parsed_feature_name,
+                                                    max_ranks,
+                                                    data,
+                                                    ids,
+                                                    parse_op,
+                                                    return_s,
+                                                    feature_name_to_rank,
+                                                    MAXIDS)
 
     return return_s, 1

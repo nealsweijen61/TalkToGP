@@ -17,13 +17,17 @@ def data_operation(conversation, parse_text, i, **kwargs):
     text += f"The exact feature names in the data are listed as follows:{f_string}<br><br>"
 
     # Summarize performance
-    model = conversation.get_var('model').contents
-    score = conversation.describe.get_eval_performance(model, conversation.default_metric)
+    models = conversation.get_var('models').contents
+    #Changed this to accept more models and replace the model with the model number -Neal
+    for i, model in enumerate(models):
+        # model = conversation.get_var('model').contents
+        score = conversation.describe.get_eval_performance(model, conversation.default_metric)
 
-    # Note, if no eval data is specified this will return an empty string and nothing will happen.
-    if score != "":
-        text += score
-        text += "<br><br>"
+        # Note, if no eval data is specified this will return an empty string and nothing will happen.
+        if score != "":
+            score = score.replace("The model", f"Model {i+1}")
+            text += score
+            text += "<br><br>"
 
     # Create more in depth description of the data, summarizing a few statistics
     rest_of_text = ""

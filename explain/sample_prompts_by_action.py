@@ -72,6 +72,8 @@ def sample_prompt_for_action(action: str,
         return "What can you do?"
     elif action == "pareto":
         return "Show the pareto front"
+    elif action == "important":
+        return "What are the most important features?"
     elif action in ACTION_2_FILENAME:
         filename_end = ACTION_2_FILENAME[action]
         for filename in filename_to_prompt_ids:

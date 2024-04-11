@@ -24,7 +24,7 @@ def predict_operation2(conversation, model, parse_text, i, max_num_preds_to_prin
     print(data)
 
     model_predictions = model.predict(data)
-    print(model_predictions)
+    # print(model_predictions)
 
     # Format return string
     return_s = ""
