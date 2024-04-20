@@ -1,5 +1,6 @@
 
 import pandas as pd
+from sympy import symbols
 
 def get_operation_value(feature_name, model):
     if feature_name == 'selectoperators':
@@ -16,6 +17,32 @@ def get_operation_value(feature_name, model):
         return model.getComplexity()
     else:
         raise NameError(f"Parsed unkown feature name {feature_name}")
+    
+def operator_to_symbol(operator):
+    if operator == "+":
+        return "ADD"
+    elif operator == "-":
+        return "SUB"
+    elif operator == "*":
+        return "MUL"
+    elif operator == "/":
+        return "DIV"
+    else:
+        raise NotImplementedError(f"This operator is not yet implemented {operator}")
+
+def check_operator(operator, model):
+    operators = model.getOperators()
+    operator = symbols(operator_to_symbol(operator))
+    for item in operators:
+        print(item, type(item))
+    print("operator list", operators, type(operators))
+    print("check", operator, type(operator), operator in operators)
+    return operator in operators
+    
+def operation_filter(parse_text, temp_select, i, feature_name):
+    operator = parse_text[i+2]
+    updated_dset = [model for model in temp_select if check_operator(operator, model)]
+    return updated_dset
 
 def numerical_filter(parse_text, temp_select, i, feature_name):
     """Performs numerical filtering.
@@ -82,6 +109,8 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
     elif feature_name == 'model':
         feature_value = int(parse_text[i+2])
         updated_dset = [temp_select[feature_value-1]]
+    elif feature_name == "selectop":
+        updated_dset = operation_filter(parse_text, temp_select, i, feature_name)
     else:
         raise NameError(f"Parsed unkown feature name {feature_name}")
 
