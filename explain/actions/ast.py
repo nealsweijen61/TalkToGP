@@ -1,10 +1,9 @@
 import ast
-from explain.actions.utils import plot_tree
+from explain.actions.utils import plot_tree, get_models
 
 def modification_operation(conversation, parse_text, i, **kwargs):
-    models = conversation.temp_select.contents
-    if len(conversation.temp_select.contents) == 0:
-        return 'There are no instances that meet this description!', 0
+    models = get_models(conversation)
+    
     model = models[0]
     astModel = model.ast
     print(astModel)
@@ -33,6 +32,14 @@ def modification_operation(conversation, parse_text, i, **kwargs):
         print("normal:", normal)
         model.changeModel(normal)
         print("output:", model.expression)
+
+    models = conversation.get_var("models").contents
+    models[model.id] = model
+    conversation.add_var('models', models, 'model')
+
+    models_prob_predictions = conversation.get_var('model_prob_predicts').contents
+    models_prob_predictions[model.id] = model.predict
+    conversation.add_var('model_prob_predicts', models_prob_predictions, 'prediction_function')
 
 
     return_string = f"The model is changed"

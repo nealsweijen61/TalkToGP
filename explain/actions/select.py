@@ -70,7 +70,7 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
     """
     if is_or:
         # construct a new temp data set to or with
-        temp_select = conversation.build_temp_select(save=False).contents
+        temp_select = conversation.build_temp_select(save=True).contents
     else:
         temp_select = conversation.temp_select.contents
 

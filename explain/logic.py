@@ -246,10 +246,13 @@ class ExplainBot:
         models = []
         models_prob_predictions = []
         #Loop through each file and load corresponding model
+        counter = 0
         for file in files:
             filepath = os.path.join(folderpath, file)
             if filepath.endswith('.pkl'):
                 model = load_sklearn_model(filepath)
+                model.id = counter
+                counter += 1
                 models.append(model)
                 models_prob_predictions.append(model.predict)
             else:

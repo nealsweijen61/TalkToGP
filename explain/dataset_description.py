@@ -6,7 +6,7 @@ provide more tailored dataset specified feedback
 import gin
 from typing import Any
 
-from sklearn.metrics import explained_variance_score
+from sklearn.metrics import explained_variance_score, r2_score
 
 from explain.utils import read_and_format_data
 
@@ -79,9 +79,9 @@ class DatasetDescription:
             performance_summary: A string describing the performance
         """
         if metric_name == "explained variance score":
-            score = explained_variance_score(y_true, y_pred)
+            score = r2_score(y_true, y_pred)
             # sklearn defaults to accuracy represented as decimal. convert this to %
-            score *= 100
+            # score *= 100
         else:
             raise NameError(f"Unknown metric {metric_name}")
 
@@ -90,7 +90,7 @@ class DatasetDescription:
         # additional context for accuracy score
         if metric_name == "accuracy":
             string_score += "%"
-
+        metric_name = "r2 score"
         performance_summary = f"The model scores <em>{string_score} {metric_name}</em> on "
         performance_summary += f"{data_name}."
         return performance_summary

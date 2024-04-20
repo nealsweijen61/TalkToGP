@@ -7,8 +7,10 @@ import ast
 
 class GpModel(BaseEstimator, RegressorMixin):
 
-    def __init__(self, expression, accuracy, complexity):
+    def __init__(self, expression, accuracy, complexity, id=0):
         super().__init__()
+        self.id = id
+
         self.expression = expression
 
         self.accuracy = accuracy
