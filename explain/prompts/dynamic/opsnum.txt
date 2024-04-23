@@ -43,6 +43,15 @@ Parsed: featuresget [E]
 User: get features
 Parsed: featuresget [E]
 
+User: What are the most common features?
+Parsed: featurescommon [E]
+
+User: Which features apear the most?
+Parsed: featurescommon [E]
+
+User: What what features are most in the models?
+Parsed: featurescommon [E]
+
 User: list models
 Parsed: exprget [E]
 

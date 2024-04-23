@@ -1,0 +1,56 @@
+User: Show on which data points the models make bad predictions
+Parsed: outlier [E]
+
+User: Show the worst predictions from the 90th percentile
+Parsed: outlier 90 [E]
+
+User: Display the outlier predictions.
+Parsed: outlier [E]
+
+User: Show me predictions with high errors.
+Parsed: outlier [E]
+
+User: Visualize predictions with the lowest accuracy.
+Parsed: outlier [E]
+
+User: Highlight the data points where the model struggles.
+Parsed: outlier [E]
+
+User: Identify the predictions in which the model performs poorly.
+Parsed: outlier [E]
+
+User: Display the outlier predictions from the top 5%.
+Parsed: outlier 95 [E]
+
+User: Show the worst predictions from the 80th percentile.
+Parsed: outlier 80 [E]
+
+User: Highlight the data points where the model is least accurate, considering the top 15%.
+Parsed: outlier 85 [E]
+
+User: Show predictions with significant errors, focusing on the top 25%.
+Parsed: outlier 75 [E]
+
+User: Visualize predictions with the lowest confidence level, starting from the 80th percentile.
+Parsed: outlier 20 [E]
+
+User: Identify the predictions where the model deviates the most, considering the top 10%.
+Parsed: outlier 90 [E]
+
+User: Display the outlier predictions with the highest uncertainty, starting from the 70th percentile.
+Parsed: outlier 30 [E]
+
+User: Show me the worst predictions from the 95th percentile.
+Parsed: outlier 95 [E]
+
+User: Highlight the data points where the model's performance is poorest, considering the top 5%.
+Parsed: outlier 95 [E]
+
+User: Visualize predictions with the lowest confidence level, focusing on the top 30%.
+Parsed: outlier 70 [E]
+
+User: Identify the predictions where the model struggles the most, starting from the 85th percentile.
+Parsed: outlier 15 [E]
+
+User: Display the outlier predictions with the highest uncertainty, considering the top 20%.
+Parsed: outlier 80 [E]

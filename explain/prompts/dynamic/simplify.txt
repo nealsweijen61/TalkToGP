@@ -1,0 +1,14 @@
+User: Simplify the expressions
+Parsed: simplify [E]
+
+User: Simplify
+Parsed: simplify [E]
+
+User: Simplify this equation
+Parsed: simplify [E]
+
+User: Can you simplify this?
+Parsed: simplify [E]
+
+User: Please simplify the following expression
+Parsed: simplify [E]

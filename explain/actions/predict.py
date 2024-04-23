@@ -61,6 +61,9 @@ def predict_operation2(conversation, model, parse_text, i, model_predictions, mi
     filter_string = gen_parse_op_text(conversation)
 
     if len(model_predictions) == 1:
+        if counter == 0:
+            return_s += "The true prediction is "
+            return_s += f"<b>{conversation.temp_dataset.contents['y'].values[0]}</b> <br>"
         return_s += f"The instance with <b>{filter_string}</b> is predicted "
         if conversation.class_names is None:
             prediction_class = str(model_predictions[0])

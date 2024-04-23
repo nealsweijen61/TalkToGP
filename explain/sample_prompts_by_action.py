@@ -66,14 +66,14 @@ def sample_prompt_for_action(action: str,
     Returns:
         prompt: The sampled prompt
     """
+    print("filename_ids", filename_to_prompt_ids)
+    print("prompt set", prompt_set)
     if action == "self":
         return "Could you tell me a bit more about what this is?"
     elif action == "function":
         return "What can you do?"
     elif action == "pareto":
         return "Show the pareto front"
-    elif action == "important":
-        return "What are the most important features?"
     elif action in ACTION_2_FILENAME:
         filename_end = ACTION_2_FILENAME[action]
         for filename in filename_to_prompt_ids:
