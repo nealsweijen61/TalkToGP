@@ -22,6 +22,7 @@ from explain.actions.utils import plot_tree
 def get_models(conversation):
     # get operatos of each model
     models = conversation.temp_select.contents
+    print("get_models", models)
     if len(conversation.temp_select.contents) == 0:
         return None
     return models
@@ -122,6 +123,7 @@ def most_common_features_operation(conversation, parse_text, i, **kwargs):
 def get_expr_operation(conversation, parse_text, i, **kwargs):
     """Gives the expressions of each model"""
     # get operatos of each model
+    print("parse_text", parse_text)
     models = get_models(conversation)
     expressions = []
     return_string = f"The expressions off each model are:"
