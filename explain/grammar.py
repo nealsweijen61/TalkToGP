@@ -35,7 +35,7 @@ multops: (ops)+
 ops: " +" | " -" | " *" | " /"
 
 selectword: " select"
-select: selectword (numoptions equality nodenumber | " model" nodenumber | " selectop" operator)
+select: selectword (numoptions equality nodenumber | " model" nodenumber | " selectop" operator || " all")
 
 numoptions: " selectoperators" | " selectnodes" | " selectconstants" | " selectfeatures" | " selectacurracy" | " selectcomplex"
 

@@ -1,0 +1,53 @@
+User: Select all models and display their features.
+Parsed: select all and featuresget [E]
+
+User: Show the most common subtrees across all models.
+Parsed: select all and commonget [E]
+
+User: List constants used in all models.
+Parsed: select all and constantsget [E]
+
+User: Display expressions used in all models.
+Parsed: select all and exprget [E]
+
+User: Show predictions for instances based on all models.
+Parsed: select all and predict [E]
+
+User: Select all models and show the number of operators.
+Parsed: select all and opsnum [E]
+
+User: List all features used in all models.
+Parsed: select all and featuresget [E]
+
+User: Provide predictions based on all models.
+Parsed: select all and predict [E]
+
+User: Display the most common subtrees across all models.
+Parsed: select all and commonget [E]
+
+User: List constants used in all models.
+Parsed: select all and constantsget [E]
+
+User: Reset the selection and display features.
+Parsed: select all and featuresget [E]
+
+User: Clear the current selection and list the most common subtrees.
+Parsed: select all and commonget [E]
+
+User: Remove current selection and list constants.
+Parsed: select all and constantsget [E]
+
+User: Reset the selection and show expressions.
+Parsed: select all and exprget [E]
+
+User: Clear the current selection and provide predictions.
+Parsed: select all and predict [E]
+
+User: Remove all selected models and show the number of operators.
+Parsed: select all and opsnum [E]
+
+User: Reset the current selection and list all features.
+Parsed: select all and featuresget [E]
+
+User: Clear selection and display predictions based on all models.
+Parsed: select all and predict [E]
