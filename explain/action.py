@@ -38,8 +38,8 @@ def run_action(conversation: Conversation,
     # Will rebuilt the temporary dataset if requested (i.e, for filtering from scratch)
     if build_temp_dataset:
         conversation.build_temp_dataset()
-    if build_temp_select:
-        conversation.build_temp_select()
+    # if build_temp_select:
+    #     conversation.build_temp_select()
 
     parsed_text = parsed_string.split(' ')
     is_or = False

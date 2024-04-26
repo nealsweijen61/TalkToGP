@@ -99,6 +99,9 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
         # construct a new temp data set to or with
         temp_select = conversation.build_temp_select(save=True).contents
     else:
+        if conversation.temp_select == None:
+            conversation.build_temp_select()
+        print("temp_select", conversation.temp_select.contents)
         temp_select = conversation.temp_select.contents
 
     operation = parse_text[i]
@@ -111,6 +114,9 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
         updated_dset = [temp_select[feature_value-1]]
     elif feature_name == "selectop":
         updated_dset = operation_filter(parse_text, temp_select, i, feature_name)
+    elif feature_name == "all":
+        conversation.build_temp_select()
+        updated_dset = conversation.temp_select.contents
     else:
         raise NameError(f"Parsed unkown feature name {feature_name}")
 
