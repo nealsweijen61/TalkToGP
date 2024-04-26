@@ -251,6 +251,9 @@ class ExplainBot:
             filepath = os.path.join(folderpath, file)
             if filepath.endswith('.pkl'):
                 model = load_sklearn_model(filepath)
+                print("expression", model.expression)
+                model.reInit()
+                print("epxr", model.expr)
                 model.id = counter
                 counter += 1
                 models.append(model)

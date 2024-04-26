@@ -26,6 +26,9 @@ class GpModel(BaseEstimator, RegressorMixin):
         self.ast = ast.parse(expression)
         self.subtrees = []
         self.getSubTrees(self.ast)
+
+    def reInit(self):
+        self.expr = parse_expr(self.expression, evaluate=False)
     
     def count_nodes(self, node):
         return sum(1 for _ in ast.walk(node))

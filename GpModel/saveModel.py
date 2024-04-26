@@ -20,11 +20,23 @@ if __name__ == '__main__':
     for expression in expressions:
         count += 1
         classifier = GpModel(expression=expression[0], accuracy=expression[1], complexity=expression[2])
+        print(classifier.expr)
         with open(f"bikes_gp_{count}.pkl", "wb") as f:
             # pkl.dump(classiefier, f)
             cloudpickle.dump(classifier, f)
 
 
+    def load_sklearn_model(filepath):
+        """Loads a sklearn model."""
+        with open(filepath, 'rb') as file:
+            model = pkl.load(file)
+        return model
+
+
+    model = load_sklearn_model("bikes_gp_3.pkl")
+    model.reInit()
+
+    print("expr", model.expr)
 
 # 1| 2.06328e+07| 1.0875| 2.22577e+07| 1.0875(57.700000/ (x10+1e-6) )
 # 2| 5.9193e+06| 1.97995| 2.16444e+06| 1.97995((21.783000*56.278000)*x0)

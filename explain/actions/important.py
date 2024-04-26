@@ -5,7 +5,7 @@ import statsmodels.stats.api as sms
 
 from explain.utils import add_to_dict_lists
 
-from explain.actions.utils import gen_parse_op_text
+from explain.actions.utils import gen_parse_op_text, get_models
 
 inflect_engine = inflect.engine()
 
@@ -172,12 +172,6 @@ def topk_feature_importance(avg_ranks, conversation, parse_op, return_s, topk):
     conversation.store_followup_desc("")
     return return_s
 
-def get_models(conversation):
-    # get operatos of each model
-    models = conversation.temp_select.contents
-    if len(conversation.temp_select.contents) == 0:
-        return None
-    return models
 
 def important_operation(conversation, parse_text, i, **kwargs):
     """Important features operation.
@@ -203,6 +197,8 @@ def important_operation(conversation, parse_text, i, **kwargs):
     parse_op = gen_parse_op_text(conversation)
     print("parse", parse_op)
 
+    models = get_models(conversation)
+
     mega_explainer_exps = conversation.get_var('mega_explainers').contents
     # print("exp", len(mega_explainer_exps), mega_explainer_exps)
     # Start formatting response into a string
@@ -213,7 +209,8 @@ def important_operation(conversation, parse_text, i, **kwargs):
     else:
         return_s += f"For the model's predictions on instance with <b>{parse_op}</b>,"
     counter = 0
-    for mega_explainer_exp in mega_explainer_exps:
+    for model in models:
+        mega_explainer_exp = mega_explainer_exps[model.id]
         counter += 1
         print("counter", counter)
         # Get the explainer

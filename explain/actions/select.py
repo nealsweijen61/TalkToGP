@@ -95,6 +95,7 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
         parse_text: The grammatical text string.
         i: The index of the parse_text that filtering is called.
     """
+    conversation.build_temp_select()
     if is_or:
         # construct a new temp data set to or with
         temp_select = conversation.build_temp_select(save=True).contents
@@ -131,4 +132,12 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
     print("Dataset", updated_dset)
     conversation.temp_select.contents = updated_dset
 
-    return '', 1
+    return_string = f"Selected model(s): "
+    for i, model in enumerate(updated_dset):
+        if i > 0:
+            return_string += ","
+        return_string += f" {model.id+1}"
+    return_string += "<br><br>"
+
+
+    return return_string, 1

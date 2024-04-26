@@ -8,7 +8,9 @@ def load_sklearn_model(filepath):
     return model
 
 
-model = load_sklearn_model("bikes_gp_5.pkl")
+model = load_sklearn_model("bikes_gp_3.pkl")
+
+print("expr", model.expr)
 
 print("COmplex", model.getComplexity())
 print(model)

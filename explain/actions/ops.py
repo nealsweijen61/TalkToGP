@@ -8,6 +8,7 @@ from graphviz import Digraph
 import ast
 from sympy import dotprint, simplify, parse_expr
 from explain.actions.utils import plot_tree
+from explain.actions.utils import get_models
 
 # def ops_operation(conversation, parse_text, i, **kwargs):
 #     """Gives the number of operations"""
@@ -18,14 +19,6 @@ from explain.actions.utils import plot_tree
 #     return_string = f"The number of operators is {number}"
 #     # return the string and 1, indicating success
 #     return return_string, 1
-
-def get_models(conversation):
-    # get operatos of each model
-    models = conversation.temp_select.contents
-    print("get_models", models)
-    if len(conversation.temp_select.contents) == 0:
-        return None
-    return models
 
 def num_ops_operation(conversation, parse_text, i, **kwargs):
     """Gives the number of operations"""
@@ -128,10 +121,22 @@ def get_expr_operation(conversation, parse_text, i, **kwargs):
     expressions = []
     return_string = f"The expressions off each model are:"
     return_string += "<br><br>"
+    features = set()
     for i, model in enumerate(models):
-        return_string += str(i+1) + ") "
-        return_string += str(model.getExpr())
+        return_string += str(model.id+1) + ") "
+        print("expr", model.expr)
+        return_string += str(model.expr)
         return_string += "<br><br>"
+        features.update(model.getFeatures())
+    print("features", features)
+    definitions = conversation.feature_definitions
+    return_string += "<br><br>"
+    return_string += "The following are the mapping of the variables"
+    for feature in features:
+        return_string += "<br><br>"
+        name = feature_to_name(feature, definitions)
+        return_string += f"{feature} = {name}"
+    
         # expressions.append(model.getExpr())
     # compose the return string
     # return_string = f"The features in each model are {expressions}"

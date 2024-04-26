@@ -164,6 +164,8 @@ class Conversation:
 
     def build_temp_select(self, save=True):
         temp_select = copy.deepcopy(self.get_var('models'))
+        for model in temp_select.contents:
+            model.reInit()
         if save:
             self._update_temp_select(temp_select)
             self.parse_operation = []

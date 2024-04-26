@@ -135,7 +135,7 @@ def create_ast_graph(graph, node, parent_name, index='', num=-1):
 
 def plot_tree(conversation, parse_text, i, model, **kwargs):
     # return_string = '<img src="https://upload.wikimedia.org/wikipedia/commons/7/70/2005-bandipur-tusker.jpg" alt="Girl in a jacket" width="500" height="600">'
-    expr = ast.parse(model.expression)
+    expr = ast.parse(str(model.expr))
 
     graph = Digraph(comment='AST Tree')
     create_ast_graph(graph, expr, '')
@@ -154,6 +154,8 @@ def plot_tree(conversation, parse_text, i, model, **kwargs):
 
 def get_models(conversation):
     # get operatos of each model
+    if conversation.temp_select == None:
+        conversation.build_temp_select()
     models = conversation.temp_select.contents
     if len(conversation.temp_select.contents) == 0:
         return None
