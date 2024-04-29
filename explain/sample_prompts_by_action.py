@@ -1,6 +1,8 @@
 """Sample a prompt for a specific action."""
 import numpy as np
-
+import random
+import os
+from os.path import exists
 from explain.prompts import get_user_part_of_prompt
 
 ACTION_2_FILENAME = {
@@ -17,7 +19,8 @@ ACTION_2_FILENAME = {
     "description": "dataset_description.txt",
     "interactions": "interactions.txt",
     "mistake": "mistakes.txt",
-    "labels": "label_prompts.txt"
+    "labels": "label_prompts.txt",
+    "select" : "prompts/questions/select.txt",
 }
 
 
@@ -74,6 +77,10 @@ def sample_prompt_for_action(action: str,
         return "What can you do?"
     elif action == "pareto":
         return "Show the pareto front"
+    elif action == "select":
+        return choosePrompt(ACTION_2_FILENAME["select"])
+
+    
     elif action in ACTION_2_FILENAME:
         filename_end = ACTION_2_FILENAME[action]
         for filename in filename_to_prompt_ids:
@@ -98,3 +105,12 @@ def sample_prompt_for_action(action: str,
     else:
         message = f"Unknown action {action}"
         raise NameError(message)
+
+def choosePrompt(filename):
+    script_dir = os.path.dirname(__file__)  # Get the directory of the current script
+    file_path = os.path.join(script_dir, filename) 
+    print(file_path)
+    print(exists(file_path))
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+        return random.choice(lines).strip()  # strip() removes any trailing newline characters
