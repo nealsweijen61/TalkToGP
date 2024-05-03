@@ -25,6 +25,7 @@ class GuidedDecodingLogitsProcessor(LogitsProcessor):
         for b in range(scores.shape[0]):
             generated_tokens = input_ids[b, self.prompt_length:].cpu().tolist()
             next_tokens = self.parser.next_tokens(generated_tokens)
+            print("tokes", next_tokens)
             int_next_tokens = np.array([int(t) for t in next_tokens])
 
             # Adjust the scores to allow only valid tokens

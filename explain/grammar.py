@@ -17,7 +17,7 @@ getcommon: " commonget"
 plotpareto: " paretoplot"
 plotsubtree: " subtreeplot"
 deletenode: " nodedelete" nodenumber
-modnode: " nodemod" nodenumber math_expression
+modnode: nodemod
 simp: " simplify"
 out: " outlier" (nodenumber)?
 
@@ -26,7 +26,7 @@ nodenumber: " 0" | " 1" | " 2" | " 3" | " 4" | " 5" | " 6" | " 7" | " 8" | " 9" 
 math_expression: term(operator(term))*
 term: digit+
 operator: add | sub | mul | div
-digit: "0"| "1" | "2" | "4" | "5" | "6" | "7" | "8" | "9" | " 3"
+digit: "0"| "1" | "2" | "4" | "5" | "6" | "7" | "8" | "9" | " 3" | "14"
 add: "+"
 sub: "-"
 mul: "*"
@@ -35,9 +35,9 @@ multops: (ops)+
 ops: " +" | " -" | " *" | " /"
 
 selectword: " select"
-select: selectword (numoptions equality nodenumber | " model" nodenumber | " selectop" operator || " all")
+select: selectword (numoptions equality adhocnumvalues | " model" adhocnumvalues | selectop | " all")
 
-numoptions: " selectoperators" | " selectnodes" | " selectconstants" | " selectfeatures" | " selectacurracy" | " selectcomplex"
+numoptions: " selectoperators" | " selectnodes" | " selectconstants" | " selectfeatures" | " selectaccuracy" | " selectcomplex"
 
 fstats: fstatsword (allfeaturenames | " target")
 fstatsword: " statistic"

@@ -233,7 +233,9 @@ class Parser:
         """
         if adhoc_grammar_updates is not None:
             final_aval = copy.deepcopy(self.available_feature_types)
+            print("fina_aval", final_aval)
             final_aval_values = ""
+
             for feat in adhoc_grammar_updates:
                 # add the adhoc grammar updates to the list of avaliable feature types in the
                 # special case of the *id* feature. Other adhoc updates are not considered as

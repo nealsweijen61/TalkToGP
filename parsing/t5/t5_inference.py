@@ -129,12 +129,13 @@ def get_predict_func(t5_gin_file: str,
         predict_f: The prediction function
     """
     # Setup t5 params
+    print(f"hiero")
     gin.parse_config_file(t5_gin_file)
     if dataset_name is not None:
         t5_params = load_t5_params(dataset_name=dataset_name)
     else:
         t5_params = load_t5_params()
-
+    print(f"hiero14")
     if bot_gin_file is None:
         if t5_params.dataset_name == "bikes":
             bot_gin_file = "./configs/bikes-config.gin"
@@ -151,10 +152,8 @@ def get_predict_func(t5_gin_file: str,
         bot = ExplainBot()
     else:
         bot = None
-
     # Get t5 model
     model, tokenizer = load_pretrained(model_checkpoint_dir, t5_params.device)
-
     if compute_grammar:
         # Case where we compute the grammar during prediction
         # This is easier for inference without loading explainbot
@@ -174,7 +173,7 @@ def get_predict_func(t5_gin_file: str,
                             explain_bot=bot,
                             guided_decoding=guided_decoding,
                             compute_grammar=compute_grammar)
-
+    print(f"hiero16")
     return partial_f, t5_params
 
 

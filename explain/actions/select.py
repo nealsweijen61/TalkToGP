@@ -11,7 +11,7 @@ def get_operation_value(feature_name, model):
         return model.numConstants()
     elif feature_name == 'selectfeatures':
         return model.numFeatures()
-    elif feature_name == 'selectacurracy':
+    elif feature_name == 'selectaccuracy':
         return model.getAccuracy()
     elif feature_name == 'selectcomplex':
         return model.getComplexity()
@@ -54,6 +54,8 @@ def numerical_filter(parse_text, temp_select, i, feature_name):
     # Greater than or equal to
     if parse_text[i+2] == 'greater' and parse_text[i+3] == 'equal':
         feature_value = float(parse_text[i+5])
+        print("feature value", feature_value)
+        print("operation value", get_operation_value(feature_name, temp_select[0]))
         updated_dset = [model for model in temp_select if get_operation_value(feature_name, model) >= feature_value]
     # Greater than
     elif parse_text[i+2] == 'greater':
@@ -108,7 +110,7 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
     operation = parse_text[i]
     feature_name = parse_text[i+1]
     print("FEATURENAME", feature_name)
-    if feature_name == 'selectoperators' or feature_name =='selectnodes' or feature_name =='selectconstants' or feature_name =='selectfeatures' or feature_name =='selectacurracy' or feature_name =='selectcomplex':
+    if feature_name == 'selectoperators' or feature_name =='selectnodes' or feature_name =='selectconstants' or feature_name =='selectfeatures' or feature_name =='selectaccuracy' or feature_name =='selectcomplex':
         updated_dset = numerical_filter(parse_text, temp_select, i, feature_name)
     elif feature_name == 'model':
         feature_value = int(parse_text[i+2])

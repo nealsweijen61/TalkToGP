@@ -1,3 +1,9 @@
+User: Select model 3.
+Parsed: select model 3
+
+User: Pick model 14.
+Parsed: select model 14
+
 User: Select model 5 and display its features.
 Parsed: select model 5 and featuresget [E]
 

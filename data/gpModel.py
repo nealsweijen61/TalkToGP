@@ -79,7 +79,7 @@ class GpModel(BaseEstimator, RegressorMixin):
         return sum(1 for node in preorder_traversal(self.expr) if isinstance(node, Number))
 
     def getAccuracy(self):
-        return self.expression
+        return self.accuracy
 
     def getComplexity(self):
         return self.complexity

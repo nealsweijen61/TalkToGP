@@ -21,6 +21,7 @@ from flask import Flask
 from sentence_transformers import SentenceTransformer, util
 import torch
 from word2number import w2n
+import re
 
 from explain.utils import find_csv_filenames
 
@@ -695,6 +696,38 @@ class Prompts:
             distances = util.pytorch_cos_sim(
                 encoded_query, embeddings).cpu().numpy()[0]
         return distances
+    
+    @staticmethod
+    def _find_mathematical_functions(query: str):
+        options = []
+
+        # Define a regular expression pattern to match mathematical functions and operators
+        pattern = r'(cos|sin|log|abs|[\+\-\*/])'
+
+        # Find all matches of the pattern in the input string
+        matches = re.findall(pattern, query)
+
+        # Append the matched functions and operators to the options list
+        for match in matches:
+            options.append(match)
+
+        return options
+
+    @staticmethod
+    def _find_mathematical_expressions(query: str):
+        options = []
+
+        # Define a regular expression pattern to match mathematical expressions
+        pattern = r'(\d+(\.\d+)?[\+\-\*/]\d+(\.\d+)?(?:[\+\-\*/]\d+(\.\d+)?)*)'
+
+        # Find all matches of the pattern in the input string
+        matches = re.findall(pattern, query)
+
+        # Extract the matched expressions and append them to the options list
+        for match in matches:
+            options.append(match[0])
+
+        return options
 
     @staticmethod
     def _strip_numerical_values(query: str):
@@ -759,7 +792,6 @@ class Prompts:
                          any, returns None.
         """
         options = self._strip_numerical_values(query)
-
         if len(options) == 0:
             return {}
 
@@ -769,6 +801,68 @@ class Prompts:
         string = string[:-1]
 
         return {"id": string}
+    def _extract_selectop_op(self, query: str):
+        """Extracts any numbers in the query string that could be ids.
+
+        We augment the grammar with any potential data id values that appear
+        in the question. We do this because there are often many items in the
+        data and including all the query id's in the grammar is not so
+        effective, causing large slowdowns. So, we just include potential ids found
+        in the query on-the-fly.
+
+        Arguments:
+            query: the user query
+        Returns:
+            nonterminal: a new nonterminal containing any id values. If there aren't
+                         any, returns None.
+        """
+        options = self._find_mathematical_functions(query)
+        print("option ops", options)
+        if len(options) == 0:
+            string = "\" selectop " + "+" + "\"" + " |"
+            return {"selectop": string}
+
+        string = ""
+        for op in options:
+            string += "\" selectop " + op + "\"" + " |"
+        string = string[:-1]
+
+        return {"selectop": string}
+    def _extract_tree_mod_nums(self, query: str):
+        """Extracts any numbers in the query string that could be ids.
+
+        We augment the grammar with any potential data id values that appear
+        in the question. We do this because there are often many items in the
+        data and including all the query id's in the grammar is not so
+        effective, causing large slowdowns. So, we just include potential ids found
+        in the query on-the-fly.
+
+        Arguments:
+            query: the user query
+        Returns:
+            nonterminal: a new nonterminal containing any id values. If there aren't
+                         any, returns None.
+        """
+        options = self._strip_numerical_values(query)
+        options2 = self._find_mathematical_expressions(query)
+        print("options", options)
+        print("options", options2)
+        if len(options) == 0:
+            string = "\" nodemod " + "0" + "1" + "\"" + " |"
+            return {"nodemod": string}
+
+        string = ""
+        for i, op in enumerate(options):
+            extra = f" {op}"
+            if i < len(options)-1:
+                extra = f" {options[i+1]}"
+            string += "\" nodemod " + op + extra + "\"" + " |"
+            if len(options2) > 0:
+                string += "\" nodemod " + op + " " + options2[0] + "\"" + " |"
+        string = string[:-1]
+
+        return {"nodemod": string}
+
 
     def _extract_numerical_values(self, query: str):
         """Extracts any numerical values in the string.
@@ -824,7 +918,9 @@ class Prompts:
 
         id_adhoc = self._extract_id_nums(query)
         num_adhoc = self._extract_numerical_values(query)
+        nodemod_adhoc =  self._extract_tree_mod_nums(query)
+        selectops_adhoc = self._extract_selectop_op(query)
 
         if error_analysis:
-            return joined_prompts, {**id_adhoc, **num_adhoc}, selected_prompts
-        return joined_prompts, {**id_adhoc, **num_adhoc}
+            return joined_prompts, {**id_adhoc, **num_adhoc, **nodemod_adhoc, **selectops_adhoc}, selected_prompts
+        return joined_prompts, {**id_adhoc, **num_adhoc, **nodemod_adhoc, **selectops_adhoc}

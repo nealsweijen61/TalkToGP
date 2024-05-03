@@ -22,7 +22,9 @@ class MyRemover(ast.NodeTransformer):
             node.index = self.index
             self.index += 1
         # Do any work required by super class 
+        print("visit super", node)
         node = super().visit(node)
+        print("visit after super")
         # If we have a valid node (ie. node not being removed)
         if isinstance(node, ast.AST):
             # update the parent, since this may have been transformed 
@@ -31,6 +33,8 @@ class MyRemover(ast.NodeTransformer):
         return node
 
     def generic_visit(self, node):
+        print("generic visit", node)
+        
         result = super().generic_visit(node)
         
         if hasattr(node, 'index'):
@@ -59,23 +63,26 @@ def load_sklearn_model(filepath):
 
 
 model = load_sklearn_model("bikes_gp_1.pkl")
+print(str(model.expr))
 astModel = model.ast
 print(astModel)
 add = ast.BinOp(left = ast.Constant(2), right= ast.Constant(2), op= ast.Add())
-newTree = ast.fix_missing_locations(MyRemover(1, add).visit(astModel))
+# newTree = ast.fix_missing_locations(MyRemover(1, add).visit(astModel))
+newTree = ast.fix_missing_locations(MyRemover(1).visit(astModel))
 
 normal = ast.unparse(newTree)
+normal = normal.replace('\n', '')
 model.changeModel(normal)
 
 print(model.expression)
 
-astModel = model.ast
-newTree = ast.fix_missing_locations(MyRemover(4, add).visit(astModel))
+# astModel = model.ast
+# newTree = ast.fix_missing_locations(MyRemover(4, add).visit(astModel))
 
-normal = ast.unparse(newTree)
-model.changeModel(normal)
+# normal = ast.unparse(newTree)
+# model.changeModel(normal)
 
 # X = [[3,0,7,0,6,0,1,0.686667,0.638263,0.585,0.208342]]
 # pred = model.predict(X)
 # print(pred)
-print(model.expression)
+# print(model.expression)

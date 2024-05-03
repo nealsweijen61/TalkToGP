@@ -109,12 +109,11 @@ class ExplainBot:
         self.decoding_model_name = parsing_model_name
 
         # Initialize completion + parsing modules
-        app.logger.info(f"Loading parsing model {parsing_model_name}...")
+        app.logger.info(f"Loading parsings model {parsing_model_name}...")
         self.decoder = Decoder(parsing_model_name,
                                t5_config,
                                use_guided_decoding=self.use_guided_decoding,
                                dataset_name=name)
-
         # Initialize parser + prompts as None
         # These are done when the dataset is loaded
         self.prompts = None
@@ -127,7 +126,6 @@ class ExplainBot:
         # Load the model into the conversation
         self.load_model(model_file_path)
         self.load_models()
-
         # Load the dataset into the conversation
         self.load_dataset(dataset_file_path,
                           dataset_index_column,
@@ -137,7 +135,6 @@ class ExplainBot:
                           remove_underscores,
                           store_to_conversation=True,
                           skip_prompts=skip_prompts)
-
         background_dataset = self.load_dataset(background_dataset_file_path,
                                                dataset_index_column,
                                                target_variable_name,
@@ -147,6 +144,7 @@ class ExplainBot:
                                                store_to_conversation=False)
         
         self.bDataset = background_dataset
+
 
         # Load the explanations
         self.load_explanations(background_dataset=background_dataset)
@@ -413,6 +411,7 @@ class ExplainBot:
         a need to do few shot
         """
         grammar, prompted_text = self.compute_grammar(text)
+        print("grammar", grammar)
         decoded_text = self.decoder.complete(text, grammar)
         app.logger.info(f"t5 decoded text {decoded_text}")
         parse_tree, parse_text = get_parse_tree(decoded_text[0])
