@@ -29,6 +29,7 @@ class GpModel(BaseEstimator, RegressorMixin):
 
     def reInit(self):
         self.expr = parse_expr(self.expression, evaluate=False)
+        self.ast = ast.parse(str(self.expr))
     
     def count_nodes(self, node):
         return sum(1 for _ in ast.walk(node))
@@ -92,7 +93,7 @@ class GpModel(BaseEstimator, RegressorMixin):
 
         self.func = lambdify(self.symbols, self.expr, 'numpy')
 
-        self.ast = ast.parse(expression)
+        self.ast = ast.parse(str(self.expr))
         self.subtrees = []
         self.getSubTrees(self.ast)
         print("changing")
