@@ -41,6 +41,7 @@
             <div class="slideDown">
                 <div class="dots-cont", id="generation-loading"> <span class="dot dot-1"></span> <span class="dot dot-2"></span> <span class="dot dot-3"></span> </div>
                 <div class="buttons", id="generation-buttons">
+                    <button id="idea-GPshow" class="idea-button" onclick="sampleGPshow()">Show GP</button>
                     <button id="idea-GPInfo" class="idea-button" onclick="sampleGP()">GP info</button>
                     <button id="idea-important" class="idea-button" onclick="sampleImportant()">important features</button>
                     <button id="idea-why" class="idea-button" onclick="sampleWhy()">explanations</button>
@@ -107,6 +108,9 @@
                 ttmInput.value = data;
             }
         });
+    }
+    function sampleGPshow() {
+        doSample("GPshow")
     }
     function sampleGP() {
         doSample("GP");

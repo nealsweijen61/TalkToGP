@@ -57,3 +57,36 @@ Parsed: select selectaccuracy between 4000.4 and 5000.5 and commonget [E]
 
 User: List constants used in models with an accuracy score greater than 7777.7.
 Parsed: select selectaccuracy greater than 7777.7 and constantsget [E]
+
+User: Select the 5 best models
+Parsed: select selectbest 5
+
+User: Select the 4 models with the best accuracy
+Parsed: select selectbest 4
+
+User: Select the 7 models with the best performance
+Parsed: select selectbest 7
+
+User: Select the top 3 models with the highest scores.
+Parsed: select selectbest 3
+
+User: Choose the 6 models demonstrating the best performance.
+Parsed: select selectbest 6
+
+User: Pick the top 8 models based on accuracy.
+Parsed: select selectbest 8
+
+User: Select the 10 most performing models.
+Parsed: select selectbest 10
+
+User: Show the top 5 models with the greatest accuracy.
+Parsed: select selectbest 5
+
+User: Choose the 9 models with the highest scores.
+Parsed: select selectbest 9
+
+User: Pick the top 7 models in terms of performance.
+Parsed: select selectbest 7
+
+User: Select the 12 models demonstrating the best accuracy.
+Parsed: select selectbest 12

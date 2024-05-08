@@ -7,6 +7,21 @@ Parsed: opsnum [E]
 User: number of operators
 Parsed: opsnum [E]
 
+User: Count the operators for me.
+Parsed: opsnum [E]
+
+User: Calculate the number of operators.
+Parsed: opsnum [E]
+
+User: Provide the count of operators.
+Parsed: opsnum [E]
+
+User: How many operations are there?
+Parsed: opsnum [E]
+
+User: Show me the total operators.
+Parsed: opsnum [E]
+
 User: what are the operators used
 Parsed: opsget [E]
 
@@ -23,6 +38,24 @@ User: how many nodes do the models use
 Parsed: nodesnum [E]
 
 User: number of nodes
+Parsed: nodesnum [E]
+
+User: Count the nodes for me.
+Parsed: nodesnum [E]
+
+User: Calculate the number of nodes.
+Parsed: nodesnum [E]
+
+User: Provide the count of nodes.
+Parsed: nodesnum [E]
+
+User: How many nodes are there?
+Parsed: nodesnum [E]
+
+User: Show me the total nodes.
+Parsed: nodesnum [E]
+
+User: Give me the size.
 Parsed: nodesnum [E]
 
 User: what are the number of features

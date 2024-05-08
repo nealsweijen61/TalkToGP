@@ -33,7 +33,9 @@ app = Flask(__name__)
 def load_sklearn_model(filepath):
     """Loads a sklearn model."""
     with open(filepath, 'rb') as file:
+        app.logger.info(f"befeoreopen")
         model = pickle.load(file)
+        app.logger.info(f"afteropen")
     return model
 
 
@@ -126,6 +128,7 @@ class ExplainBot:
         # Load the model into the conversation
         self.load_model(model_file_path)
         self.load_models()
+        print("here124")
         # Load the dataset into the conversation
         self.load_dataset(dataset_file_path,
                           dataset_index_column,
@@ -135,6 +138,7 @@ class ExplainBot:
                           remove_underscores,
                           store_to_conversation=True,
                           skip_prompts=skip_prompts)
+        print("hiero123")
         background_dataset = self.load_dataset(background_dataset_file_path,
                                                dataset_index_column,
                                                target_variable_name,
@@ -248,10 +252,13 @@ class ExplainBot:
         for file in files:
             filepath = os.path.join(folderpath, file)
             if filepath.endswith('.pkl'):
+                app.logger.info(f"befeoreload")
                 model = load_sklearn_model(filepath)
                 print("expression", model.expression)
+                app.logger.info(f"expression {model.expression}")
                 model.reInit()
                 print("epxr", model.expr)
+                app.logger.info(f"expr {model.expr}")
                 model.id = counter
                 counter += 1
                 models.append(model)

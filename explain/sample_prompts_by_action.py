@@ -25,7 +25,8 @@ ACTION_2_FILENAME = {
     "plotTree": "prompts/questions/plottree.txt",
     "GP": "prompts/questions/gpinfo.txt",
     "common": "prompts/questions/common.txt",
-    "simplify": "prompts/questions/simplify.txt" 
+    "simplify": "prompts/questions/simplify.txt",
+    "GPshow": "prompts/questions/gpshow.txt"
 }
 
 
@@ -82,7 +83,7 @@ def sample_prompt_for_action(action: str,
         return "What can you do?"
     elif action == "pareto":
         return "Show the pareto front"
-    elif action == "GP" or action == "select" or action == "important" or action == "description" or action == "show" or action == "score" or action == "labels" or action == "predict" or action == "tree" or action == "plotTree" or action == "common" or action == "simplify" or action == "mistake":
+    elif action == "GP" or action == "select" or action == "important" or action == "description" or action == "show" or action == "score" or action == "labels" or action == "predict" or action == "tree" or action == "plotTree" or action == "common" or action == "simplify" or action == "GPshow" or action == "mistake":
         return choosePrompt(ACTION_2_FILENAME[action])
 
     

@@ -46,6 +46,15 @@ def operator_to_symbol(operator):
         return "LOG"
     else:
         raise NotImplementedError(f"This operator is not yet implemented {operator}")
+    
+def feature_to_name(variable_name, definitions):
+    print("Varaialbe_name", variable_name)
+    variable_number = int(str(variable_name)[1:])
+    keys = list(definitions.keys())
+    if 0 <= variable_number <= len(keys):
+        return keys[variable_number]
+    else:
+        return None
 
 def check_operator(operator, model):
     operators = model.getOperators()
@@ -55,10 +64,25 @@ def check_operator(operator, model):
     print("operator list", operators, type(operators))
     print("check", operator, type(operator), operator in operators)
     return operator in operators
+
+def check_feature(conversation, feature, model):
+    features = model.getFeatures()
+    definitions = conversation.feature_definitions
+    features = [feature_to_name(feat, definitions) for feat in features]
+    for item in features:
+        print(item, type(item))
+    print("feature list", features, type(feature))
+    print("check", feature, type(feature), feature in features)
+    return feature in features
     
 def operation_filter(parse_text, temp_select, i, feature_name):
     operator = parse_text[i+2]
     updated_dset = [model for model in temp_select if check_operator(operator, model)]
+    return updated_dset
+
+def feature_filter(conversation, parse_text, temp_select, i, feature_name):
+    feature = parse_text[i+2]
+    updated_dset = [model for model in temp_select if check_feature(conversation, feature, model)]
     return updated_dset
 
 def numerical_filter(conversation, parse_text, temp_select, i, feature_name):
@@ -132,6 +156,8 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
     elif feature_name == 'model':
         feature_value = int(parse_text[i+2])
         updated_dset = [temp_select[feature_value-1]]
+    elif feature_name == "selectnames":
+        updated_dset = feature_filter(conversation, parse_text, temp_select, i, feature_name)
     elif feature_name == "selectop":
         updated_dset = operation_filter(parse_text, temp_select, i, feature_name)
     elif feature_name == "all":

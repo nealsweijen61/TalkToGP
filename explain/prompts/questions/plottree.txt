@@ -1,2 +1,4 @@
-give the subtree
+Show the tree
+show the model as a tree
+display as a tree
 show the subtrees
