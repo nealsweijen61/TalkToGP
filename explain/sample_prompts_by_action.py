@@ -7,20 +7,25 @@ from explain.prompts import get_user_part_of_prompt
 
 ACTION_2_FILENAME = {
     "self": None,
-    "score": "score_prompts.txt",
+    "score": "prompts/questions/score.txt",
     "likelihood": "likelihood_prompts.txt",
-    "important": "most_important_feature_prompts.txt",
+    "important": "prompts/questions/important.txt",
     "explain": "explanation_prompts.txt",
-    "predict": "predict_prompts.txt",
+    "predict": "prompts/questions/predict.txt",
     "whatif": "whatif_prompts.txt",
     "cfe": "cfe_prompts.txt",
     "function": None,
-    "show": "show_data_prompts.txt",
-    "description": "dataset_description.txt",
+    "show": "prompts/questions/show.txt",
+    "description": "prompts/questions/dataset.txt",
     "interactions": "interactions.txt",
-    "mistake": "mistakes.txt",
-    "labels": "label_prompts.txt",
+    "mistake": "prompts/questions/mistakes.txt",
+    "labels": "prompts/questions/labels.txt",
     "select" : "prompts/questions/select.txt",
+    "tree": "prompts/questions/treemod.txt",
+    "plotTree": "prompts/questions/plottree.txt",
+    "GP": "prompts/questions/gpinfo.txt",
+    "common": "prompts/questions/common.txt",
+    "simplify": "prompts/questions/simplify.txt" 
 }
 
 
@@ -77,8 +82,8 @@ def sample_prompt_for_action(action: str,
         return "What can you do?"
     elif action == "pareto":
         return "Show the pareto front"
-    elif action == "select":
-        return choosePrompt(ACTION_2_FILENAME["select"])
+    elif action == "GP" or action == "select" or action == "important" or action == "description" or action == "show" or action == "score" or action == "labels" or action == "predict" or action == "tree" or action == "plotTree" or action == "common" or action == "simplify" or action == "mistake":
+        return choosePrompt(ACTION_2_FILENAME[action])
 
     
     elif action in ACTION_2_FILENAME:

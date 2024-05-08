@@ -12,38 +12,44 @@ expression4 = "((21.783000*56.278000)*x0)"
 expression5 = "(((x1+(2.793000*x8))*(57.470000*(32.096000+x2)))+(((36.191000/ (x6+1e-6) )+(x0-19.821000))*((x4+x2)*4.235000)))"
 symbols = symbols('x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10')
 
+
 expr = parse_expr(expression, evaluate=False)
 expr2 = parse_expr(expression2, evaluate=False)
 expr3 = parse_expr(expression3, evaluate=False)
 expr4 = parse_expr(expression4, evaluate=False)
 expr5 = parse_expr(expression5, evaluate=False)
 
+
 exprs = [expr, expr3]
 
 simple = simplify(expr)
 simple2 = simplify(expr2)
 
-subtrees = {}
-print(expr3)
-def addSubTrees(expr):
-    for arg in preorder_traversal(expr):
-        print(arg)
-        if(arg.args != ()):
-            found = False
-            for key in subtrees:
-                if simplify(key - arg) == 0:
-                    print(key, arg)
-                    subtrees[key] = subtrees.get(key, 0) + 1
-                    found = True
-            if not found:
-                subtrees[arg] = subtrees.get(arg, 0) + 1
+expr6 = "(0.000000+(1.000000*((ln((x0+x0))*x0)/cos(sin(ln(x3))))))"
+expr = parse_expr(expr6, evaluate=False)
+print(expr)
 
-for expr in exprs:
-    addSubTrees(expr)
-sorted(subtrees.items(), key=lambda x:x[1], reverse=True)
-print(subtrees)
+# subtrees = {}
+# print(expr3)
+# def addSubTrees(expr):
+#     for arg in preorder_traversal(expr):
+#         print(arg)
+#         if(arg.args != ()):
+#             found = False
+#             for key in subtrees:
+#                 if simplify(key - arg) == 0:
+#                     print(key, arg)
+#                     subtrees[key] = subtrees.get(key, 0) + 1
+#                     found = True
+#             if not found:
+#                 subtrees[arg] = subtrees.get(arg, 0) + 1
 
-func = lambdify(symbols, expr, 'numpy')
+# for expr in exprs:
+#     addSubTrees(expr)
+# sorted(subtrees.items(), key=lambda x:x[1], reverse=True)
+# print(subtrees)
+
+# func = lambdify(symbols, expr, 'numpy')
 # symbols = symbols('x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10')
 # expr = parse_expr(expr, evaluate=False)
 # print(expr)

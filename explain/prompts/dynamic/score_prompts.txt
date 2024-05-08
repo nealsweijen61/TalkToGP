@@ -13,6 +13,27 @@ Parsed: score default [E]
 User: display score
 Parsed: score default [E]
 
+User: Display the mean squared error
+Parsed: score default [E]
+
+User: What is the mse
+Parsed: score default [E]
+
+User: What is the mean squared error
+Parsed: score default [E]
+
+User: display the r2 score
+Parsed: score r2 [E]
+
+User: How good is the r2
+Parsed: score r2 [E]
+
+User: Show the r2 score
+Parsed: score r2 [E]
+
+User: What is the r2 score
+Parsed: score r2 [E]
+
 User: give me the accuracy on the data
 Parsed: score accuracy [E]
 

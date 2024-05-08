@@ -39,3 +39,18 @@ Parsed: nodemod 25 (6-2)/2 [E]
 
 User: modify node 30 to 2*3-1
 Parsed: nodemod 30 2*3-1 [E]
+
+User: Revert the changes
+Parsed: noderevert [E]
+
+User: Go back to the orignal experssion
+Parsed: noderevert [E]
+
+User: Revert
+Parsed: noderevert [E]
+
+User: Restore to the original
+Parsed: noderevert [E]
+
+User: Undo changes
+Parsed: noderevert [E]

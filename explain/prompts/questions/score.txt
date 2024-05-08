@@ -1,0 +1,4 @@
+testing accuracy
+Display the score
+Display the r2 score
+what's the accuracy performance of the model on the training data for individuals with year equals 0

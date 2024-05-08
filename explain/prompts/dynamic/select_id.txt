@@ -1,8 +1,17 @@
 User: Select model 3.
-Parsed: select model 3
+Parsed: select model 3 [E]
 
 User: Pick model 14.
-Parsed: select model 14
+Parsed: select model 14 [E]
+
+User: Select models 3 and 17.
+Parsed: select model 3 17 [E]
+
+User: Pick models 5 and 3.
+Parsed: select model 5 3 [E]
+
+User: Select models 3,8,19.
+Parsed: select model 3 8 19 [E]
 
 User: Select model 5 and display its features.
 Parsed: select model 5 and featuresget [E]

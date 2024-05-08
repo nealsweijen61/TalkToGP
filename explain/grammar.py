@@ -1,7 +1,7 @@
 GRAMMAR = r"""
 ?start: action
 action: operation done | operation join action | followup done
-operation: explanation | filter | predictions | whatami | lastturnfilter | lastturnop | data | impfeatures | show | whatif | likelihood | modeldescription | function | score | ndatapoints | interact | label | mistakes | fstats | define | labelfilter | predfilter | numops | getops | numnodes | numfeatures | getfeatures | commonfeatures | getexpr | getcommon | plotpareto | plotsubtree | deletenode | modnode | select | simp | out
+operation: explanation | filter | predictions | whatami | lastturnfilter | lastturnop | data | impfeatures | show | whatif | likelihood | modeldescription | function | score | ndatapoints | interact | label | mistakes | fstats | define | labelfilter | predfilter | numops | getops | numnodes | numfeatures | getfeatures | commonfeatures | getexpr | getcommon | plotpareto | plotsubtree | deletenode | modnode | revertnode | select | simp | out
 
 labelfilter: " labelfilter" class
 predfilter: " predictionfilter" class
@@ -16,8 +16,9 @@ getexpr: " exprget"
 getcommon: " commonget"
 plotpareto: " paretoplot"
 plotsubtree: " subtreeplot"
-deletenode: " nodedelete" nodenumber
+deletenode: " nodedelete" adhocnumvalues
 modnode: nodemod
+revertnode: " noderevert"
 simp: " simplify"
 out: " outlier" (nodenumber)?
 
@@ -35,7 +36,7 @@ multops: (ops)+
 ops: " +" | " -" | " *" | " /"
 
 selectword: " select"
-select: selectword (numoptions equality adhocnumvalues | " model" adhocnumvalues | selectop | " all")
+select: selectword (numoptions equality adhocnumvalues | " model" adhocnumvalues | selectop | " all" | " selectnames" allfeaturenames)
 
 numoptions: " selectoperators" | " selectnodes" | " selectconstants" | " selectfeatures" | " selectaccuracy" | " selectcomplex"
 
@@ -84,7 +85,7 @@ function: " function"
 
 score: scoreword metricword
 scoreword: " score"
-metricword: " default" | " accuracy" | " f1" | " roc" | " precision" | " recall" | " sensitivity" | " specificity" | " ppv" | " npv"
+metricword: " default" | " mse" | " r2" |" accuracy" | " f1" | " roc" | " precision" | " recall" | " sensitivity" | " specificity" | " ppv" | " npv"
 testword: " test"
 
 followup: " followup"

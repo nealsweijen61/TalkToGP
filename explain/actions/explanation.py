@@ -2,7 +2,7 @@
 
 This action controls the explanation generation operations.
 """
-from explain.actions.utils import gen_parse_op_text
+from explain.actions.utils import gen_parse_op_text, get_models
 
 
 def explain_operation(conversation, parse_text, i, **kwargs):
@@ -14,13 +14,16 @@ def explain_operation(conversation, parse_text, i, **kwargs):
 
     if len(conversation.temp_dataset.contents['X']) == 0:
         return 'There are no instances that meet this description!', 0
+    
+    models = get_models(conversation)
 
     regen = conversation.temp_dataset.contents['ids_to_regenerate']
     parse_op = gen_parse_op_text(conversation)
-
+    mega_explainer_exps = conversation.get_var('mega_explainers').contents
     if parse_text[i+1] == 'features':
         # mega explainer explanation case
-        mega_explainer_exp = conversation.get_var('mega_explainer').contents
+        # mega_explainer_exp = conversation.get_var('mega_explainer').contents
+        mega_explainer_exp = mega_explainer_exps[models[0].id]
         full_summary, short_summary = mega_explainer_exp.summarize_explanations(data,
                                                                                 filtering_text=parse_op,
                                                                                 ids_to_regenerate=regen)

@@ -139,6 +139,8 @@ def get_predict_func(t5_gin_file: str,
     if bot_gin_file is None:
         if t5_params.dataset_name == "bikes":
             bot_gin_file = "./configs/bikes-config.gin"
+        elif t5_params.dataset_name == "house":
+            bot_gin_file = "./configs/house-config.gin"
         else:
             known_options = "bikes"
             message = ("Please provide the gin file for the conversation in bot_gin_file, "

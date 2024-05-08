@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 from flask import Flask, render_template 
 import os
 import base64
@@ -152,15 +153,30 @@ def plot_operation(conversation, parse_text, i, **kwargs):
     expr = "(57.700000/ (x10+1e-6))"
     classifier = CustomClassifier(expr, 5, 6)
     print(classifier.accuracy)
-    for model in models:
-        x.append(model.accuracy)
+    data = conversation.temp_dataset.contents['X']
+    y_true = conversation.temp_dataset.contents['y']
+    plot_colors = ['hotpink','darkviolet','mediumblue']
+    explain_string = ""
+    colors = ["red", "blue", "green", "magenta", "cyan", "black", "yellow"]
+    print(colors)
+    plot_colors = []
+    for i, model in enumerate(models):
+        color = colors[i%len(colors)]
+        plot_colors.append(color)
+        y_pred = model.predict(data)
+        print("model number:", model.id)
+        score = conversation.describe.get_score_text(y_true,y_pred,'mse',conversation.rounding_precision,'', True)
+        score = float(score)
+        x.append(score)
         y.append(model.complexity)
-    plt.scatter(x, y, alpha=0.5) 
+        explain_string += f'<p style="color:{color};">{model.id+1}) {str(model.expr)}</p>'
+    plt.scatter(x, y, c=plot_colors, alpha=0.5) 
     plt.savefig(os.path.join('static', 'images', 'plot.png'))
     plt.close()
     # render = render_template('matplotlib-plot1.html') 
     # return_string = "<img src='{{ url_for('static', filename='istatic/images/plot.png') }}'>"
     return_string = '<img src="static/images/plot.png" alt="drawing" width="400"/>'
+    return_string += explain_string
     return return_string, 1
 
 # def most_common_features_operation(conversation, parse_text, i, **kwargs):
@@ -174,6 +190,13 @@ def plot_tree_operation(conversation, parse_text, i, **kwargs):
     # return_string = '<img src="https://upload.wikimedia.org/wikipedia/commons/7/70/2005-bandipur-tusker.jpg" alt="Girl in a jacket" width="500" height="600">'
     models = get_models(conversation)
     model = models[0]
+    # return_string = ""
+    # for model in models:
+    #     tree_text, i = plot_tree(conversation, parse_text, i, model, **kwargs)
+    #     return_string += tree_text
+
+    # model = models[0]
+    # return return_string, 1
     return plot_tree(conversation, parse_text, i, model, **kwargs)
 
 def most_common_trees_operation(conversation, parse_text, i, **kwargs):

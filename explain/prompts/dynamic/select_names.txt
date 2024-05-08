@@ -1,0 +1,23 @@
+User: List models with {num_features}.
+Parsed: select selectnames {num_features} [E]
+
+User: Select models with {num_features}.
+Parsed: select selectnames {num_features} [E]
+
+User: Select models with {cat_features}.
+Parsed: select selectnames {cat_features} [E]
+
+User: List models with {cat_features}.
+Parsed: select selectnames {cat_features} [E]
+
+User: Choose models with {num_features}.
+Parsed: select selectnames {num_features} [E]
+
+User: Show models with {num_features}.
+Parsed: select selectnames {num_features} [E]
+
+User: Pick models with {cat_features}.
+Parsed: select selectnames {cat_features} [E]
+
+User: Display models with {cat_features}.
+Parsed: select selectnames {cat_features} [E]

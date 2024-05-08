@@ -1,0 +1,4 @@
+what are the number of operators
+what are the number of nodes
+number of features
+what are the features used

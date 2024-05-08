@@ -125,6 +125,14 @@ def create_ast_graph(graph, node, parent_name, index='', num=-1):
         for i, child in enumerate(ast.iter_child_nodes(node)):
             child_name = f'{current_name}_{i}'
             num = create_ast_graph(graph, child, current_name, i, num)
+    elif isinstance(node, ast.Call):
+        graph.node(current_name, label=f'{node.func.id}_{num}')
+        for i, child in enumerate(ast.iter_child_nodes(node)):
+            if i == 0:
+                continue
+            child_name = f'{current_name}_{i}'
+            graph.edge(current_name, child_name)
+            num = create_ast_graph(graph, child, current_name, i, num)
     elif isinstance(node, ast.AST):
         graph.node(current_name, label=f'{node.__class__.__name__}_{num}')
         for i, child in enumerate(ast.iter_child_nodes(node)):
@@ -150,6 +158,7 @@ def plot_tree(conversation, parse_text, i, model, **kwargs):
     # Render and save the graph
     graph.render(output_file, format='png', cleanup=True)
     return_string = f'<img src="static/images/expression_tree+{timestamp}.png" alt="drawing" width="400"/>'
+    return_string += f'<br>{model.id+1}) {str(model.expr)}'
     return return_string, 1
 
 def get_models(conversation):

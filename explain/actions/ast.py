@@ -46,6 +46,27 @@ def modification_operation(conversation, parse_text, i, **kwargs):
     return plot_tree(conversation, parse_text, i, model, **kwargs)
     # return return_string, 1
 
+def revert_operation(conversation, parse_text, i, **kwargs):
+    models = get_models(conversation)
+    model = models[0]
+    expression = model.oldExpression
+    print(expression)
+    model.changeModel(expression)
+
+    models = conversation.get_var("models").contents
+    models[model.id] = model
+    conversation.add_var('models', models, 'model')
+
+    models_prob_predictions = conversation.get_var('model_prob_predicts').contents
+    models_prob_predictions[model.id] = model.predict
+    conversation.add_var('model_prob_predicts', models_prob_predictions, 'prediction_function')
+
+
+    return_string = f"The model is reverted to the original"
+    plot_string, i = plot_tree(conversation, parse_text, i, model, **kwargs)
+    return_string += plot_string
+    return return_string, i
+
 
 class MyRemover(ast.NodeTransformer):
     def __init__(self, modIndex, newNode=None):

@@ -1,0 +1,27 @@
+{
+    "os": "Windows-10-10.0.19045-SP0",
+    "python": "3.9.18",
+    "heartbeatAt": "2024-05-06T21:28:33.510269",
+    "startedAt": "2024-05-06T21:28:33.207269",
+    "docker": null,
+    "cpu_count": 12,
+    "cuda": null,
+    "args": [
+        "--gin",
+        "parsing/t5/gin_configs/t5-small.gin",
+        "--dataset",
+        "house"
+    ],
+    "state": "running",
+    "program": "C:\\Users\\Neal\\TalkToGP\\parsing\\t5\\start_fine_tuning.py",
+    "codePath": "parsing\\t5\\start_fine_tuning.py",
+    "git": {
+        "remote": "https://github.com/nealsweijen61/TalkToGP.git",
+        "commit": "aa8f700fd72316ca3c69f6bfc0f5d34aed5156b2"
+    },
+    "email": "n.sweijen@student.tudelft.nl",
+    "root": "C:/Users/Neal/TalkToGP",
+    "host": "DESKTOP-O6AFUC5",
+    "username": "Neal",
+    "executable": "C:\\Users\\Neal\\Anaconda3\\envs\\ttm\\python.exe"
+}

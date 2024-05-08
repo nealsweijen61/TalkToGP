@@ -155,7 +155,7 @@ class Parser:
             self.features[nf_lower] = num_values_numeric
         num_features_grammar = NUM_FEATURES.format(numfeaturenames=num_names)
         num_features_grammar += all_num_values
-        print("KLEOENKERS", num_features_grammar)
+        # print("KLEOENKERS", num_features_grammar)
         return num_features_grammar
 
     def format_cat_features(self, cat_features: Any, dataset: Any):
@@ -233,7 +233,7 @@ class Parser:
         """
         if adhoc_grammar_updates is not None:
             final_aval = copy.deepcopy(self.available_feature_types)
-            print("fina_aval", final_aval)
+            # print("fina_aval", final_aval)
             final_aval_values = ""
 
             for feat in adhoc_grammar_updates:

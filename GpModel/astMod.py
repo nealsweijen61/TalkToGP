@@ -19,7 +19,9 @@ def get_grand_child(node, number=0):
 def create_ast_graph(graph, node, parent_name, index='', num=-1):
     current_name = f'{parent_name}_{index}' if parent_name else 'Root'
     num += 1
+    print(type(node))
     if isinstance(node, ast.BinOp):
+        print("binop", node.__class__)
         graph.node(current_name, label=f'{get_second_child_name(node)}_{num}')
         for i, child in enumerate(ast.iter_child_nodes(node)):
             if i == 1:
@@ -29,12 +31,20 @@ def create_ast_graph(graph, node, parent_name, index='', num=-1):
             num = create_ast_graph(graph, child, current_name, i, num)
     elif isinstance(node, ast.Constant):
         graph.node(current_name, label=f'{node.value}_{num}')
-    elif isinstance(node, ast.Name):
+    elif isinstance(node, ast.Name): 
         graph.node(current_name, label=f'{node.id}_{num}')
     elif isinstance(node, ast.Module) or isinstance(node, ast.Expr):
         num -= 1
         for i, child in enumerate(ast.iter_child_nodes(node)):
             child_name = f'{current_name}_{i}'
+            num = create_ast_graph(graph, child, current_name, i, num)
+    elif isinstance(node, ast.Call):
+        graph.node(current_name, label=f'{node.func.id}_{num}')
+        for i, child in enumerate(ast.iter_child_nodes(node)):
+            if i == 0:
+                continue
+            child_name = f'{current_name}_{i}'
+            graph.edge(current_name, child_name)
             num = create_ast_graph(graph, child, current_name, i, num)
     elif isinstance(node, ast.AST):
         graph.node(current_name, label=f'{node.__class__.__name__}_{num}')
@@ -141,23 +151,23 @@ def load_sklearn_model(filepath):
     return model
 
 
-model = load_sklearn_model("bikes_gp_1.pkl")
+model = load_sklearn_model("bikes_gp_6.pkl")
 model.reInit()
 plot_tree(model, "og")
-print(str(model.expr))
-astModel = model.ast
-# astModel = ast.parse(str(model.expr))
-print("ast", astModel)
-add = ast.BinOp(left = ast.Constant(2), right= ast.Constant(2), op= ast.Add())
-# newTree = ast.fix_missing_locations(MyRemover(1, add).visit(astModel))
-newTree = ast.fix_missing_locations(MyRemover(1).visit(astModel))
+# print(str(model.expr))
+# astModel = model.ast
+# # astModel = ast.parse(str(model.expr))
+# print("ast", astModel)
+# add = ast.BinOp(left = ast.Constant(2), right= ast.Constant(2), op= ast.Add())
+# # newTree = ast.fix_missing_locations(MyRemover(1, add).visit(astModel))
+# newTree = ast.fix_missing_locations(MyRemover(1).visit(astModel))
 
-normal = ast.unparse(newTree)
-normal = normal.replace('\n', '')
-model.changeModel(normal)
-plot_tree(model, "newTree")
+# normal = ast.unparse(newTree)
+# normal = normal.replace('\n', '')
+# model.changeModel(normal)
+# plot_tree(model, "newTree")
 
-print(model.expression)
+# print(model.expression)
 
 # astModel = model.ast
 # newTree = ast.fix_missing_locations(MyRemover(4, add).visit(astModel))

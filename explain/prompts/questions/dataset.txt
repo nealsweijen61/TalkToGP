@@ -1,0 +1,5 @@
+describe data
+more info about the data and model
+what is the distribution of wind_speed
+what is 1 standard deviation of the label
+how do you define weather

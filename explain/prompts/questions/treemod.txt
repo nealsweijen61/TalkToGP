@@ -1,0 +1,4 @@
+change node 5 to 2+2
+adjust node 20 to 2+3*4
+delete node 2
+remove node 10

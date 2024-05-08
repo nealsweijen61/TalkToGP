@@ -2,7 +2,7 @@
 import pandas as pd
 from sympy import symbols
 
-def get_operation_value(feature_name, model):
+def get_operation_value(feature_name, model, conversation):
     if feature_name == 'selectoperators':
         return model.numOperators()
     elif feature_name ==  'selectnodes':
@@ -12,7 +12,16 @@ def get_operation_value(feature_name, model):
     elif feature_name == 'selectfeatures':
         return model.numFeatures()
     elif feature_name == 'selectaccuracy':
-        return model.getAccuracy()
+        data = conversation.temp_dataset.contents['X']
+        y_true = conversation.temp_dataset.contents['y']
+        y_pred = model.predict(data)
+        score = conversation.describe.get_score_text(y_true,
+                                                    y_pred,
+                                                    "mse",
+                                                    conversation.rounding_precision,
+                                                    "",
+                                                    True)
+        return float(score)
     elif feature_name == 'selectcomplex':
         return model.getComplexity()
     else:
@@ -27,6 +36,14 @@ def operator_to_symbol(operator):
         return "MUL"
     elif operator == "/":
         return "DIV"
+    elif operator == "sin":
+        return "SIN"
+    elif operator == "cos":
+        return "COS"
+    elif operator == "tan":
+        return "TAN"
+    elif operator == "log":
+        return "LOG"
     else:
         raise NotImplementedError(f"This operator is not yet implemented {operator}")
 
@@ -44,7 +61,7 @@ def operation_filter(parse_text, temp_select, i, feature_name):
     updated_dset = [model for model in temp_select if check_operator(operator, model)]
     return updated_dset
 
-def numerical_filter(parse_text, temp_select, i, feature_name):
+def numerical_filter(conversation, parse_text, temp_select, i, feature_name):
     """Performs numerical filtering.
 
     All this routine does (though it looks a bit clunky) is look at
@@ -55,29 +72,29 @@ def numerical_filter(parse_text, temp_select, i, feature_name):
     if parse_text[i+2] == 'greater' and parse_text[i+3] == 'equal':
         feature_value = float(parse_text[i+5])
         print("feature value", feature_value)
-        print("operation value", get_operation_value(feature_name, temp_select[0]))
-        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model) >= feature_value]
+        print("operation value", get_operation_value(feature_name, temp_select[0], conversation))
+        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model, conversation) >= feature_value]
     # Greater than
     elif parse_text[i+2] == 'greater':
         feature_value = float(parse_text[i+4])
-        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model) > feature_value]
+        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model, conversation) > feature_value]
         print("WORKING:", updated_dset)
     # Less than or equal to
     elif parse_text[i+2] == 'less' and parse_text[i+3] == 'equal':
         feature_value = float(parse_text[i+5])
-        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model) <= feature_value]
+        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model, conversation) <= feature_value]
     # Less than
     elif parse_text[i+2] == 'less':
         feature_value = float(parse_text[i+4])
-        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model) < feature_value]
+        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model, conversation) < feature_value]
     # Equal to
     elif parse_text[i+2] == 'equal':
         feature_value = float(parse_text[i+4])
-        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model) == feature_value]
+        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model, conversation) == feature_value]
     # Not equal to
     elif parse_text[i+2] == 'not':
         feature_value = float(parse_text[i+5])
-        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model) != feature_value]
+        updated_dset = [model for model in temp_select if get_operation_value(feature_name, model, conversation) != feature_value]
     else:
         raise NameError(f"Uh oh, looks like something is wrong with {parse_text}")
     return updated_dset
@@ -111,7 +128,7 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
     feature_name = parse_text[i+1]
     print("FEATURENAME", feature_name)
     if feature_name == 'selectoperators' or feature_name =='selectnodes' or feature_name =='selectconstants' or feature_name =='selectfeatures' or feature_name =='selectaccuracy' or feature_name =='selectcomplex':
-        updated_dset = numerical_filter(parse_text, temp_select, i, feature_name)
+        updated_dset = numerical_filter(conversation, parse_text, temp_select, i, feature_name)
     elif feature_name == 'model':
         feature_value = int(parse_text[i+2])
         updated_dset = [temp_select[feature_value-1]]

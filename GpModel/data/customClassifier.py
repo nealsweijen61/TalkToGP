@@ -18,7 +18,7 @@ class CustomClassifier(BaseEstimator, RegressorMixin):
         self.func = lambdify(self.symbols, self.expr, 'numpy')
 
         self.complexity = complexity
-
+        self.complexity = self.numNodes()
         self.ast = ast.parse(expression)
         self.subtrees = []
         self.getSubTrees(self.ast)

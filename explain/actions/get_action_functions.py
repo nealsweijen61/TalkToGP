@@ -26,7 +26,7 @@ from explain.actions.self import self_operation
 from explain.actions.show_data import show_operation
 from explain.actions.what_if import what_if_operation
 from explain.actions.ops import num_ops_operation, get_ops_operation, num_nodes_operation, num_features_operation, get_features_operation, get_expr_operation, most_common_features_operation, plot_operation, plot_tree_operation, most_common_trees_operation
-from explain.actions.ast import modification_operation
+from explain.actions.ast import modification_operation, revert_operation
 from explain.actions.select import select_operation
 from explain.actions.simplify import simplify_operation
 from explain.actions.outlier import outlier_operation
@@ -72,5 +72,6 @@ def get_all_action_functions_map():
         "select": select_operation,
         "simplify": simplify_operation,
         "outlier": outlier_operation,
+        "noderevert": revert_operation
     }
     return actions

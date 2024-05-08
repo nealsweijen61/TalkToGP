@@ -13,6 +13,8 @@ class GpModel(BaseEstimator, RegressorMixin):
 
         self.expression = expression
 
+        self.oldExpression = expression
+
         self.accuracy = accuracy
 
         self.symbols = symbols('x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10')
@@ -22,7 +24,8 @@ class GpModel(BaseEstimator, RegressorMixin):
         self.func = lambdify(self.symbols, self.expr, 'numpy')
 
         self.complexity = complexity
-
+        self.complexity = self.numNodes()
+        
         self.ast = ast.parse(expression)
         self.subtrees = []
         self.getSubTrees(self.ast)

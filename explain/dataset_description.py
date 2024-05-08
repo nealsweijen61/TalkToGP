@@ -6,7 +6,7 @@ provide more tailored dataset specified feedback
 import gin
 from typing import Any
 
-from sklearn.metrics import explained_variance_score, r2_score
+from sklearn.metrics import explained_variance_score, r2_score, mean_squared_error
 
 from explain.utils import read_and_format_data
 
@@ -66,7 +66,8 @@ class DatasetDescription:
                        y_pred: Any,
                        metric_name: str,
                        rounding_precision: int,
-                       data_name: str) -> str:
+                       data_name: str,
+                       only_num=False) -> str:
         """Computes model score and returns text describing the outcome.
 
         Arguments:
@@ -78,10 +79,12 @@ class DatasetDescription:
         Returns:
             performance_summary: A string describing the performance
         """
-        if metric_name == "explained variance score":
-            score = r2_score(y_true, y_pred)
+        if metric_name == "mse":
+            score = mean_squared_error(y_true, y_pred)
             # sklearn defaults to accuracy represented as decimal. convert this to %
             # score *= 100
+        elif metric_name == "r2":
+            score = r2_score(y_true, y_pred)
         else:
             raise NameError(f"Unknown metric {metric_name}")
 
@@ -90,10 +93,12 @@ class DatasetDescription:
         # additional context for accuracy score
         if metric_name == "accuracy":
             string_score += "%"
-        metric_name = "r2 score"
-        performance_summary = f"The model scores <em>{string_score} {metric_name}</em> on "
-        performance_summary += f"{data_name}."
-        return performance_summary
+        # metric_name = "r2 score"
+        if only_num == False:
+            performance_summary = f"The model scores <em>{string_score} {metric_name}</em> on "
+            performance_summary += f"{data_name}."
+            return performance_summary
+        return score
 
     def get_eval_performance(self,
                              model: Any,

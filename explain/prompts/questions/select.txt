@@ -1,2 +1,3 @@
 Select model 5 and display its features.
 Display the most common subtrees in models with less than 5 operators.
+Select all models

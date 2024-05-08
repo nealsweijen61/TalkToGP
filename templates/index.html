@@ -41,20 +41,26 @@
             <div class="slideDown">
                 <div class="dots-cont", id="generation-loading"> <span class="dot dot-1"></span> <span class="dot dot-2"></span> <span class="dot dot-3"></span> </div>
                 <div class="buttons", id="generation-buttons">
+                    <button id="idea-GPInfo" class="idea-button" onclick="sampleGP()">GP info</button>
                     <button id="idea-important" class="idea-button" onclick="sampleImportant()">important features</button>
                     <button id="idea-why" class="idea-button" onclick="sampleWhy()">explanations</button>
                     <button id="idea-predict" class="idea-button" onclick="samplePredict()">predictions</button>
-                    <button id="idea-likelihood" class="idea-button" onclick="sampleLikelihood()">prediction likelihood</button>
+                    <button id="idea-plotTree" class="idea-button" onclick="samplePlotTree()">tree plot</button>
+                    <button id="idea-tree" class="idea-button" onclick="sampleTree()">tree modification</button>
+                    <!-- <button id="idea-likelihood" class="idea-button" onclick="sampleLikelihood()">prediction likelihood</button> -->
                     <button id="idea-show" class="idea-button" onclick="sampleShow()">showing data</button>
+                    <button id="idea-common" class="idea-button" onclick="sampleCommon()">common</button>
+                    <button id="idea-mistakes" class="idea-button" onclick="sampleMistakes()">mistakes</button>
                     <button id="idea-capabilities" class="idea-button" onclick="sampleCapabilities()">system capabilities</button>
                     <button id="idea-performance" class="idea-button" onclick="samplePerformance()">performance</button>
                     <button id="idea-whatif" class="idea-button" onclick="sampleWhatIf()">what if scenario</button>
-                    <button id="idea-flip" class="idea-button" onclick="sampleFlip()">how to change a prediction</button>
+                    <!-- <button id="idea-flip" class="idea-button" onclick="sampleFlip()">how to change a prediction</button> -->
                     <button id="idea-description" class="idea-button" onclick="sampleDataDescription()">dataset description</button>
-                    <button id="idea-interaction" class="idea-button" onclick="sampleInteractions()">feature interaction effects</button>
+                    <!-- <button id="idea-interaction" class="idea-button" onclick="sampleInteractions()">feature interaction effects</button> -->
                     <button id="idea-interaction" class="idea-button" onclick="samplePareto()">Pareto front</button>
                     <button id="idea-interaction" class="idea-button" onclick="sampleLabels()">data labels</button>
                     <button id="idea-interaction" class="idea-button" onclick="sampleSelect()">Select</button>
+                    <button id="idea-simplify" class="idea-button" onclick="sampleSimplify()">Simplify</button>
                 </div>
             </div>
         </section>
@@ -102,6 +108,9 @@
             }
         });
     }
+    function sampleGP() {
+        doSample("GP");
+    }
     function sampleDataDescription() {
         doSample("description");
     }
@@ -146,6 +155,18 @@
     }
     function sampleSelect() {
         doSample("select")
+    }
+    function samplePlotTree(){
+      doSample("plotTree")
+    }
+    function sampleTree(){
+      doSample("tree")
+    }
+    function sampleCommon(){
+      doSample("common")
+    }
+    function sampleSimplify(){
+      doSample("simplify")
     }
 </script>
 

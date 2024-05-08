@@ -15,3 +15,15 @@ Parsed: subtreeplot [E]
 
 User: give the subtree
 Parsed: subtreeplot [E]
+
+User: plot the tree
+Parsed: subtreeplot [E]
+
+User: show the model as a tree
+Parsed: subtreeplot [E]
+
+User: display as a tree
+Parsed: subtreeplot [E]
+
+User: now show me the tree
+Parsed: subtreeplot [E]
