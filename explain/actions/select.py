@@ -85,6 +85,22 @@ def feature_filter(conversation, parse_text, temp_select, i, feature_name):
     updated_dset = [model for model in temp_select if check_feature(conversation, feature, model)]
     return updated_dset
 
+def best_filter(conversation, parse_text, temp_select, i, feature_name):
+    bestNumber = int(parse_text[i+2])
+    print("compara", bestNumber, len(temp_select))
+    bestNumber = min(bestNumber, len(temp_select))
+    print("bestnum", bestNumber)
+    scores = []
+    for model in temp_select:
+        scores.append(get_operation_value("selectaccuracy", model, conversation))
+    sorted_scores = sorted(scores, reverse=False)
+    top_5_scores = sorted_scores[:bestNumber]
+    print("top5", top_5_scores)
+    updated_dset = [model for model in temp_select if get_operation_value("selectaccuracy", model, conversation) in top_5_scores]
+            
+    return updated_dset
+
+
 def numerical_filter(conversation, parse_text, temp_select, i, feature_name):
     """Performs numerical filtering.
 
@@ -154,8 +170,15 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
     if feature_name == 'selectoperators' or feature_name =='selectnodes' or feature_name =='selectconstants' or feature_name =='selectfeatures' or feature_name =='selectaccuracy' or feature_name =='selectcomplex':
         updated_dset = numerical_filter(conversation, parse_text, temp_select, i, feature_name)
     elif feature_name == 'model':
-        feature_value = int(parse_text[i+2])
-        updated_dset = [temp_select[feature_value-1]]
+        feature_value = parse_text[i+2]
+        indices = []
+        counter = 0
+        while feature_value != "[E]" and feature_value.isdigit():
+            feature_value = int(feature_value)
+            indices.append(feature_value)
+            counter += 1
+            feature_value = parse_text[i+2+counter]
+        updated_dset = [temp_select[i - 1] for i in indices]
     elif feature_name == "selectnames":
         updated_dset = feature_filter(conversation, parse_text, temp_select, i, feature_name)
     elif feature_name == "selectop":
@@ -163,6 +186,8 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
     elif feature_name == "all":
         conversation.build_temp_select()
         updated_dset = conversation.temp_select.contents
+    elif feature_name == "selectbest":
+        updated_dset = best_filter(conversation, parse_text, temp_select, i, feature_name)
     else:
         raise NameError(f"Parsed unkown feature name {feature_name}")
 

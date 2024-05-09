@@ -1,3 +1,9 @@
 Select model 5 and display its features.
 Display the most common subtrees in models with less than 5 operators.
 Select all models
+Select models with an accuracy of 2000000 or less
+Select models which have 10 or more nodes
+Select models which have season in it
+Select the 5 best models
+Select the 3 best models
+Select the 7 best models

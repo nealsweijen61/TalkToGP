@@ -10,9 +10,9 @@ ACTION_2_FILENAME = {
     "score": "prompts/questions/score.txt",
     "likelihood": "likelihood_prompts.txt",
     "important": "prompts/questions/important.txt",
-    "explain": "explanation_prompts.txt",
+    "explain": "prompts/questions/explanation.txt",
     "predict": "prompts/questions/predict.txt",
-    "whatif": "whatif_prompts.txt",
+    "whatif": "prompts/questions/whatif.txt",
     "cfe": "cfe_prompts.txt",
     "function": None,
     "show": "prompts/questions/show.txt",
@@ -83,7 +83,7 @@ def sample_prompt_for_action(action: str,
         return "What can you do?"
     elif action == "pareto":
         return "Show the pareto front"
-    elif action == "GP" or action == "select" or action == "important" or action == "description" or action == "show" or action == "score" or action == "labels" or action == "predict" or action == "tree" or action == "plotTree" or action == "common" or action == "simplify" or action == "GPshow" or action == "mistake":
+    elif action == "GP" or action == "select" or action == "important" or action == "description" or action == "show" or action == "score" or action == "labels" or action == "predict" or action == "tree" or action == "plotTree" or action == "common" or action == "simplify" or action == "GPshow" or action == "mistake" or action == "whatif" or action == "explain":
         return choosePrompt(ACTION_2_FILENAME[action])
 
     

@@ -38,7 +38,9 @@ def score_operation(conversation, parse_text, i, **kwargs):
                                                     y_pred,
                                                     metric,
                                                     conversation.rounding_precision,
-                                                    data_name)
+                                                    data_name,
+                                                    False,
+                                                    model.id)
         text += "<br><br>"
 
     text += "<br><br>"

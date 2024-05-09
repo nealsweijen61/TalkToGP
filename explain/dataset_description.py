@@ -67,7 +67,8 @@ class DatasetDescription:
                        metric_name: str,
                        rounding_precision: int,
                        data_name: str,
-                       only_num=False) -> str:
+                       only_num=False,
+                       model_id = 0) -> str:
         """Computes model score and returns text describing the outcome.
 
         Arguments:
@@ -95,7 +96,7 @@ class DatasetDescription:
             string_score += "%"
         # metric_name = "r2 score"
         if only_num == False:
-            performance_summary = f"The model scores <em>{string_score} {metric_name}</em> on "
+            performance_summary = f"Model {model_id} scores <em>{string_score} {metric_name}</em> on "
             performance_summary += f"{data_name}."
             return performance_summary
         return score
@@ -135,5 +136,7 @@ class DatasetDescription:
                                                   y_pred,
                                                   metric_name,
                                                   rounding_precision,
-                                                  "the data")
+                                                  "the data",
+                                                  False,
+                                                  model.id)
         return performance_summary

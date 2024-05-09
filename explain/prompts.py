@@ -7,6 +7,7 @@ import copy
 import os
 import string
 import warnings
+import itertools
 from random import shuffle
 from typing import Union
 
@@ -827,7 +828,46 @@ class Prompts:
             string += "\" selectop " + op + "\"" + " |"
         string = string[:-1]
 
-        return {"selectop": string}
+    def _find_combinations(self, numbers):
+    # Generate all combinations of the numbers
+        combinations = []
+        for r in range(1, len(numbers) + 1):
+            combinations.extend(itertools.combinations(numbers, r))
+        return combinations
+    
+    def _extract_select_id(self, query: str):
+        """Extracts any numbers in the query string that could be ids.
+
+        We augment the grammar with any potential data id values that appear
+        in the question. We do this because there are often many items in the
+        data and including all the query id's in the grammar is not so
+        effective, causing large slowdowns. So, we just include potential ids found
+        in the query on-the-fly.
+
+        Arguments:
+            query: the user query
+        Returns:
+            nonterminal: a new nonterminal containing any id values. If there aren't
+                         any, returns None.
+        """
+        options = self._strip_numerical_values(query)
+        print("options combi", options)
+        options = set(options)
+        combis = self._find_combinations(options)
+        print("combi ops", combis)
+        if len(combis) == 0:
+            string = "\" model " + "0" + "\"" + " |"
+            return {"model": string}
+
+        string = ""
+        for combo in combis:
+            string += "\" model "
+            for val in combo:
+                string += val 
+            string += "\"" + " |"
+        string = string[:-1]
+
+        return {"model": string}
     def _extract_tree_mod_nums(self, query: str):
         """Extracts any numbers in the query string that could be ids.
 
@@ -920,7 +960,9 @@ class Prompts:
         num_adhoc = self._extract_numerical_values(query)
         nodemod_adhoc =  self._extract_tree_mod_nums(query)
         selectops_adhoc = self._extract_selectop_op(query)
+        selectmodel_adhoc = self._extract_select_id(query)
+        print("selectmodel", selectmodel_adhoc)
 
         if error_analysis:
-            return joined_prompts, {**id_adhoc, **num_adhoc, **nodemod_adhoc, **selectops_adhoc}, selected_prompts
-        return joined_prompts, {**id_adhoc, **num_adhoc, **nodemod_adhoc, **selectops_adhoc}
+            return joined_prompts, {**id_adhoc, **num_adhoc, **nodemod_adhoc, **selectops_adhoc, **selectmodel_adhoc}, selected_prompts
+        return joined_prompts, {**id_adhoc, **num_adhoc, **nodemod_adhoc, **selectops_adhoc, **selectmodel_adhoc}

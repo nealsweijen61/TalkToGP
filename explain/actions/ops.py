@@ -10,6 +10,7 @@ import ast
 from sympy import dotprint, simplify, parse_expr
 from explain.actions.utils import plot_tree
 from explain.actions.utils import get_models
+import time
 
 # def ops_operation(conversation, parse_text, i, **kwargs):
 #     """Gives the number of operations"""
@@ -157,7 +158,7 @@ def plot_operation(conversation, parse_text, i, **kwargs):
     y_true = conversation.temp_dataset.contents['y']
     plot_colors = ['hotpink','darkviolet','mediumblue']
     explain_string = ""
-    colors = ["red", "blue", "green", "magenta", "cyan", "black", "yellow"]
+    colors = ["red", "blue", "green", "magenta", "cyan", "black", "yellow", "darkred", "lime", "indigo", "grey", "pink"]
     print(colors)
     plot_colors = []
     for i, model in enumerate(models):
@@ -171,11 +172,14 @@ def plot_operation(conversation, parse_text, i, **kwargs):
         y.append(model.complexity)
         explain_string += f'<p style="color:{color};">{model.id+1}) {str(model.expr)}</p>'
     plt.scatter(x, y, c=plot_colors, alpha=0.5) 
-    plt.savefig(os.path.join('static', 'images', 'plot.png'))
+    plt.xlabel("Accurracy (MSE)")
+    plt.ylabel("Complexity (size)")
+    timestamp = int(time.time())
+    plt.savefig(os.path.join('static', 'images', f'plot{timestamp}.png'))
     plt.close()
     # render = render_template('matplotlib-plot1.html') 
     # return_string = "<img src='{{ url_for('static', filename='istatic/images/plot.png') }}'>"
-    return_string = '<img src="static/images/plot.png" alt="drawing" width="400"/>'
+    return_string = f'<img src="static/images/plot{timestamp}.png" alt="drawing" width="400"/>'
     return_string += explain_string
     return return_string, 1
 
@@ -214,7 +218,7 @@ def most_common_trees_operation(conversation, parse_text, i, **kwargs):
         found = False
         if speedDic[test] > 1:
             for key in subDic:
-                print("sym:", symExpr, "key:", key)
+                # print("sym:", symExpr, "key:", key)
                 if simplify(key - symExpr) == 0:
                     subDic[key] = subDic.get(key, 0) + 1
                     found = True

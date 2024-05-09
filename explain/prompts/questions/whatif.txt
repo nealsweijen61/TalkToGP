@@ -1,0 +1,2 @@
+Tell me what the model would predict if you decreased temperature by 5 on all the data
+Over all the instances in the data, what would the predictions be if wind_speed were set to 2?

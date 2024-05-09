@@ -36,7 +36,7 @@ multops: (ops)+
 ops: " +" | " -" | " *" | " /"
 
 selectword: " select"
-select: selectword (numoptions equality adhocnumvalues | " model" adhocnumvalues | selectop | " all" | " selectnames" allfeaturenames)
+select: selectword (numoptions equality adhocnumvalues | model adhocnumvalues | selectop | " all" | " selectnames" allfeaturenames | " selectbest" adhocnumvalues)
 
 numoptions: " selectoperators" | " selectnodes" | " selectconstants" | " selectfeatures" | " selectaccuracy" | " selectcomplex"
 

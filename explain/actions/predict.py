@@ -64,7 +64,7 @@ def predict_operation2(conversation, model, parse_text, i, model_predictions, mi
         if counter == 0:
             return_s += "The true prediction is "
             return_s += f"<b>{conversation.temp_dataset.contents['y'].values[0]}</b> <br>"
-        return_s += f"The instance with <b>{filter_string}</b> is predicted "
+        return_s += f"Model {model.id} predicts instance with <b>{filter_string}</b> is predicted "
         if conversation.class_names is None:
             prediction_class = str(model_predictions[0])
             return_s += f"<b>{prediction_class}</b>"
@@ -73,9 +73,11 @@ def predict_operation2(conversation, model, parse_text, i, model_predictions, mi
             return_s += f"<b>{class_text}</b>."
     else:
         intro_text = get_parse_filter_text(conversation)
-        return_s += f"{intro_text} the model predicts:"
+        if counter > 0:
+            return_s += f"{intro_text} model {model.id} predicts:"
         # Create histogram
         if counter == 0:
+            return_s += f"{intro_text} model predicts:"
             return_s += f"True output"
             trueOutput = conversation.temp_dataset.contents['y']
             return_s += createHistogram(trueOutput, counter-1, max, min)

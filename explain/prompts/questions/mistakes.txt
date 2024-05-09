@@ -1,6 +1,6 @@
 Show on which data points the models make bad predictions
 Show the worst predictions from the 90th percentile
-Parsed: outlier 90 [E]
+outlier 90
 Display the outlier predictions.
 Show me predictions with high errors.
 Visualize predictions with the lowest accuracy.

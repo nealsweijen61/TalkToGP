@@ -1,4 +1,5 @@
 What do you predict for 191?
 Predict id 67
-Predict all data
+what does the model predict on all the training data
 Show me the predictions for humidity is less than 0.631
+predict over everything

@@ -6,38 +6,31 @@ import cloudpickle
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
 
-    expr = "(1.000000*x3)"
-    expr2 = "(1.000000*(x1*x3))"
-    expr3 = "(1.000000*((x1*abs(x0))*x1))"
-    expr4 = "((x1*x7)/abs(((abs(x5)+(x1+x6))/(abs(x1)*(x6*x0)))))"
-    expr5 = "((x1*(x7*x1))*x1)"
-    expr6 = "(((x1+(sqrt(x1)/x7))*x7)/abs(((abs(x5)+(x1+x6))/(abs(x1)*(x6*x0)))))"
-    # expr = "((((x1+x3)+41.432000)/ ((x5/ (x2+1e-6) )+1e-6) )+(x7+x7))"
-    # expr2 = "(57.700000/ (x5+1e-6))"
-    # expr3 = "x0*(x7+x7)"
-    # expr4 = "((21.783000*56.278000)*x0)"
-    # expr5 = "(((x1+(2.793000*x7))*(57.470000*(32.096000+x2)))+(((36.191000/ (x6+1e-6) )+(x0-19.821000))*((x4+x2)*4.235000)))"
-    # expr6 = "(0.000000+(1.000000*((ln((x0+x0+1e-6))*x0)/cos(sin(ln(x3+1e-6)))+1e-6)))"
+    expr = "(128038.565000--65500.791000)"
+    expr2 = "(90747.418000*sqrt(x7))"
+    expr3 = "(87694.852000-(x7*-33431.155000))"
+    expr4 = "((((x4*x2)+(x7*55966.764000))+16510.250000)*sin(cos(sin(x0))))"
+    expr5 = "(((x3+(x7*55966.764000))+((88382.076000/ (x7+1e-6) )+x4))*sin(cos(sin(x0))))"
+    expr6 = "((((x4*x2)+(x7*55966.764000))+((60840.333000/ (x7+1e-6) )+x4))*sin(cos(sin(x0))))"
+    expr7 = "((38714.865000-6404.511000)+(x7*41230.930000))"
+    expr8 = "((((x4*x2)+(x7*55966.764000))+((59111.773000/ (x7+1e-6) )+(x2*x2)))*sin(cos(sin(x0))))"
+    expr9 = "((x0--62467.385000)-(x7*-33431.155000))"
+    expr10 = "((((x6/ (x5+1e-6) )*139366.254000)-56759.704000)+(((42076.555000*x7)+x5)-(x2*(119829.645000/ (x0+1e-6) ))))"
+    expr11 = "((((x6/ (x5+1e-6) )*139366.254000)-60222.572000)+(((42076.555000*x7)+(x6*x2))-(x2*(88422.150000/ (x0+1e-6) ))))"
+    expr12 = "(((x3+(x7*55966.764000))+24423.635000)*sin(cos(sin(x0))))"
     expressions = []
-    expressions.append([expr, 45376929792, 15])
-    expressions.append([expr2, 20401788928, 4])
-    expressions.append([expr3, 10064391168, 1])
-    expressions.append([expr4, 3329543680, 5])
-    expressions.append([expr5, 4784167424, 24])
-    expressions.append([expr6, 3211574528, 15])
-    # expressions.append([expr6, 3211574528, 15])
-    # expressions.append([expr, 911789, 15])
-    # expressions.append([expr2, 2.06328e+07, 4])
-    # expressions.append([expr3, 2.37852e+07, 1])
-    # expressions.append([expr4, 5.9193e+06, 5])
-    # expressions.append([expr5, 750528, 24])
-    # expressions.append([expr6, 3230261, 15])
-    # expressions.append([expr7, 911789, 15])
-    # expressions.append([expr8, 2.06328e+07, 4])
-    # expressions.append([expr9, 2.37852e+07, 1])
-    # expressions.append([expr10, 5.9193e+06, 5])
-    # expressions.append([expr11, 750528, 24])
-    # expressions.append([expr12, 3230261, 15])
+    expressions.append([expr, 9.57798e+9, 15])
+    expressions.append([expr2, 5.19642e+9, 4])
+    expressions.append([expr3, 4.1584e+9, 1])
+    expressions.append([expr4, 2.98372e+9, 5])
+    expressions.append([expr5, 2.97052e+9, 24])
+    expressions.append([expr6, 2.87533e+9, 15])
+    expressions.append([expr7, 3.36917e+9, 15])
+    expressions.append([expr8, 2.87311e+9, 4])
+    expressions.append([expr9, 3.54174e+9, 1])
+    expressions.append([expr10, 2.871e+9, 5])
+    expressions.append([expr11, 2.80815e+9, 24])
+    expressions.append([expr12, 3.11271e+9, 15])
     count = 0
     for expression in expressions:
         count += 1

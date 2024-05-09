@@ -161,7 +161,7 @@ def topk_feature_importance(avg_ranks, conversation, parse_op, return_s, topk):
 
     if topk == len(avg_ranks):
         return_s += (" the importance of the features have the following ranking, where 1 is the "
-                     "most important feature:<br><br>")
+                     "most important feature:<br>")
     else:
         return_s += (f" the <b>top {topk}</b> most important features are as follows, where 1 is the most "
                      "important feature:<br><br>")
@@ -211,6 +211,7 @@ def important_operation(conversation, parse_text, i, **kwargs):
     counter = 0
     for model in models:
         mega_explainer_exp = mega_explainer_exps[model.id]
+        return_s += f"Model {model.id}) <br><br>"
         counter += 1
         print("counter", counter)
         # Get the explainer

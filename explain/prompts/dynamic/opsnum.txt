@@ -58,6 +58,15 @@ Parsed: nodesnum [E]
 User: Give me the size.
 Parsed: nodesnum [E]
 
+User: Give me the size of the models
+Parsed: nodesnum [E]
+
+User: What is the complexity
+Parsed: nodesnum [E]
+
+User: What is the complexity of the models
+Parsed: nodesnum [E]
+
 User: what are the number of features
 Parsed: featuresnum [E]
 
