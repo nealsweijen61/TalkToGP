@@ -1,4 +1,4 @@
-instant,longitude,latitude,housing_median_age,total_rooms,total_bedrooms,population,households,median_income,target
+instant,longitude,latitude,housing_median_age,total_rooms,total_bedrooms,population,households,median_income,y
 400,-122.03,37.61,36.0,1409.0,271.0,1002.0,281.0,3.7262,164900.0
 401,-120.83,38.74,17.0,3685.0,775.0,1714.0,734.0,2.2269,128300.0
 402,-122.25,37.89,41.0,1125.0,195.0,356.0,181.0,6.1593,344000.0

@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for talktogp on 2024-05-01T11:03:36+02:00
+# fly.toml app configuration file generated for talktogp-icy-wave-4334 on 2024-05-10T10:51:01+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'talktogp'
+app = 'talktogp-icy-wave-4334'
 primary_region = 'ams'
 
 [build]

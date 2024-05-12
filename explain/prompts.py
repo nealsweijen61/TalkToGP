@@ -828,6 +828,8 @@ class Prompts:
             string += "\" selectop " + op + "\"" + " |"
         string = string[:-1]
 
+        return {"selectop": string}
+
     def _find_combinations(self, numbers):
     # Generate all combinations of the numbers
         combinations = []
@@ -961,7 +963,6 @@ class Prompts:
         nodemod_adhoc =  self._extract_tree_mod_nums(query)
         selectops_adhoc = self._extract_selectop_op(query)
         selectmodel_adhoc = self._extract_select_id(query)
-        print("selectmodel", selectmodel_adhoc)
 
         if error_analysis:
             return joined_prompts, {**id_adhoc, **num_adhoc, **nodemod_adhoc, **selectops_adhoc, **selectmodel_adhoc}, selected_prompts
