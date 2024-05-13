@@ -171,11 +171,11 @@ def select_operation(conversation, parse_text, i, is_or=False, **kwargs):
         updated_dset = numerical_filter(conversation, parse_text, temp_select, i, feature_name)
     elif feature_name == 'model':
         feature_value = parse_text[i+2]
-        indices = []
+        indices = set()
         counter = 0
         while feature_value != "[E]" and feature_value.isdigit():
             feature_value = int(feature_value)
-            indices.append(feature_value)
+            indices.add(feature_value)
             counter += 1
             feature_value = parse_text[i+2+counter]
         updated_dset = [temp_select[i - 1] for i in indices]

@@ -67,6 +67,10 @@ def revert_operation(conversation, parse_text, i, **kwargs):
     return_string += plot_string
     return return_string, i
 
+def get_child(node, number=1):
+    for i, child in enumerate(ast.iter_child_nodes(node)):
+        if i == number:
+            return child
 
 class MyRemover(ast.NodeTransformer):
     def __init__(self, modIndex, newNode=None):
@@ -82,7 +86,7 @@ class MyRemover(ast.NodeTransformer):
         node.parent = self.parent
         # This node becomes the new parent
         self.parent = node
-        if isinstance(node, ast.BinOp) or isinstance(node, ast.Name) or isinstance(node, ast.Constant):
+        if isinstance(node, ast.BinOp) or isinstance(node, ast.Name) or isinstance(node, ast.Constant) or isinstance(node, ast.Call) or isinstance(node, ast.UnaryOp):
             print(node.__class__.__name__, "parent:", node.parent.__class__.__name__, "index", self.index)
             node.index = self.index
             self.index += 1
@@ -97,15 +101,19 @@ class MyRemover(ast.NodeTransformer):
 
     def generic_visit(self, node):
         result = super().generic_visit(node)
-        
-        if hasattr(node, 'index'):
-            print("index", node.index)
+        if isinstance(node.parent, ast.Call) and isinstance(node, ast.Name):
+            self.index -= 1
+            return result
         if hasattr(node, 'index') and self.modIndex == node.index:
             print("ALTERING", node.__class__.__name__)
             if self.newNode is not None:
                 newNode = self.newNode
             else:
                 num = 0
+                if isinstance(node.parent, ast.Call):
+                    node2 = get_child(node.parent, 0)
+                    if node2.id == "sin":
+                        num = 1
                 if isinstance(node.parent, ast.BinOp):
                     op = node.parent.op
                     if isinstance(op, ast.Mult) or isinstance(op, ast.Div):

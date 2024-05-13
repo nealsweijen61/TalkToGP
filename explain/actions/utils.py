@@ -100,9 +100,9 @@ def get_rules(tree, feature_names, class_names):
     return rules
 
 
-def get_second_child_name(node):
+def get_second_child_name(node, num=1):
     for i, child in enumerate(ast.iter_child_nodes(node)):
-        if i == 1:
+        if i == num:
             return str(child.__class__.__name__)
 
 def create_ast_graph(graph, node, parent_name, index='', num=-1):
@@ -118,6 +118,14 @@ def create_ast_graph(graph, node, parent_name, index='', num=-1):
             num = create_ast_graph(graph, child, current_name, i, num)
     elif isinstance(node, ast.Constant):
         graph.node(current_name, label=f'{node.value}_{num}')
+    elif isinstance(node, ast.UnaryOp):
+        graph.node(current_name, label=f'Min_{num}')
+        for i, child in enumerate(ast.iter_child_nodes(node)):
+            if i == 0:
+                continue
+            child_name = f'{current_name}_{i}'
+            graph.edge(current_name, child_name)
+            num = create_ast_graph(graph, child, current_name, i, num)
     elif isinstance(node, ast.Name):
         graph.node(current_name, label=f'{node.id}_{num}')
     elif isinstance(node, ast.Module) or isinstance(node, ast.Expr):

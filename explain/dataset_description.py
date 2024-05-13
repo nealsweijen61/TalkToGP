@@ -96,7 +96,7 @@ class DatasetDescription:
             string_score += "%"
         # metric_name = "r2 score"
         if only_num == False:
-            performance_summary = f"Model {model_id} scores <em>{string_score} {metric_name}</em> on "
+            performance_summary = f"Model {model_id+1} scores <em>{string_score} {metric_name}</em> on "
             performance_summary += f"{data_name}."
             return performance_summary
         return score

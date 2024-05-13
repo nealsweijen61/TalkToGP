@@ -3,7 +3,7 @@
 #######################
 
 # Model + dataset configuration specific file
-GlobalArgs.config = "./configs/bikes-config.gin"
+GlobalArgs.config = "./configs/house-config.gin"
 
 # Set the base url to host the demo, if needed
 GlobalArgs.baseurl = "/"
