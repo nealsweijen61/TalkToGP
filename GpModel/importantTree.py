@@ -21,8 +21,9 @@ class MyRemover(ast.NodeTransformer):
         node.parent = self.parent
         # This node becomes the new parent
         self.parent = node
-        print(node.__class__.__name__, "parent:", node.parent.__class__.__name__, "index", self.index)
+        
         if isinstance(node, ast.BinOp) or isinstance(node, ast.Name) or isinstance(node, ast.Constant) or isinstance(node, ast.Call) or isinstance(node, ast.UnaryOp):
+            print(node.__class__.__name__, "parent:", node.parent.__class__.__name__, "index", self.index)
             node.index = self.index
             self.index += 1
             if isinstance(node, ast.Call):
@@ -77,18 +78,27 @@ def load_sklearn_model(filepath):
         model = pickle.load(file)
     return model
 
+def getScore(model):
+    df = pd.read_csv('house_small_test_data.csv')
+    row_slice = slice(0, df.shape[0])
+    selected_row = df.iloc[row_slice, 1:9]
+    y_true = df.iloc[row_slice, 9:10]
+    y_pred = model.predict(selected_row)
+    score = r2_score(y_true, y_pred)
+    return score
+    # print(score)
 
 if __name__ == '__main__':
     X = [[-121.54,39.47,14.0,1724.0,315.0,939.0,302.0,2.4952]]
-    model = load_sklearn_model("bikes_gp_1.pkl")
+    model = load_sklearn_model("bikes_gp_4.pkl")
     model.reInit()
     print(str(model.expr))
-    # model = GpModel("128038.565 - 1*(-65500.791)", 0, 0)
+    # model = GpModel("x0 - (-33431.155)*x7 - 1*(-62467.385)", 0, 0)
     # model.reInit()
     # subtrees = model.subtrees
     # print(type(subtrees[0]))
     # print(subtrees)
-    # scores = []
+    scores = []
     # for subtree in subtrees:
     #     newModel = GpModel(subtree, 0, 0)
     #     pred = newModel.predict(X)
@@ -101,19 +111,21 @@ if __name__ == '__main__':
     #     score = r2_score(y_true, y_pred)
     #     # print(score)
     #     scores.append(score)
-    # print(scores)
     oldExpr = model.expr
     astExpr = ast.parse(str(model.expr))
-
-    # oldPred = model.predict(X)
-
-    newTree = ast.fix_missing_locations(MyRemover(4).visit(astExpr))
-    normal =  ast.unparse(newTree)
-    print("normal", normal)
-    model = model.changeModel(normal)
-    print("expr", model.expr)
-    print("expr", oldExpr)
-
+    scores.append(getScore(model))
+    exprs = []
+    for i in range(1, model.complexity):
+        # oldPred = model.predict(X)
+        astExpr = ast.parse(str(model.expr))
+        newTree = ast.fix_missing_locations(MyRemover(i).visit(astExpr))
+        normal =  ast.unparse(newTree)
+        newModel = GpModel(normal, 0, 0)
+        exprs.append(str(newModel.expr))
+        scores.append(getScore(newModel))
+        # print("expr", oldExpr)
+    print(scores)
+    print(exprs)
     # newPred = model.predict(X)
     # print("old", oldPred, "newPred", newPred, "differnce", oldPred-newPred, "part", (oldPred-newPred)/oldPred)
 

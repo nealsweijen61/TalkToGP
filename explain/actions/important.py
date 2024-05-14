@@ -211,7 +211,7 @@ def important_operation(conversation, parse_text, i, **kwargs):
     counter = 0
     for model in models:
         mega_explainer_exp = mega_explainer_exps[model.id]
-        return_s += f"Model {model.id}) <br><br>"
+        return_s += f"<br> Model {model.id+1}) <br>"
         counter += 1
         print("counter", counter)
         # Get the explainer
