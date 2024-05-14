@@ -1,0 +1,50 @@
+User: Show the effect of feature {num_features} on subtree 3
+Parsed: effect {num_features} 3 [E]
+
+User: Plot the effect graph of feature {num_features} on subtree 5
+Parsed: effect {num_features} 5 [E]
+
+User: Display the impact of feature {num_features} on subtree 7.
+Parsed: effect {num_features} 7 [E]
+
+User: Visualize the effect of feature {num_features} on subtree 10.
+Parsed: effect {num_features} 10 [E]
+
+User: Plot the graph illustrating the effect of feature {num_features} on subtree 2.
+Parsed: effect {num_features} 2 [E]
+
+User: Show the influence of feature {num_features} on subtree 8.
+Parsed: effect {num_features} 8 [E]
+
+User: Illustrate the effect of feature {num_features} on subtree 6.
+Parsed: effect {num_features} 6 [E]
+
+User: Graph the impact of feature {num_features} on subtree 4.
+Parsed: effect {num_features} 4 [E]
+
+User: Plot the effect graph of feature {num_features} on subtree 9.
+Parsed: effect {num_features} 9 [E]
+
+User: Visualize the effect of feature {num_features} on subtree 1.
+Parsed: effect {num_features} 1 [E]
+
+User: Display the effect of feature {num_features}
+Parsed: effect {num_features} 0 [E]
+
+User: Plot the effect graph of feature {num_features}
+Parsed: effect {num_features} 0 [E]
+
+User: Show the effect of feature {num_features}
+Parsed: effect {num_features} 0 [E]
+
+User: Set {num_features} to 3
+Parsed: alter {num_features} 3 [E]
+
+User: Change {num_features} to 6.31
+Parsed: alter {num_features} 6.31 [E]
+
+User: {num_features} = 4.23
+Parsed: alter {num_features} 4.23 [E]
+
+User: {num_features} = 0.55
+Parsed: alter {num_features} 0.55 [E]

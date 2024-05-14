@@ -9,7 +9,7 @@ from graphviz import Digraph
 import ast
 from sympy import dotprint, simplify, parse_expr
 from explain.actions.utils import plot_tree
-from explain.actions.utils import get_models
+from explain.actions.utils import get_models, feature_to_name, map_strings
 import time
 
 # def ops_operation(conversation, parse_text, i, **kwargs):
@@ -26,11 +26,12 @@ def num_ops_operation(conversation, parse_text, i, **kwargs):
     """Gives the number of operations"""
     # get operatos values of each model
     models = get_models(conversation)
-    operators = []
-    for model in models:
-        operators.append(model.numOperators())
     # compose the return string
-    return_string = f"The number of operators in each model is {operators}"
+    return_string = f"The number of operators in each model is"
+    for model in models:
+        return_string += "<br>"
+        return_string += f'model <b>{str(model.id+1)}</b>) '
+        return_string += str(model.numOperators())
     # return the string and 1, indicating success
     return return_string, 1
 
@@ -38,11 +39,12 @@ def get_ops_operation(conversation, parse_text, i, **kwargs):
     """Gives the operations"""
     # get operatos of each model
     models = get_models(conversation)
-    operators = []
-    for model in models:
-        operators.append(model.getOperators())
     # compose the return string
-    return_string = f"The operators in each model is {operators}"
+    return_string = f"The operators in each model is"
+    for model in models:
+        return_string += "<br>"
+        return_string += f'model <b>{str(model.id+1)}</b>) '
+        return_string += str(model.getOperators())
     # return the string and 1, indicating success
     return return_string, 1
 
@@ -50,11 +52,12 @@ def num_nodes_operation(conversation, parse_text, i, **kwargs):
     """Gives the number of nodes"""
     # get operatos values of each model
     models = get_models(conversation)
-    operators = []
+    return_string = f"The number of nodes in each model is"
     for model in models:
-        operators.append(model.numNodes())
+        return_string += "<br>"
+        return_string += f'model <b>{str(model.id+1)}</b>) '
+        return_string += str(model.numNodes())
     # compose the return string
-    return_string = f"The number of nodes in each model is {operators}"
     # return the string and 1, indicating success
     return return_string, 1
 
@@ -66,49 +69,40 @@ def get_features_operation(conversation, parse_text, i, **kwargs):
     for model in models:
         features.append(model.getFeatures())
     # compose the return string
-    definitions = conversation.feature_definitions
     features_names = []
     for feature in features:
         feats = []
         for feat in feature:
-            feats.append(feature_to_name(feat, definitions))
+            feats.append(feature_to_name(conversation, feat))
         features_names.append(feats)
     return_string = f"The features in each model are {features_names}"
     # return the string and 1, indicating success
     return return_string, 1
-
-def feature_to_name(variable_name, definitions):
-    print("Varaialbe_name", variable_name)
-    variable_number = int(str(variable_name)[1:])
-    keys = list(definitions.keys())
-    if 0 <= variable_number <= len(keys):
-        return keys[variable_number]
-    else:
-        return None
     
 def num_features_operation(conversation, parse_text, i, **kwargs):
     """Gives the number of features"""
     # get operatos of each model
     models = get_models(conversation)
-    features = []
-    for model in models:
-        features.append(model.numFeatures())
     # compose the return string
-    return_string = f"The features in each model are {features}"
+    return_string = f"The features in each model are"
+    for model in models:
+        return_string += "<br>"
+        return_string += f'model <b>{str(model.id+1)}</b>) '
+        return_string += str(model.numFeatures())
+
     # return the string and 1, indicating success
     return return_string, 1
 
 def most_common_features_operation(conversation, parse_text, i, **kwargs):
     models = get_models(conversation)
     features = []
-    definitions = conversation.feature_definitions
     for model in models:
         features.append(model.getFeatures())
     
     features_count = {}
     for feature_set in features:
         for feature in feature_set:
-            feature = feature_to_name(feature, definitions)
+            feature = feature_to_name(conversation, feature)
             features_count[feature] = features_count.get(feature, 0) + 1
     features_count = sorted(features_count.items(), key=lambda x:x[1], reverse=True)
     return_string = f"Most common features are {features_count}"
@@ -125,19 +119,19 @@ def get_expr_operation(conversation, parse_text, i, **kwargs):
     return_string += "<br><br>"
     features = set()
     for i, model in enumerate(models):
-        return_string += str(model.id+1) + ") "
+        return_string += f'model <b>{str(model.id+1)}</b>) '
         print("expr", model.expr)
-        return_string += str(model.expr)
+        mapped_string = map_strings(conversation, str(model.expr))
+        return_string += mapped_string
         return_string += "<br><br>"
         features.update(model.getFeatures())
     print("features", features)
-    definitions = conversation.feature_definitions
-    return_string += "<br><br>"
-    return_string += "The following are the mapping of the variables"
-    for feature in features:
-        return_string += "<br><br>"
-        name = feature_to_name(feature, definitions)
-        return_string += f"{feature} = {name}"
+    # return_string += "<br><br>"
+    # return_string += "The following are the mapping of the variables"
+    # for feature in features:
+    #     return_string += "<br><br>"
+    #     name = feature_to_name(conversation, feature)
+    #     return_string += f"{feature} = {name}"
     
         # expressions.append(model.getExpr())
     # compose the return string

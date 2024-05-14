@@ -5,6 +5,7 @@ import os
 from graphviz import Digraph
 import time
 import ast
+import re
 
 from explain.conversation import Conversation
 
@@ -105,7 +106,7 @@ def get_second_child_name(node, num=1):
         if i == num:
             return str(child.__class__.__name__)
 
-def create_ast_graph(graph, node, parent_name, index='', num=-1):
+def create_ast_graph(conversation, graph, node, parent_name, index='', num=-1):
     current_name = f'{parent_name}_{index}' if parent_name else 'Root'
     num += 1
     if isinstance(node, ast.BinOp):
@@ -115,7 +116,7 @@ def create_ast_graph(graph, node, parent_name, index='', num=-1):
                 continue
             child_name = f'{current_name}_{i}'
             graph.edge(current_name, child_name)
-            num = create_ast_graph(graph, child, current_name, i, num)
+            num = create_ast_graph(conversation, graph, child, current_name, i, num)
     elif isinstance(node, ast.Constant):
         graph.node(current_name, label=f'{node.value}_{num}')
     elif isinstance(node, ast.UnaryOp):
@@ -125,14 +126,17 @@ def create_ast_graph(graph, node, parent_name, index='', num=-1):
                 continue
             child_name = f'{current_name}_{i}'
             graph.edge(current_name, child_name)
-            num = create_ast_graph(graph, child, current_name, i, num)
+            num = create_ast_graph(conversation, graph, child, current_name, i, num)
     elif isinstance(node, ast.Name):
-        graph.node(current_name, label=f'{node.id}_{num}')
+        nodeName = feature_to_name(conversation, node.id)
+        if nodeName == None:
+            nodeName = node.id
+        graph.node(current_name, label=f'{nodeName}_{num}')
     elif isinstance(node, ast.Module) or isinstance(node, ast.Expr):
         num -= 1
         for i, child in enumerate(ast.iter_child_nodes(node)):
             child_name = f'{current_name}_{i}'
-            num = create_ast_graph(graph, child, current_name, i, num)
+            num = create_ast_graph(conversation, graph, child, current_name, i, num)
     elif isinstance(node, ast.Call):
         graph.node(current_name, label=f'{node.func.id}_{num}')
         for i, child in enumerate(ast.iter_child_nodes(node)):
@@ -140,13 +144,13 @@ def create_ast_graph(graph, node, parent_name, index='', num=-1):
                 continue
             child_name = f'{current_name}_{i}'
             graph.edge(current_name, child_name)
-            num = create_ast_graph(graph, child, current_name, i, num)
+            num = create_ast_graph(conversation, graph, child, current_name, i, num)
     elif isinstance(node, ast.AST):
         graph.node(current_name, label=f'{node.__class__.__name__}_{num}')
         for i, child in enumerate(ast.iter_child_nodes(node)):
             child_name = f'{current_name}_{i}'
             graph.edge(current_name, child_name)
-            num = create_ast_graph(graph, child, current_name, i, num)
+            num = create_ast_graph(conversation, graph, child, current_name, i, num)
     return num
 
 def plot_tree(conversation, parse_text, i, model, **kwargs):
@@ -154,7 +158,7 @@ def plot_tree(conversation, parse_text, i, model, **kwargs):
     expr = ast.parse(str(model.expr))
 
     graph = Digraph(comment='AST Tree')
-    create_ast_graph(graph, expr, '')
+    create_ast_graph(conversation, graph, expr, '')
 
     output_directory = 'static/images/'
     # Ensure the output directory exists
@@ -165,8 +169,8 @@ def plot_tree(conversation, parse_text, i, model, **kwargs):
 
     # Render and save the graph
     graph.render(output_file, format='png', cleanup=True)
-    return_string = f'<img src="static/images/expression_tree+{timestamp}.png" alt="drawing" width="400"/>'
-    return_string += f'<br>{model.id+1}) {str(model.expr)}'
+    return_string = f'<img src="static/images/expression_tree+{timestamp}.png" alt="drawing" width="600"/>'
+    return_string += f'<br>{model.id+1}) {map_strings(conversation, str(model.expr))}'
     return return_string, 1
 
 def get_models(conversation):
@@ -177,3 +181,24 @@ def get_models(conversation):
     if len(conversation.temp_select.contents) == 0:
         return None
     return models
+
+def feature_to_name(conversation, variable_name):
+    print("Varaialbe_name", variable_name)
+    variable_number = int(str(variable_name)[1:])
+    definitions = conversation.feature_definitions
+    keys = list(definitions.keys())
+    if 0 <= variable_number <= len(keys):
+        return keys[variable_number]
+    else:
+        return None
+    
+def map_strings(conversation, input_string):
+    # Use regular expression to find all occurrences of x followed by digits
+    matches = re.findall(r'x\d+', input_string)
+    
+    # Replace each match with its corresponding mapping
+    transformed_string = input_string
+    for match in matches:
+        transformed_string = transformed_string.replace(match, f'<span style="color:blue">{feature_to_name(conversation, match)}</span>')
+    
+    return transformed_string

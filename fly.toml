@@ -3,7 +3,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'talktogp-icy-wave-4334'
+app = 'talktogp'
 primary_region = 'ams'
 
 [build]
