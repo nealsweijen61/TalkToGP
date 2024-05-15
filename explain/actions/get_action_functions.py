@@ -30,6 +30,7 @@ from explain.actions.ast import modification_operation, revert_operation
 from explain.actions.select import select_operation
 from explain.actions.simplify import simplify_operation
 from explain.actions.outlier import outlier_operation
+from explain.actions.effect import effect_operation
 
 def get_all_action_functions_map():
     """Gets a dictionary mapping all the names of the actions in the parse tree to their functions."""
@@ -72,6 +73,7 @@ def get_all_action_functions_map():
         "select": select_operation,
         "simplify": simplify_operation,
         "outlier": outlier_operation,
-        "noderevert": revert_operation
+        "noderevert": revert_operation,
+        "effect": effect_operation
     }
     return actions
