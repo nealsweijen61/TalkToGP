@@ -97,6 +97,7 @@ class GpModel(BaseEstimator, RegressorMixin):
 
         self.func = lambdify(self.symbols, self.expr, 'numpy')
 
+        self.complexity = self.numNodes()
         self.ast = ast.parse(str(self.expr))
         self.subtrees = []
         self.getSubTrees(self.ast)
@@ -108,7 +109,7 @@ class GpModel(BaseEstimator, RegressorMixin):
         self.expr = simplify(self.expr)
     
         self.func = lambdify(self.symbols, self.expr, 'numpy')
-
+        self.complexity = self.numNodes()
         self.ast = ast.parse(str(self.expr))
         self.subtrees = []
         self.getSubTrees(self.ast)

@@ -113,7 +113,7 @@ if __name__ == '__main__':
     #     scores.append(score)
     oldExpr = model.expr
     astExpr = ast.parse(str(model.expr))
-    scores.append(getScore(model))
+    scores.append((getScore(model), 0))
     exprs = []
     for i in range(1, model.complexity):
         # oldPred = model.predict(X)
@@ -122,8 +122,9 @@ if __name__ == '__main__':
         normal =  ast.unparse(newTree)
         newModel = GpModel(normal, 0, 0)
         exprs.append(str(newModel.expr))
-        scores.append(getScore(newModel))
+        scores.append((getScore(newModel), i))
         # print("expr", oldExpr)
+    scores = sorted(scores, key=lambda x: x[0], reverse=True)
     print(scores)
     print(exprs)
     # newPred = model.predict(X)

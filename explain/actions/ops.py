@@ -164,7 +164,7 @@ def plot_operation(conversation, parse_text, i, **kwargs):
         score = float(score)
         x.append(score)
         y.append(model.complexity)
-        explain_string += f'<p style="color:{color};">{model.id+1}) {str(model.expr)}</p>'
+        explain_string += f'<p style="color:{color};">{model.id+1}) {map_strings(conversation, str(model.expr), colour=False)}</p>'
     plt.scatter(x, y, c=plot_colors, alpha=0.5) 
     plt.xlabel("Accurracy (MSE)")
     plt.ylabel("Complexity (size)")

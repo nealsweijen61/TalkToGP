@@ -192,13 +192,16 @@ def feature_to_name(conversation, variable_name):
     else:
         return None
     
-def map_strings(conversation, input_string):
+def map_strings(conversation, input_string, colour=True):
     # Use regular expression to find all occurrences of x followed by digits
     matches = re.findall(r'x\d+', input_string)
     
     # Replace each match with its corresponding mapping
     transformed_string = input_string
     for match in matches:
-        transformed_string = transformed_string.replace(match, f'<span style="color:blue">{feature_to_name(conversation, match)}</span>')
+        if colour:
+            transformed_string = transformed_string.replace(match, f'<span style="color:blue">{feature_to_name(conversation, match)}</span>')
+        else:
+            transformed_string = transformed_string.replace(match, f'{feature_to_name(conversation, match)}')
     
     return transformed_string
