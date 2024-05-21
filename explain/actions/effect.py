@@ -61,8 +61,14 @@ def effect_operation(conversation, parse_text, i, **kwargs):
     feature_values = np.linspace(minValue, maxValue, num=100)  # Adjust num as needed for smoother plot
 
     default_values = []
+    features = conversation.get_var('features').contents
+    definitions = conversation.feature_definitions
+    keys = list(definitions.keys())
     for i in range(8):
-        default_values.append(data.iloc[:, i].mean())
+        if keys[i] in features:
+            default_values.append(features[keys[i]])
+        else:
+            default_values.append(data.iloc[:, i].mean())
     print("default_values", default_values)
     input_values = []
     for feat in feature_values:

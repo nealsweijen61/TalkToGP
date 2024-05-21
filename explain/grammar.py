@@ -1,7 +1,7 @@
 GRAMMAR = r"""
 ?start: action
 action: operation done | operation join action | followup done
-operation: explanation | filter | predictions | whatami | lastturnfilter | lastturnop | data | impfeatures | show | whatif | likelihood | modeldescription | function | score | ndatapoints | interact | label | mistakes | fstats | define | labelfilter | predfilter | numops | getops | numnodes | numfeatures | getfeatures | commonfeatures | getexpr | getcommon | plotpareto | plotsubtree | deletenode | modnode | revertnode | select | simp | out | effect | alter
+operation: explanation | filter | predictions | whatami | lastturnfilter | lastturnop | data | impfeatures | show | whatif | likelihood | modeldescription | function | score | ndatapoints | interact | label | mistakes | fstats | define | labelfilter | predfilter | numops | getops | numnodes | numfeatures | getfeatures | commonfeatures | getexpr | getcommon | plotpareto | plotsubtree | deletenode | modnode | revertnode | select | simp | out | effect | alter | analyze | badtrees
 
 labelfilter: " labelfilter" class
 predfilter: " predictionfilter" class
@@ -41,6 +41,8 @@ numoptions: " selectoperators" | " selectnodes" | " selectconstants" | " selectf
 
 effect: " effect" numfeaturenames adhocnumvalues
 alter: " alter" numfeaturenames adhocnumvalues
+analyze: " analyze"
+badtrees: " badtrees"
 
 fstats: fstatsword (allfeaturenames | " target")
 fstatsword: " statistic"

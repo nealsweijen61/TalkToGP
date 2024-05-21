@@ -7,9 +7,31 @@ import csv
 import pandas as pd
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.inspection import permutation_importance
-import shap
-from scipy.special import softmax
 import numpy as np
+import shap
+
+class SubTree(ast.NodeVisitor):
+    def __init__(self):
+        self.index = 0
+        self.mapping = []
+        self.parent = None
+
+    def generic_visit(self, node):
+        node.parent = self.parent
+        self.parent = node
+        if isinstance(node, ast.BinOp) or isinstance(node, ast.Name) or isinstance(node, ast.Constant) or isinstance(node, ast.Call) or isinstance(node, ast.UnaryOp):
+            print("visit", self.index, type(node))
+            if isinstance(node, ast.Constant) == False and isinstance(node, ast.Name) == False:
+                self.mapping.append(self.index)
+            if isinstance(node, ast.Name) and isinstance(node.parent, ast.Call):
+                self.index -= 1
+            self.index += 1
+        ast.NodeVisitor.generic_visit(self, node)
+        if isinstance(node, ast.AST):
+            # update the parent, since this may have been transformed 
+            # to a different node by super
+            self.parent = node.parent
+        return node
 
 class MyRemover(ast.NodeTransformer):
     def __init__(self, modIndex, newNode=None):
@@ -92,102 +114,81 @@ def getScore(model):
     return score
     # print(score)
 
-def print_feature_importances_shap_values(shap_values, features):
-    '''
-    Prints the feature importances based on SHAP values in an ordered way
-    shap_values -> The SHAP values calculated from a shap.Explainer object
-    features -> The name of the features, on the order presented to the explainer
-    '''
+def print_feature_importances_shap_values(shap_values):
+    
     # Calculates the feature importance (mean absolute shap value) for each feature
     importances = []
     for i in range(shap_values.values.shape[1]):
         importances.append(np.mean(np.abs(shap_values.values[:, i])))
-    # Calculates the normalized version
-    # importances_norm = softmax(importances)
-    # Organize the importances and columns in a dictionary
-    # feature_importances = {fea: imp for imp, fea in zip(importances, features)}
-    # feature_importances_norm = {fea: imp for imp, fea in zip(importances_norm, features)}
-    # Sorts the dictionary
-    # feature_importances = {k: v for k, v in sorted(feature_importances.items(), key=lambda item: item[1], reverse = True)}
-    # feature_importances_norm= {k: v for k, v in sorted(feature_importances_norm.items(), key=lambda item: item[1], reverse = True)}
-    # Prints the feature importances
-    print(importances[7])
+    return(importances[8])
 
 if __name__ == '__main__':
     X = [[-121.54,39.47,14.0,1724.0,315.0,939.0,302.0,2.4952]]
-    model = load_sklearn_model("bikes_gp_4.pkl")
+    model = load_sklearn_model("bikes_gp_11.pkl")
+    # model = GpModel("(x2*x4 + x7*52000.764 + 16510.25)", 0, 0)
+    model.reInit()
     df = pd.read_csv('house_small_train_data.csv')
     dfTest = pd.read_csv('house_small_test_data.csv')
     model.reInit()
-    row_slice = slice(0, dfTest.shape[0])
+    row_slice = slice(0, df.shape[0])
     print(str(model.expr))
+    result = permutation_importance(model, df.iloc[row_slice, 1:9], df.iloc[row_slice, 9:10], n_repeats=10, random_state=42, n_jobs=-1)
 
-    # astExpr = ast.parse(str(model.expr))
-    # print("astExpr", astExpr)
-    # newTree = ast.fix_missing_locations(MyRemover(10, ast.parse("1")).visit(astExpr))
-    # normal =  ast.unparse(newTree)
-    # normal = normal.replace('\n', '')
-    # print("normal", normal)
-    # newModel = GpModel(normal, 0, 0, explain=True)
-    # print(str(newModel.expr))
+    # Get mean importance
+    print(result.importances_mean)
+    importances = result.importances_mean
 
-    # # Fits the explainer
-    # explainer = shap.Explainer(model.predict, df.iloc[row_slice, 1:9])
-    # shap_values = explainer(df.iloc[row_slice, 1:9])
-    # print(shap_values)
-    # print(len(shap_values), len(shap_values[0]))
-    # print_feature_importances_shap_values(shap_values, ["longitude", "latitude", "housing_median_age", "total_rooms", "total_bedrooms", "population", "households", "median_income"])
-    # shap.plots.bar(shap_values)
-    # shap.summary_plot(shap_values, df.iloc[row_slice, 1:9])
-    
-    # result = permutation_importance(model, df.iloc[row_slice, 1:9], df.iloc[row_slice, 9:10], n_repeats=10, random_state=42, n_jobs=-1)
+    # Print feature importance
+    for i, importance in enumerate(importances):
+        print(f'Feature {i}: {importance}')
 
-    # # Get mean importance
-    # print(result.importances_mean)
-    # importances = result.importances_mean
-
-    # # Print feature importance
-    # for i, importance in enumerate(importances):
-    #     print(f'Feature {i}: {importance}')
-    # model = GpModel("x0 - (-33431.155)*x7 - 1*(-62467.385)", 0, 0)
-    # model.reInit()
     subtrees = model.subtrees
-    print(type(subtrees[0]))
     print(subtrees)
     scores = []
-    # for subtree in subtrees:
-    #     newModel = GpModel(subtree, 0, 0)
-    #     pred = newModel.predict(X)
+    for i, subtree in enumerate(subtrees):
+        #make new model from subtree
+        newModel = GpModel(subtree, 0, 0)
 
-    #     df = pd.read_csv('house_small_test_data.csv')
-    #     row_slice = slice(0, df.shape[0])
-    #     selected_row = df.iloc[row_slice, 1:9]
-    #     y_true = df.iloc[row_slice, 9:10]
-    #     y_pred = newModel.predict(selected_row)
-    #     score = r2_score(y_true, y_pred)
-    #     # print(score)
-    #     scores.append(score)
-    # print(scores)
+        #select data
+        row_slice = slice(0, df.shape[0])
+        selected_row = dfTest.iloc[row_slice, 1:9]
+        #make predictions for subtree
+        preds = newModel.predict(selected_row)
 
-    oldExpr = model.expr
-    astExpr = ast.parse(str(model.expr))
-    scores.append((getScore(model), 0))
-    exprs = []
-    for i in range(1, model.complexity):
-        # oldPred = model.predict(X)
+        #add predictions to last column of data
+        selected_row[f"node{1}"] = preds
+
+
+        #look which index this subtree is add
+        subT = SubTree()
+        subT.visit(model.ast)
+        mapping = subT.mapping
+        print("mapping", mapping)
+        num = mapping[i]
+        print(num)
+
         astExpr = ast.parse(str(model.expr))
-        newTree = ast.fix_missing_locations(MyRemover(i).visit(astExpr))
+        print("astExpr", astExpr)
+        newTree = ast.fix_missing_locations(MyRemover(num, ast.parse("x8")).visit(astExpr))
         normal =  ast.unparse(newTree)
-        newModel = GpModel(normal, 0, 0)
-        exprs.append(str(newModel.expr))
-        scores.append((getScore(newModel), i))
-        # print("expr", oldExpr)
-    scores = sorted(scores, key=lambda x: x[0], reverse=True)
-    print(scores)
-    # print(exprs)
-    # newPred = model.predict(X)
-    # print("old", oldPred, "newPred", newPred, "differnce", oldPred-newPred, "part", (oldPred-newPred)/oldPred)
+        normal = normal.replace('\n', '')
+        print(normal)
+        newModel = GpModel(normal, 0, 0, explain=True)
+        print(str(newModel.expr))
 
+        explainer = shap.Explainer(newModel.predict, selected_row)
+        shap_values = explainer(selected_row)
+        score = print_feature_importances_shap_values(shap_values)
+        scores.append(score)
+        # result = permutation_importance(newModel, selected_row, dfTest.iloc[row_slice, 9:10], n_repeats=10, random_state=42, n_jobs=-1)
+        # importances = result.importances_mean
+        # print("Last feature", importances[8])
+        # scores.append(importances[8])
+        # for i, importance in enumerate(importances):
+        #     print(f'Feature {i}: {importance}')
+    
+    print(scores)
+    print("mapping", mapping)
 
 
 

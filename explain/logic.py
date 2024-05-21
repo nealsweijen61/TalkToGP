@@ -126,9 +126,9 @@ class ExplainBot:
                                          feature_definitions=feature_definitions)
 
         # Load the model into the conversation
+        self.conversation.add_var('features', {}, 'features')
         self.load_model(model_file_path)
         self.load_models()
-        print("here124")
         # Load the dataset into the conversation
         self.load_dataset(dataset_file_path,
                           dataset_index_column,
@@ -138,7 +138,6 @@ class ExplainBot:
                           remove_underscores,
                           store_to_conversation=True,
                           skip_prompts=skip_prompts)
-        print("hiero123")
         background_dataset = self.load_dataset(background_dataset_file_path,
                                                dataset_index_column,
                                                target_variable_name,

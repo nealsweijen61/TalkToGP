@@ -7,7 +7,7 @@ import ast
 
 class GpModel(BaseEstimator, RegressorMixin):
 
-    def __init__(self, expression, accuracy, complexity, id=0):
+    def __init__(self, expression, accuracy, complexity, id=0, explain=False):
         super().__init__()
         self.id = id
 
@@ -17,7 +17,11 @@ class GpModel(BaseEstimator, RegressorMixin):
 
         self.accuracy = accuracy
 
+        self.explain = explain
+
         self.symbols = symbols('x0 x1 x2 x3 x4 x5 x6 x7')
+        if explain:
+            self.symbols = symbols('x0 x1 x2 x3 x4 x5 x6 x7 x8')
 
         self.expr = parse_expr(expression, evaluate=False)
 

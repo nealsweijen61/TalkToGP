@@ -61,6 +61,7 @@ def revert_operation(conversation, parse_text, i, **kwargs):
     models_prob_predictions[model.id] = model.predict
     conversation.add_var('model_prob_predicts', models_prob_predictions, 'prediction_function')
 
+    conversation.add_var('features', {}, 'features')
 
     return_string = f"The model is reverted to the original"
     plot_string, i = plot_tree(conversation, parse_text, i, model, **kwargs)

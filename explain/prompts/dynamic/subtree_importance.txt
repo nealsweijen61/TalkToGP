@@ -1,0 +1,65 @@
+User: What is the most important subtree?
+Parsed: analyze [E]
+
+User: Which node has the most influence?
+Parsed: analyze [E]
+
+User: Can you tell me more about this tree?
+Parsed: analyze [E]
+
+User: Identify the most critical subtree.
+Parsed: analyze [E]
+
+User: Which subtree plays the key role?
+Parsed: analyze [E]
+
+User: Highlight the most influential subtree.
+Parsed: analyze [E]
+
+User: Show the most significant node.
+Parsed: analyze [E]
+
+User: Determine the key subtree in this tree.
+Parsed: analyze [E]
+
+User: Find the node with the highest importance.
+Parsed: analyze [E]
+
+User: Analyze the most impactful subtree.
+Parsed: analyze [E]
+
+User: Which subtree is the most crucial?
+Parsed: analyze [E]
+
+User: Which subtee is not important?
+Parsed: badtrees [E]
+
+User: Show me which nodes I can remove
+Parsed: badtrees [E]
+
+User: What nodes have the least effect?
+Parsed: badtrees [E]
+
+User: Highlight the least important subtrees.
+Parsed: badtrees [E]
+
+User: Identify the subtrees with the least significance.
+Parsed: badtrees [E]
+
+User: Show the nodes with minimal impact.
+Parsed: badtrees [E]
+
+User: Which subtrees contribute the least?
+Parsed: badtrees [E]
+
+User: Display the subtrees that are the least useful.
+Parsed: badtrees [E]
+
+User: Find the nodes that can be safely ignored.
+Parsed: badtrees [E]
+
+User: List the subtrees with the least influence.
+Parsed: badtrees [E]
+
+User: Show me the least impactful subtrees.
+Parsed: badtrees [E]
