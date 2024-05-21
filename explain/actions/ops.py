@@ -66,16 +66,20 @@ def get_features_operation(conversation, parse_text, i, **kwargs):
     # get operatos of each model
     models = get_models(conversation)
     features = []
+    return_string = f"The features in each model are:"
     for model in models:
         features.append(model.getFeatures())
     # compose the return string
     features_names = []
-    for feature in features:
+    for i, feature in enumerate(features):
         feats = []
         for feat in feature:
             feats.append(feature_to_name(conversation, feat))
+        return_string += "<br>"
+        return_string += f'model <b>{str(models[i].id+1)}</b>) '
+        return_string += str(feats)
         features_names.append(feats)
-    return_string = f"The features in each model are {features_names}"
+    # return_string = f"The features in each model are {features_names}"
     # return the string and 1, indicating success
     return return_string, 1
     
