@@ -168,6 +168,7 @@ def bad_operation(conversation, parse_text, i, **kwargs):
         scores.append((getScore(conversation, newModel), i))
     scores = sorted(scores, key=lambda x: x[0], reverse=True)
     return_string = f"The original model scores {score0}"
+    return_string += "<br>"
     return_string += "Removing the following nodes results in a score:"
     for score, node in scores:
         return_string += "<br>"

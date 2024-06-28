@@ -11,6 +11,7 @@ from sympy import dotprint, simplify, parse_expr
 from explain.actions.utils import plot_tree
 from explain.actions.utils import get_models, feature_to_name, map_strings
 import time
+from collections import Counter
 
 # def ops_operation(conversation, parse_text, i, **kwargs):
 #     """Gives the number of operations"""
@@ -212,17 +213,35 @@ def most_common_trees_operation(conversation, parse_text, i, **kwargs):
     for subtree in subtrees:
         symExpr = parse_expr(subtree)
         test = simplify(parse_expr(testExpr)- symExpr)
-        speedDic[test] = speedDic.get(test, 0) + 1
-        found = False
-        if speedDic[test] > 1:
-            for key in subDic:
-                # print("sym:", symExpr, "key:", key)
-                if simplify(key - symExpr) == 0:
-                    subDic[key] = subDic.get(key, 0) + 1
-                    found = True
-                    break
-        if not found:
-            subDic[symExpr] = subDic.get(symExpr, 0) + 1
-    subDic = sorted(subDic.items(), key=lambda x:x[1], reverse=True)
-    return_string = f"Most common subtrees are {subDic}"
+        if test in speedDic:
+            freq, sym = speedDic.get(test)
+            speedDic[test] = (freq+1, sym)
+        else:
+            speedDic[test] = (1, symExpr)
+        
+        # found = False
+        
+        # if speedDic[test] > 1:
+        #     for key in subDic:
+        #         # print("sym:", symExpr, "key:", key)
+        #         if simplify(key - symExpr) == 0:
+        #             subDic[key] = subDic.get(key, 0) + 1
+        #             found = True
+        #             break
+        # if not found:
+        #     subDic[symExpr] = subDic.get(symExpr, 0) + 1
+    values_list = [(value[0], value[1]) for value in speedDic.values()]
+
+    filtered_tuples = [tup for tup in values_list if tup[0] >= 2]
+    # subDic = sorted(subDic.items(), key=lambda x:x[0], reverse=True)
+    sorted_list = sorted(filtered_tuples, key=lambda x: x[0], reverse=True)
+    print(sorted_list)
+    return_string = "The most common subtrees are:"
+    for i, tuple in enumerate(sorted_list):
+        print(tuple)
+        return_string += "<br>"
+        print(type(tuple[1]), tuple[1])
+        mapped_string = map_strings(conversation, str(tuple[1]))
+        return_string += f"{i+1}) {mapped_string} apears {tuple[0]} times"
+    # return_string = f"Most common subtrees are {sorted_list}"
     return return_string, 1

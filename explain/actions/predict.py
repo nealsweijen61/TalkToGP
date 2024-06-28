@@ -74,10 +74,11 @@ def predict_operation2(conversation, model, parse_text, i, model_predictions, mi
     else:
         intro_text = get_parse_filter_text(conversation)
         if counter > 0:
-            return_s += f"{intro_text} model {model.id} predicts:"
+            return_s += f""
+            # return_s += f"{intro_text} model {model.id} predicts:"
         # Create histogram
         if counter == 0:
-            return_s += f"{intro_text} model predicts:"
+            return_s += f"{intro_text} here are all model predictions:"
             return_s += f"True output"
             trueOutput = conversation.temp_dataset.contents['y']
             return_s += createHistogram(trueOutput, counter-1, max, min)
