@@ -1,8 +1,6 @@
-<p align="center">
-<img src="static/images/banner.png" alt="drawing" width="600"/>
-</p>
+# Talk to GP:: Explaining Genetic Programming Models models through natural language
 
-# TalkToModel: Explaining Machine Learning Models with Interactive Natural Language Conversations
+This is an extension of TalkToModel
 
 [![Python application](https://github.com/dylan-slack/TalkToModel/actions/workflows/python-app.yml/badge.svg)](https://github.com/dylan-slack/TalkToModel/actions/workflows/python-app.yml) [![arXiv](https://img.shields.io/badge/arXiv-2207.04154-b31b1b.svg)](https://arxiv.org/abs/2207.04154)
 
@@ -13,37 +11,6 @@ Welcome to the [TalkToModel paper](https://arxiv.org/abs/2207.04154) page! The g
 &nbsp;&nbsp;&nbsp;
 <img src="static/images/output.gif" alt="drawing" width="600"/>
 </p>
-
-## Links
-
-- Check out the [arXiv TalkToModel paper](https://arxiv.org/abs/2207.04154) ✨
-- Check out the [github code](https://github.com/dylan-slack/TalkToModel) 🖥️
-- We are hosting a [demo of TalkToModel](https://nlp.ics.uci.edu/talk-to-healthcare-model/) on the diabetes prediction task 🚀
-
-If you found this work useful, please cite us! 
-
-```bibtex
-@Article{Slack2023,
-author={Slack, Dylan
-and Krishna, Satyapriya
-and Lakkaraju, Himabindu
-and Singh, Sameer},
-title={Explaining machine learning models with interactive natural language conversations using TalkToModel},
-journal={Nature Machine Intelligence},
-year={2023},
-month={Jul},
-day={27},
-abstract={Practitioners increasingly use machine learning (ML) models, yet models have become more complex and harder to understand. To understand complex models, researchers have proposed techniques to explain model predictions. However, practitioners struggle to use explainability methods because they do not know which explanation to choose and how to interpret the explanation. Here we address the challenge of using explainability methods by proposing TalkToModel: an interactive dialogue system that explains ML models through natural language conversations. TalkToModel consists of three components: an adaptive dialogue engine that interprets natural language and generates meaningful responses; an execution component that constructs the explanations used in the conversation; and a conversational interface. In real-world evaluations, 73{\%} of healthcare workers agreed they would use TalkToModel over existing systems for understanding a disease prediction model, and 85{\%} of ML professionals agreed TalkToModel was easier to use, demonstrating that TalkToModel is highly effective for model explainability.},
-issn={2522-5839},
-doi={10.1038/s42256-023-00692-8},
-url={https://doi.org/10.1038/s42256-023-00692-8}
-}
-```
-
-[UPDATE] This work won an honorable mention outstanding paper at the TSRML Workshop at NeurIPS 🎉
-
-We additionally wrote a [precursor paper](https://arxiv.org/abs/2202.01875) about domain experts needs for understanding models, that helped inspire this work. It's called *Rethinking Explainability as a Dialogue: A Practitioner's Perspective*. Check that out as well!
-
 
 ## Table of Contents
 
@@ -61,8 +28,6 @@ Here follows a brief overview of the purpose and scope of the system.
 ### Purpose
 
 As machine learning models are being increasingly integrated in our day-to-day lives, it becomes important that anyone can interact with and understand them. TalkToModel helps realize this goal and enables *anyone* to chat with a machine learning model to understand the model's predictions.
-
-Please [read our paper](https://arxiv.org/abs/2207.04154) for more motivation and details about how the system works.
 
 ### Scope
 
@@ -181,16 +146,6 @@ python parsing/t5/start_fine_tuning.py --gin parsing/t5/gin_configs/t5-{small, b
 where `{small, base, large}` and `{diabetes, german, compas}` are one of the values in the set. Note, these experiments require use [Weights & Biases](https://wandb.ai/site) to track training and the best validation model.
 
 For simplicity, we also provide all the best validation pre-trained models for download on huggingface: [https://huggingface.co/dslack/all-finetuned-ttm-models](https://huggingface.co/dslack/all-finetuned-ttm-models). You can download these models from the provided zip file, and unzip the models to `./parsing/t5/models`.
-
-### Evaluating Gold Parsing Accuracy
-
-With all the models downloaded, you can compute the parsing accuracies by running
-
-```shell
-python experiments/generate_parsing_results.py
-```
-
-The results will be deposited in the `./experiments/results_store` directory.
 
 ## Running on Your Own Model & Dataset
 
