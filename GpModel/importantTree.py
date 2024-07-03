@@ -154,6 +154,7 @@ if __name__ == '__main__':
     subtrees = model.subtrees
     print(type(subtrees[0]))
     print(subtrees)
+    print("parents", model.nodeParents)
     scores = []
     # for subtree in subtrees:
     #     newModel = GpModel(subtree, 0, 0)
@@ -169,21 +170,21 @@ if __name__ == '__main__':
     #     scores.append(score)
     # print(scores)
 
-    oldExpr = model.expr
-    astExpr = ast.parse(str(model.expr))
-    scores.append((getScore(model), 0))
-    exprs = []
-    for i in range(1, model.complexity):
-        # oldPred = model.predict(X)
-        astExpr = ast.parse(str(model.expr))
-        newTree = ast.fix_missing_locations(MyRemover(i).visit(astExpr))
-        normal =  ast.unparse(newTree)
-        newModel = GpModel(normal, 0, 0)
-        exprs.append(str(newModel.expr))
-        scores.append((getScore(newModel), i))
-        # print("expr", oldExpr)
-    scores = sorted(scores, key=lambda x: x[0], reverse=True)
-    print(scores)
+    # oldExpr = model.expr
+    # astExpr = ast.parse(str(model.expr))
+    # scores.append((getScore(model), 0))
+    # exprs = []
+    # for i in range(1, model.complexity):
+    #     # oldPred = model.predict(X)
+    #     astExpr = ast.parse(str(model.expr))
+    #     newTree = ast.fix_missing_locations(MyRemover(i).visit(astExpr))
+    #     normal =  ast.unparse(newTree)
+    #     newModel = GpModel(normal, 0, 0)
+    #     exprs.append(str(newModel.expr))
+    #     scores.append((getScore(newModel), i))
+    #     # print("expr", oldExpr)
+    # scores = sorted(scores, key=lambda x: x[0], reverse=True)
+    # print(scores)
     # print(exprs)
     # newPred = model.predict(X)
     # print("old", oldPred, "newPred", newPred, "differnce", oldPred-newPred, "part", (oldPred-newPred)/oldPred)

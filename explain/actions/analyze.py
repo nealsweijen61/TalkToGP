@@ -110,6 +110,7 @@ def analyze_operation(conversation, parse_text, i, **kwargs):
 
     subtrees = model.subtrees
     scores = []
+    nodeNums = []
     return_string = "The scores of all subtrees are:"
     for i, subtree in enumerate(subtrees):
         #make new model from subtree
@@ -145,11 +146,17 @@ def analyze_operation(conversation, parse_text, i, **kwargs):
         importances = result.importances_mean
         print("Last feature", importances[8])
         scores.append(importances[8])
-        return_string += "<br>"
-        return_string += f"Subtree {num} has score {importances[8]}"
+        nodeNums.append(num)
         for i, importance in enumerate(importances):
             print(f'Feature {i}: {importance}')
     
+    print(scores)
+    for i, score in enumerate(scores):
+        if model.nodeParents[i] == -1:
+            continue
+        scores[i] *= scores[model.nodeParents[i]]
+        return_string += "<br>"
+        return_string += f"Subtree {nodeNums[i]} has score {scores[i]}"
     print(scores)
     print("mapping", mapping)
     return return_string, 1

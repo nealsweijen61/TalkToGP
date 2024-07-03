@@ -4,16 +4,20 @@ import ast
 
 # expr = "((((x1+x9)+41.432000)/ ((x10/ (x2+1e-6) )+1e-6) )+(x8+x8))"
 expr = "(57.700000/ (x10+1e-6))"
-expr = "(57.700000/ (log(3)))"
+# expr = "(57.700000/ (log(3)))"
 expr3 = "x0*(x8+x8)"
-classifier = GpModel(expr3, 5, 6)
+expr4 = "((((x4*x2)+(x7*55966.764000))+16510.250000)*sin(cos(sin(x0))))"
+model = GpModel(expr4, 5, 6)
 
-print("class", classifier.expr)
-classifier.getSimplify()
-print("class", classifier.expr)
+print(model.subtrees)
+print("parents", model.nodeParents)
+
+# print("class", classifier.expr)
+# classifier.getSimplify()
+# print("class", classifier.expr)
 # X = [[3,0,7,0,6,0,1,0.686667,0.638263,0.585,0.208342]]
 # res = classifier.predict(X)
-res = classifier.ast
+# res = classifier.ast
 class MyVisitor(ast.NodeTransformer):
     def __init__(self, node_number):
         self.node_number = node_number
@@ -30,6 +34,6 @@ class MyVisitor(ast.NodeTransformer):
         return result
 
 
-visitor = MyVisitor(2)
-new = visitor.visit(res)
+# visitor = MyVisitor(2)
+# new = visitor.visit(res)
 # print(res)

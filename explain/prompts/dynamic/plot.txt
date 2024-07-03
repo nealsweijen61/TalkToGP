@@ -7,6 +7,12 @@ Parsed: paretoplot [E]
 User: show the pareto front
 Parsed: paretoplot [E]
 
+User: plot the approximation front
+Parsed: paretoplot [E]
+
+User: plot the front
+Parsed: paretoplot [E]
+
 User: show the subtrees
 Parsed: subtreeplot [E]
 

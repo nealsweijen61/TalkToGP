@@ -31,7 +31,12 @@ class GpModel(BaseEstimator, RegressorMixin):
         self.complexity = self.numNodes()
 
         self.ast = ast.parse(str(self.expr))
+
         self.subtrees = []
+
+        self.nodeParents = []
+        self.nodeCount = -1
+
         self.getSubTrees(self.ast)
 
     def reInit(self):
@@ -42,14 +47,17 @@ class GpModel(BaseEstimator, RegressorMixin):
     def count_nodes(self, node):
         return sum(1 for _ in ast.walk(node))
     
-    def getSubTrees(self, node):
+    def getSubTrees(self, node, parent=-1):
         if isinstance(node, ast.Module) or isinstance(node, ast.Expr) or self.count_nodes(node) < 3:
             for child_node in ast.iter_child_nodes(node):
                 self.getSubTrees(child_node)
         else:
             self.subtrees.append(ast.unparse(node))
+            self.nodeParents.append(parent)
+            self.nodeCount += 1
+            currentNumber = self.nodeCount
             for child_node in ast.iter_child_nodes(node):
-                self.getSubTrees(child_node)
+                self.getSubTrees(child_node, currentNumber)
 
     def fit(self, X, y=None):
         pass
