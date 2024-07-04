@@ -17,6 +17,7 @@ Welcome to the [TalkToModel paper](https://arxiv.org/abs/2207.04154) page! The g
 - [Overview](#Overview)
 - [Installation](#Installation)
 - [Running the TalkToModel Application](#running-the-talktomodel-application)
+- [TalkToGP](#TalkToGP)
 - [Running On Your Own Model & Dataset](#running-on-your-own-model--dataset)
 - [Experiments](#experiments)
 - [Development](#development)
@@ -59,6 +60,12 @@ pip install -r requirements.txt
 ```
 
 Nice work 👍
+
+## TalkToGP
+
+Any models you want to add to the TalkToGP system should be added in data/models.
+
+To create GpModels from numerical expressions the script GpModel/saveModelsHouse.py can be used. 
 
 ## Running A Pre-Configured TalkToModel Demo
 
